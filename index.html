@@ -158,9 +158,11 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
 
 /* ---- HERO ---- */
 .eligibility-hero { border-radius: var(--radius-lg); padding: 24px 28px; display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
-.eligibility-hero.pass { background: linear-gradient(135deg, #065F46 0%, #10B981 100%); color: white; }
-.eligibility-hero.fail { background: linear-gradient(135deg, #991B1B 0%, #EF4444 100%); color: white; }
+.eligibility-hero.pass    { background: linear-gradient(135deg, #065F46 0%, #10B981 100%); color: white; }
+.eligibility-hero.fail    { background: linear-gradient(135deg, #991B1B 0%, #EF4444 100%); color: white; }
 .eligibility-hero.pending { background: linear-gradient(135deg, #92400E 0%, #F59E0B 100%); color: white; }
+.eligibility-hero.empty   { background: linear-gradient(135deg, #1F2937 0%, #4B5563 100%); color: white; }
+.eligibility-hero.info    { background: linear-gradient(135deg, #1A3A6B 0%, #2563EB 100%); color: white; }
 .hero-icon { font-size: 48px; flex-shrink: 0; }
 .hero-body h2 { font-size: 22px; font-weight: 700; }
 .hero-body p { font-size: 13.5px; opacity: 0.9; margin-top: 4px; }
@@ -348,9 +350,125 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
 
 /* ---- PRINT ---- */
 @media print {
-  .app-header, .sidebar, .header-actions { display: none !important; }
-  .main-content { margin-left: 0 !important; padding: 16px !important; }
-  .section { display: block !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body > *:not(#print-page) { display: none !important; }
+  html, body { background: white !important; margin: 0 !important; padding: 0 !important; }
+  #print-page { display: block !important; background: white !important; }
+}
+#print-page {
+  display: none;
+  font-family: 'Prompt', 'Sarabun', Arial, sans-serif;
+  font-size: 13px;
+  color: #111;
+  padding: 28px 32px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+#print-page .print-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 2.5px solid #C2185B;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+#print-page .print-header-text h1 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #C2185B;
+  margin: 0 0 2px 0;
+}
+#print-page .print-header-text p {
+  font-size: 12px;
+  color: #555;
+  margin: 0;
+}
+#print-page .print-section {
+  margin-bottom: 14px;
+}
+#print-page .print-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1A3A6B;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #EEF2FF;
+  border-left: 3px solid #1A3A6B;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+  border-radius: 0 4px 4px 0;
+}
+#print-page .print-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin-bottom: 4px;
+}
+#print-page .print-field {
+  display: flex;
+  gap: 6px;
+  min-width: 200px;
+}
+#print-page .print-field .pf-label {
+  color: #666;
+  white-space: nowrap;
+}
+#print-page .print-field .pf-val {
+  font-weight: 700;
+  color: #111;
+}
+#print-page .print-grade-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+#print-page .print-grade-table th {
+  background: #1A3A6B;
+  color: white;
+  padding: 5px 8px;
+  text-align: center;
+  font-weight: 700;
+}
+#print-page .print-grade-table td {
+  border: 1px solid #ddd;
+  padding: 5px 8px;
+  text-align: center;
+}
+#print-page .print-grade-table tr:nth-child(even) td { background: #F8FAFC; }
+#print-page .print-result-box {
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+#print-page .print-result-box.pass    { background: #065F46; color: white; }
+#print-page .print-result-box.fail    { background: #991B1B; color: white; }
+#print-page .print-result-box.pending { background: #92400E; color: white; }
+#print-page .print-result-box.empty   { background: #374151; color: white; }
+#print-page .print-result-box.info    { background: #1A3A6B; color: white; }
+#print-page .print-goal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 8px;
+  margin-bottom: 4px;
+}
+#print-page .print-footnote {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  font-size: 10.5px;
+  color: #555;
+  line-height: 1.6;
+}
+#print-page .print-footnote strong {
+  color: #111;
 }
 
 /* ---- FONT SIZE SCALE UP ---- */
@@ -592,7 +710,7 @@ html { font-size: 17px; }
       <p>สรุปผลการเรียนและสถานะการขึ้นชั้น ม.4</p>
     </div>
 
-    <div class="eligibility-hero pending" id="hero-card">
+    <div class="eligibility-hero empty" id="hero-card">
       <div class="hero-icon" id="hero-icon">📋</div>
       <div class="hero-body">
         <h2 id="hero-title">รอข้อมูลผลการเรียน</h2>
@@ -1134,7 +1252,7 @@ html { font-size: 17px; }
         <label class="form-label">แผนการเรียนที่ต้องการเรียน</label>
         <div style="display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center">
           <span style="font-size:12px;font-weight:600;color:var(--primary);background:#EEF4FF;border-radius:20px;padding:3px 10px;white-space:nowrap">อันดับ 1</span>
-          <select class="form-input" id="prof-goal1" style="padding:8px 12px">
+          <select class="form-input" id="prof-goal1" style="padding:8px 12px" onchange="validateGoalDuplicate('goal1')">
             <option value="">— เลือกหลักสูตร / แผนการเรียน —</option>
             <optgroup label="🔵 EP — English Program (GPA ≥ 3.00 ทุกแผน)">
               <option value="EP|แผนเตรียมแพทย์">[EP] 🏥 แผนเตรียมแพทย์</option>
@@ -1177,7 +1295,7 @@ html { font-size: 17px; }
             </optgroup>
           </select>
           <span style="font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface-3);border-radius:20px;padding:3px 10px;white-space:nowrap">อันดับ 2</span>
-          <select class="form-input" id="prof-goal2" style="padding:8px 12px">
+          <select class="form-input" id="prof-goal2" style="padding:8px 12px" onchange="validateGoalDuplicate('goal2')">
             <option value="">— เลือกหลักสูตร / แผนการเรียน —</option>
             <optgroup label="🔵 EP — English Program (GPA ≥ 3.00 ทุกแผน)">
               <option value="EP|แผนเตรียมแพทย์">[EP] 🏥 แผนเตรียมแพทย์</option>
@@ -1219,6 +1337,10 @@ html { font-size: 17px; }
               <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[GP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
             </optgroup>
           </select>
+        </div>
+        <div id="goal-duplicate-warn" style="display:none;margin-top:8px;padding:10px 14px;background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:8px;font-size:13px;color:#92400E;display:none;align-items:center;gap:8px">
+          <span style="font-size:16px">⚠️</span>
+          <span>ไม่สามารถเลือกแผนการเรียนเดียวกันทั้งอันดับ 1 และอันดับ 2 ได้ — กรุณาเลือกแผนการเรียนใหม่</span>
         </div>
       </div>
 
@@ -1637,9 +1759,50 @@ function updateProfilePreview() {
   document.getElementById('profile-display-class').textContent = cls || '—';
 }
 
+function validateGoalDuplicate(changed) {
+  const g1El = document.getElementById('prof-goal1');
+  const g2El = document.getElementById('prof-goal2');
+  const warnEl = document.getElementById('goal-duplicate-warn');
+
+  const v1 = g1El.value;
+  const v2 = g2El.value;
+
+  if (v1 && v2 && v1 === v2) {
+    // รีเซ็ตอันที่เพิ่งเปลี่ยน
+    if (changed === 'goal1') g1El.value = '';
+    else g2El.value = '';
+
+    // แสดงข้อความเตือน
+    warnEl.style.display = 'flex';
+
+    // ไฮไลต์ขอบ dropdown ทั้งสอง
+    g1El.style.borderColor = '#F59E0B';
+    g2El.style.borderColor = '#F59E0B';
+
+    // ซ่อนอัตโนมัติหลัง 4 วินาที
+    clearTimeout(warnEl._hideTimer);
+    warnEl._hideTimer = setTimeout(() => {
+      warnEl.style.display = 'none';
+      g1El.style.borderColor = '';
+      g2El.style.borderColor = '';
+    }, 4000);
+  } else {
+    warnEl.style.display = 'none';
+    g1El.style.borderColor = '';
+    g2El.style.borderColor = '';
+  }
+}
+
 function saveProfile() {
   const name = document.getElementById('prof-name').value.trim();
   if (!name) { alert('กรุณากรอกชื่อ-สกุล'); return; }
+  const g1v = document.getElementById('prof-goal1').value;
+  const g2v = document.getElementById('prof-goal2').value;
+  if (g1v && g2v && g1v === g2v) {
+    validateGoalDuplicate('goal2');
+    document.getElementById('prof-goal2').focus();
+    return;
+  }
   state.name     = name;
   state.class    = document.getElementById('prof-class').value.trim();
   state.studentId= document.getElementById('prof-id').value.trim();
@@ -1861,43 +2024,88 @@ function updateDashboard(scores) {
   const anyFilled   = gpaFilledHero > 0;
 
   if (gpax === null) {
-    hero.className = 'eligibility-hero pending';
+    hero.className = 'eligibility-hero empty';
     heroIcon.textContent = '📋';
     heroTitle.textContent = 'รอข้อมูลผลการเรียน';
     heroSub.textContent   = 'กรุณากรอกผลการเรียนในเมนู "ข้อมูลนักเรียน & ผลการเรียน" เพื่อดูการประเมิน';
   } else if (!allSubjFull) {
     hero.className = 'eligibility-hero pending';
-    heroIcon.textContent = '📋';
-    heroTitle.textContent = `${name} — ยังไม่สามารถประเมินผลได้`;
+    heroIcon.textContent = '⏳';
+    heroTitle.textContent = `${name} — ยังไม่สามารถประเมินได้`;
     const missing = [];
     if (gpaFilledHero  < 5) missing.push(`GPAX (${gpaFilledHero}/5 เทอม)`);
     if (mathFilledHero < 5) missing.push(`คณิต (${mathFilledHero}/5 เทอม)`);
     if (sciFilledHero  < 5) missing.push(`วิทย์ (${sciFilledHero}/5 เทอม)`);
     if (engFilledHero  < 5) missing.push(`อังกฤษ (${engFilledHero}/5 เทอม)`);
-    heroSub.textContent = 'ยังกรอกข้อมูลไม่ครบ: ' + missing.join(', ');
+    heroSub.textContent = `เนื่องจากยังกรอกเกรดไม่ครบ: ${missing.join(', ')} — กรุณากรอกให้ครบทั้ง 5 เทอมเพื่อดูผลประเมิน`;
   } else {
-    const pass = gpax >= 2.00 && (math===null||math>=1.50) && (sci===null||sci>=1.50) && (eng===null||eng>=1.50);
-    const warn = !pass && gpax >= 1.80;
-    if (pass) {
-      hero.className = 'eligibility-hero pass';
-      heroIcon.textContent = '✅';
-      heroTitle.textContent = `${name} — ผ่านเกณฑ์การขึ้น ม.4`;
-      heroSub.textContent = `GPAX ${fmt(gpax)} · คณิต ${fmt(math)} · วิทย์ ${fmt(sci)} · อังกฤษ ${fmt(eng)} — ผ่านเกณฑ์ขั้นต่ำทุกวิชา`;
-    } else if (warn) {
-      hero.className = 'eligibility-hero pending';
-      heroIcon.textContent = '⚠️';
-      heroTitle.textContent = `${name} — เกรดอยู่ในเกณฑ์เสี่ยง`;
-      heroSub.textContent = `GPAX ${fmt(gpax)} ต่ำกว่าเกณฑ์ 2.00 เล็กน้อย ควรพัฒนาผลการเรียนเทอมต่อไป`;
-    } else {
+    // เกณฑ์ขั้นต่ำ: GPAX >= 2.50 (ต่ำสุดของทุกแผนการเรียน)
+    const pass = gpax >= 2.50;
+
+    // ตรวจว่า goal1/goal2 ผ่านเกณฑ์โปรแกรมที่เลือกไหม
+    const scores = { gpax, math, sci, eng };
+    const g1pass = state.goal1 ? goalPass(state.goal1, scores)?.pass : null;
+    const g2pass = state.goal2 ? goalPass(state.goal2, scores)?.pass : null;
+    const goalsSelected = !!(state.goal1 || state.goal2);
+    const bothGoalsFail = goalsSelected && (state.goal1 ? !g1pass : true) && (state.goal2 ? !g2pass : true);
+
+    // ตรวจว่ามีแผนการเรียนอื่น (นอกจาก goal1/goal2) ที่ผ่านเกณฑ์ไหม
+    const g1name = state.goal1 ? parseGoal(state.goal1).name : null;
+    const g2name = state.goal2 ? parseGoal(state.goal2).name : null;
+    let otherPassCount = 0;
+    Object.values(CRITERIA).forEach(progs => {
+      progs.forEach(p => {
+        if (p.name !== g1name && p.name !== g2name) {
+          if (progPass(p, scores).pass) otherPassCount++;
+        }
+      });
+    });
+
+    const baseScoreText = `GPAX ${fmt(gpax)} · คณิต ${fmt(math)} · วิทย์ ${fmt(sci)} · อังกฤษ ${fmt(eng)}`;
+    const failMsg = `${baseScoreText} — ยังไม่ผ่านเกณฑ์ของแผนการเรียนที่เลือกและแผนการเรียนทั้งหมด`;
+
+    if (!pass) {
+      // กรณี 3: GPAX < 2.50 → ไม่ผ่านทุกแผน
       hero.className = 'eligibility-hero fail';
       heroIcon.textContent = '❌';
-      const reasons = [];
-      if (gpax < 2.00) reasons.push(`GPAX ${fmt(gpax)} < 2.00`);
-      if (math!==null && math<1.50) reasons.push(`คณิต ${fmt(math)} < 1.50`);
-      if (sci!==null  && sci<1.50)  reasons.push(`วิทย์ ${fmt(sci)} < 1.50`);
-      if (eng!==null  && eng<1.50)  reasons.push(`อังกฤษ ${fmt(eng)} < 1.50`);
-      heroTitle.textContent = `${name} — ยังไม่ผ่านเกณฑ์การขึ้น ม.4`;
-      heroSub.textContent = 'สาเหตุ: ' + reasons.join(', ');
+      heroTitle.textContent = `${name} — ไม่ผ่านเกณฑ์แผนการเรียนที่เลือก รวมถึงแผนการเรียนทั้งหมด`;
+      heroSub.textContent = `GPAX ${fmt(gpax)} ต่ำกว่าเกณฑ์ขั้นต่ำ 2.50 — ยังไม่ผ่านเกณฑ์ของแผนการเรียนใดเลย`;
+    } else if (!goalsSelected) {
+      // กรณี 5: ผ่านขั้นต่ำ แต่ยังไม่ได้เลือกแผน → น้ำเงิน
+      hero.className = 'eligibility-hero info';
+      heroIcon.textContent = '✅';
+      heroTitle.textContent = `${name} — ผ่านเกณฑ์ขั้นต่ำ แต่ยังไม่ได้เลือกแผนการเรียน`;
+      heroSub.textContent = `${baseScoreText} — กรุณาเลือกแผนการเรียนอันดับ 1–2 ในเมนู "ข้อมูลนักเรียน" เพื่อดูผลประเมิน`;
+    } else if (g1pass && g2pass) {
+      // กรณี 6: ผ่านทั้งสองแผน → เขียว
+      const g1label = parseGoal(state.goal1).label;
+      const g2label = parseGoal(state.goal2).label;
+      hero.className = 'eligibility-hero pass';
+      heroIcon.textContent = '🎉';
+      heroTitle.textContent = `${name} — ผ่านเกณฑ์แผนการเรียนทั้งสองแผน`;
+      heroSub.innerHTML = `${baseScoreText}<br>🎯 ผ่านเกณฑ์: <strong>${g1label}</strong> และ <strong>${g2label}</strong>`;
+    } else if (g1pass || g2pass) {
+      // กรณี 7: ผ่านแค่แผนเดียว → เหลือง
+      const g1label = state.goal1 ? parseGoal(state.goal1).label : null;
+      const g2label = state.goal2 ? parseGoal(state.goal2).label : null;
+      const passedRank = g1pass ? `อันดับ 1 (${g1label})` : `อันดับ 2 (${g2label})`;
+      const failedRank = g1pass ? `อันดับ 2 (${g2label})` : `อันดับ 1 (${g1label})`;
+      hero.className = 'eligibility-hero pending';
+      heroIcon.textContent = '✅';
+      heroTitle.textContent = `${name} — ผ่านเกณฑ์แผนการเรียน${passedRank}`;
+      heroSub.innerHTML = `${baseScoreText}<br>✅ ผ่าน${passedRank} &nbsp;·&nbsp; ❌ ยังไม่ผ่าน${failedRank}`;
+    } else if (bothGoalsFail && otherPassCount > 0) {
+      // กรณี 8: ไม่ผ่านทั้ง 2 แผนที่เลือก แต่มีแผนอื่นผ่าน → เหลือง
+      hero.className = 'eligibility-hero pending';
+      heroIcon.textContent = '⚠️';
+      heroTitle.textContent = `${name} — ไม่ผ่านเกณฑ์แผนการเรียนที่เลือก`;
+      heroSub.innerHTML = `ยังไม่ผ่านเกณฑ์ของแผนการเรียนอันดับ 1–2 ที่เลือกไว้ แต่มีแผนการเรียนอื่นที่ผ่านเกณฑ์อีก <strong>${otherPassCount} แผน</strong> &nbsp;·&nbsp; <a onclick="showSection('dashboard')" style="color:white;text-decoration:underline;cursor:pointer">ดูแผนที่ผ่านเกณฑ์ด้านล่าง ↓</a>`;
+    } else {
+      // กรณี 9: ผ่านขั้นต่ำ แต่ไม่ผ่านแผนที่เลือกและไม่มีแผนอื่นผ่านเลย → แดง
+      hero.className = 'eligibility-hero fail';
+      heroIcon.textContent = '❌';
+      heroTitle.textContent = `${name} — ไม่ผ่านเกณฑ์แผนการเรียนที่เลือก รวมถึงแผนการเรียนทั้งหมด`;
+      heroSub.textContent = failMsg;
     }
   }
 
@@ -1938,18 +2146,25 @@ function updateDashboard(scores) {
   }
 
 
-  // Subject bars — threshold from goal1 program, with semester progress note
+  // Subject bars — threshold from goal1 (ถ้าเลือก), fallback goal2, fallback เกณฑ์ทั่วไป
   const { curr: g1Curr, name: g1Name } = parseGoal(state.goal1);
-  const g1Progs = g1Curr ? (CRITERIA[g1Curr] || getPrograms()) : getPrograms();
+  const { curr: g2Curr, name: g2Name } = parseGoal(state.goal2);
+  const g1Progs = g1Curr ? (CRITERIA[g1Curr] || getPrograms()) : [];
+  const g2Progs = g2Curr ? (CRITERIA[g2Curr] || getPrograms()) : [];
   const g1Prog  = g1Progs.find(p => p.name === g1Name) || null;
-  // fallback thresholds (general ม.4 criteria) if no goal selected
+  const g2Prog  = g2Progs.find(p => p.name === g2Name) || null;
+  // ใช้เกณฑ์อันดับ 1 ถ้ามี ไม่งั้นใช้อันดับ 2 ไม่งั้นใช้เกณฑ์ทั่วไป
+  const refProg  = g1Prog || g2Prog || null;
+  const refCurr  = g1Prog ? g1Curr : g2Prog ? g2Curr : null;
+  const refName  = g1Prog ? g1Name : g2Prog ? g2Name : null;
+  const refRank  = g1Prog ? 'อันดับ 1' : g2Prog ? 'อันดับ 2' : null;
   const barMin = {
-    gpax: g1Prog ? g1Prog.gpax : 2.0,
-    math: g1Prog ? g1Prog.math : 1.5,
-    sci:  g1Prog ? g1Prog.sci  : 1.5,
-    eng:  g1Prog ? g1Prog.eng  : 1.5,
+    gpax: refProg ? refProg.gpax : 2.5,
+    math: refProg ? refProg.math : null,
+    sci:  refProg ? refProg.sci  : null,
+    eng:  refProg ? refProg.eng  : null,
   };
-  const barGoalLabel = g1Prog ? `[${g1Curr}] ${g1Name}` : 'เกณฑ์ทั่วไป';
+  const barGoalLabel = refProg ? `${refRank} · [${refCurr}] ${refName}` : 'ยังไม่ได้เลือกแผนการเรียน';
 
   const subjectBarItems = [
     {label:'📊 GPAX รวม',     val:gpax, stateKey:'gpa',  color:'var(--primary)', minKey:'gpax'},
@@ -1958,9 +2173,9 @@ function updateDashboard(scores) {
     {label:'🌍 ภาษาอังกฤษ',  val:eng,  stateKey:'eng',  color:'var(--purple)',  minKey:'eng' },
   ];
 
-  const barHeader = g1Prog
+  const barHeader = refProg
     ? `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เกณฑ์อ้างอิงจาก: <strong style="color:var(--primary)">${barGoalLabel}</strong></div>`
-    : `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เลือกแผนการเรียนในข้อมูลนักเรียนเพื่อดูเกณฑ์เฉพาะแผน</div>`;
+    : `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เลือกแผนการเรียนในหน้าข้อมูลนักเรียนเพื่อดูเกณฑ์เฉพาะแผน</div>`;
 
   document.getElementById('subject-bars').innerHTML =
     barHeader +
@@ -2014,41 +2229,50 @@ function updateDashboard(scores) {
   const rawGoals = [
     { rank:'อันดับ 1', raw: state.goal1 },
     { rank:'อันดับ 2', raw: state.goal2 },
-  ].filter(g => g.raw);
+  ];
 
   const gpaFilledCount = state.gpa.filter(v => v !== null).length;
   const gradesFullyEntered = gpaFilledCount === 5;
 
-  heroGoalsEl.style.display = rawGoals.length ? 'flex' : 'none';
-  if (rawGoals.length) {
-    heroGoalsEl.innerHTML = rawGoals.map(g => {
-      const { curr, name } = parseGoal(g.raw);
-      const progs = CRITERIA[curr] || getPrograms();
-      const prog  = progs.find(p => p.name === name);
-      // Only show pass/fail when ALL 5 GPA semesters are entered
-      const res   = (prog && gradesFullyEntered) ? progPass(prog, scores) : null;
-      const pass  = res ? res.pass : null;
-      const bg = pass === null ? 'rgba(255,255,255,0.15)' : pass ? 'rgba(255,255,255,0.25)' : 'rgba(239,68,68,0.25)';
-      const icon = prog ? prog.icon : '🏫';
-      const partialNote = gpaFilledCount > 0 && !gradesFullyEntered
-        ? `กรอกมาแล้ว ${gpaFilledCount}/5 เทอม`
-        : 'กรอกเกรดเพื่อดูสถานะ';
-      const badge = pass === null
-        ? `<span style="font-size:10px;opacity:0.7">${partialNote}</span>`
-        : pass
-          ? `<span style="background:#16A34A;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านเกณฑ์</span>`
-          : `<span style="background:#DC2626;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">❌ ไม่ผ่านเกณฑ์</span>`;
-      const currBadge = curr ? `<span style="font-size:9px;opacity:0.75;background:rgba(255,255,255,0.2);border-radius:4px;padding:1px 5px;margin-left:4px">${curr}</span>` : '';
-      return `<div style="background:${bg};border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px)">
-        <span style="font-size:18px">${icon}</span>
+  heroGoalsEl.style.display = 'flex';
+  heroGoalsEl.innerHTML = rawGoals.map(g => {
+    if (!g.raw) {
+      // ยังไม่ได้เลือกแผนการเรียน — แสดง placeholder
+      return `<div style="background:rgba(255,255,255,0.10);border:1.5px dashed rgba(255,255,255,0.35);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;opacity:0.75">
+        <span style="font-size:18px">📋</span>
         <div>
-          <div style="font-size:10px;opacity:0.8">${g.rank}${currBadge}</div>
-          <div style="font-size:12px;font-weight:700">${name}</div>
-          <div style="margin-top:3px">${badge}</div>
+          <div style="font-size:10px;opacity:0.8">${g.rank}</div>
+          <div style="font-size:12px;font-weight:700;opacity:0.8">ยังไม่ได้เลือกแผนการเรียน</div>
+          <div style="margin-top:3px"><span style="font-size:10px;opacity:0.6">กรุณาเลือกในหน้าข้อมูลนักเรียน</span></div>
         </div>
       </div>`;
-    }).join('');
-  }
+    }
+    const { curr, name } = parseGoal(g.raw);
+    const progs = CRITERIA[curr] || getPrograms();
+    const prog  = progs.find(p => p.name === name);
+    // Only show pass/fail when ALL 5 GPA semesters are entered
+    const res   = (prog && gradesFullyEntered) ? progPass(prog, scores) : null;
+    const pass  = res ? res.pass : null;
+    const bg = pass === null ? 'rgba(255,255,255,0.15)' : pass ? 'rgba(255,255,255,0.25)' : 'rgba(239,68,68,0.25)';
+    const icon = prog ? prog.icon : '🏫';
+    const partialNote = gpaFilledCount > 0 && !gradesFullyEntered
+      ? `กรอกมาแล้ว ${gpaFilledCount}/5 เทอม`
+      : 'กรอกเกรดเพื่อดูสถานะ';
+    const badge = pass === null
+      ? `<span style="font-size:10px;opacity:0.7">${partialNote}</span>`
+      : pass
+        ? `<span style="background:#16A34A;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านเกณฑ์</span>`
+        : `<span style="background:#DC2626;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">❌ ไม่ผ่านเกณฑ์</span>`;
+    const currBadge = curr ? `<span style="font-size:9px;opacity:0.75;background:rgba(255,255,255,0.2);border-radius:4px;padding:1px 5px;margin-left:4px">${curr}</span>` : '';
+    return `<div style="background:${bg};border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px)">
+      <span style="font-size:18px">${icon}</span>
+      <div>
+        <div style="font-size:10px;opacity:0.8">${g.rank}${currBadge}</div>
+        <div style="font-size:12px;font-weight:700">${name}</div>
+        <div style="margin-top:3px">${badge}</div>
+      </div>
+    </div>`;
+  }).join('');
 
   // ── การ์ดแผนทั้งหมดที่ผ่านเกณฑ์ — แสดงทุกหลักสูตร แยกกลุ่ม ──
   const allQualEl = document.getElementById('dashboard-all-qualified');
@@ -2239,7 +2463,266 @@ function resetAll() {
   location.reload();
 }
 
-function printReport() { window.print(); }
+function printReport() {
+  // ── ข้อมูลพื้นฐาน ──
+  const name     = state.name      || '(ยังไม่ระบุ)';
+  const cls      = state.class     || '—';
+  const sid      = state.studentId || '—';
+  const teacher  = state.teacher   || '—';
+  const teacher2 = state.teacher2  || '—';
+  const curr     = state.curriculum || 'GP';
+
+  const fmt2 = v => (v !== null && v !== undefined) ? v.toFixed(2) : '—';
+  const avg  = arr => { const f = arr.filter(v=>v!==null); return f.length ? f.reduce((a,b)=>a+b,0)/f.length : null; };
+  const gpax = avg(state.gpa), mathAvg = avg(state.math), sciAvg = avg(state.sci), engAvg = avg(state.eng);
+  const scores = { gpax, math: mathAvg, sci: sciAvg, eng: engAvg };
+
+  // ── ฟังก์ชัน helper ──
+  function gradeColor(v, min) {
+    if (v === null) return '#9CA3AF';
+    if (min !== null && v < min) return '#DC2626';
+    if (v >= 3.5) return '#059669';
+    if (v >= 3.0) return '#10B981';
+    if (v >= 2.5) return '#F59E0B';
+    return '#EF4444';
+  }
+  function gradeBar(v) {
+    if (v === null) return '';
+    const pct = Math.round((v / 4) * 100);
+    const c = v >= 3.0 ? '#10B981' : v >= 2.5 ? '#F59E0B' : '#EF4444';
+    return `<div style="height:4px;border-radius:2px;background:#E5E7EB;margin-top:3px">
+      <div style="height:4px;border-radius:2px;background:${c};width:${pct}%"></div>
+    </div>`;
+  }
+
+  // ── เกรดรายเทอม — infographic cards ──
+  const semLabels = ['เทอม 1/67','เทอม 2/67','เทอม 1/68','เทอม 2/68','เทอม 1/69'];
+  const subjects = [
+    { key:'gpa',  label:'GPAX',               color:'#C2185B', min: 2.5 },
+    { key:'math', label:'คณิตศาสตร์พื้นฐาน', color:'#2563EB', min: null },
+    { key:'sci',  label:'วิทยาศาสตร์พื้นฐาน',color:'#059669', min: null },
+    { key:'eng',  label:'อังกฤษพื้นฐาน',     color:'#7C3AED', min: null },
+  ];
+
+  // sem cards — 5 columns
+  const semCards = semLabels.map((lbl, i) => {
+    const vals = subjects.map(s => state[s.key][i]);
+    const g = vals[0];
+    const bgGrade = g === null ? '#F3F4F6' : g >= 3.0 ? '#ECFDF5' : g >= 2.5 ? '#FFFBEB' : '#FEF2F2';
+    const borderC = g === null ? '#E5E7EB' : g >= 3.0 ? '#10B981' : g >= 2.5 ? '#F59E0B' : '#EF4444';
+    const rows = subjects.map((s,si) => {
+      const v = vals[si];
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid #F3F4F6">
+        <span style="font-size:9px;color:#6B7280">${s.label}</span>
+        <span style="font-size:11px;font-weight:700;color:${gradeColor(v, s.min)}">${v!==null?v.toFixed(2):'—'}</span>
+      </div>`;
+    }).join('');
+    return `<div style="border:1.5px solid ${borderC};border-radius:8px;background:${bgGrade};padding:8px;flex:1;min-width:0">
+      <div style="font-size:9px;font-weight:700;color:#1A3A6B;text-align:center;margin-bottom:6px;padding-bottom:4px;border-bottom:1.5px solid ${borderC}">${lbl}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+
+  // avg summary bar
+  const avgBars = subjects.map(s => {
+    const v = s.key === 'gpa' ? gpax : s.key === 'math' ? mathAvg : s.key === 'sci' ? sciAvg : engAvg;
+    const pct = v !== null ? Math.round((v/4)*100) : 0;
+    const c = gradeColor(v, s.min);
+    return `<div style="flex:1;text-align:center">
+      <div style="font-size:9px;color:rgba(255,255,255,0.7);margin-bottom:4px">${s.label}</div>
+      <div style="font-size:16px;font-weight:800;color:white">${fmt2(v)}</div>
+      <div style="height:5px;background:rgba(255,255,255,0.25);border-radius:3px;margin-top:4px">
+        <div style="height:5px;background:white;border-radius:3px;width:${pct}%;opacity:0.9"></div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.8);font-weight:600;margin-top:2px">${pct}%</div>
+    </div>`;
+  }).join('<div style="width:1px;background:rgba(255,255,255,0.2);margin:0 4px"></div>');
+
+  // ── ผลการประเมินอันดับที่เลือก ──
+  const goalColors = {
+    pass:    { bg:'#065F46', text:'white' },
+    fail:    { bg:'#991B1B', text:'white' },
+    pending: { bg:'#92400E', text:'white' },
+    empty:   { bg:'#374151', text:'white' },
+    info:    { bg:'#1A3A6B', text:'white' },
+  };
+
+  function renderGoalResult(raw, rankLabel, rankBg) {
+    if (!raw) return `<div style="border:1.5px dashed #D1D5DB;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;opacity:0.5">
+      <span style="font-size:20px">📋</span>
+      <div><div style="font-size:10px;font-weight:700;color:#6B7280">${rankLabel}</div>
+      <div style="font-size:12px;color:#9CA3AF">ยังไม่ได้เลือกแผนการเรียน</div></div></div>`;
+    const { curr: gc, name: gn } = parseGoal(raw);
+    const prog = (CRITERIA[gc]||getPrograms()).find(p=>p.name===gn);
+    if (!prog) return '';
+    const res  = progPass(prog, scores);
+    const pass = res.pass;
+    const pct  = res.pct;
+    const statusBg  = pass ? '#065F46' : '#991B1B';
+    const statusTxt = pass ? '✅ ผ่านเกณฑ์' : '❌ ไม่ผ่านเกณฑ์';
+    // criteria detail
+    const critRows = ['gpax','math','sci','eng'].map(k => {
+      const req = prog[k];
+      if (req === null) return '';
+      const val = k === 'gpax' ? gpax : k === 'math' ? mathAvg : k === 'sci' ? sciAvg : engAvg;
+      const lbl = k === 'gpax' ? 'GPAX' : k === 'math' ? 'คณิต' : k === 'sci' ? 'วิทย์' : 'อังกฤษ';
+      const ok  = val !== null && val >= req;
+      return `<span style="font-size:9.5px;padding:2px 7px;border-radius:999px;background:${ok?'#D1FAE5':'#FEE2E2'};color:${ok?'#065F46':'#991B1B'};font-weight:600;white-space:nowrap">${lbl} ${val!==null?val.toFixed(2):'?'} / ≥${req}</span>`;
+    }).filter(Boolean).join(' ');
+
+    return `<div style="border:2px solid ${statusBg}22;border-radius:8px;overflow:hidden">
+      <div style="background:${rankBg};padding:6px 12px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:10px;font-weight:700;color:white">${rankLabel}</div>
+        <div style="font-size:10px;font-weight:700;color:white">${prog.icon} [${gc}] ${gn}</div>
+      </div>
+      <div style="padding:8px 12px;background:white;display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div style="display:flex;flex-wrap:wrap;gap:4px">${critRows}</div>
+        <span style="background:${statusBg};color:white;font-size:10px;padding:3px 10px;border-radius:999px;font-weight:700;white-space:nowrap">${statusTxt}</span>
+      </div>
+    </div>`;
+  }
+
+  const goal1Result = renderGoalResult(state.goal1, 'อันดับ 1', '#1A3A6B');
+  const goal2Result = renderGoalResult(state.goal2, 'อันดับ 2', '#C2185B');
+
+  // ── แผนการเรียนอื่นที่ผ่านเกณฑ์ ──
+  const g1n = parseGoal(state.goal1).name, g2n = parseGoal(state.goal2).name;
+  // สร้างตาราง 3 คอลัมน์ EP | IEP | GP
+  const otherColData = ['EP','IEP','GP'].map(cKey => {
+    const progs = CRITERIA[cKey] || [];
+    const passing = progs.filter(p => {
+      if (p.name === g1n || p.name === g2n) return false;
+      return progPass(p, scores).pass;
+    });
+    return { cKey, passing };
+  });
+  const hasAnyOther = otherColData.some(c => c.passing.length > 0);
+  const otherPassBlocks = hasAnyOther ? (() => {
+    const colLabels = { EP:'หลักสูตร EP', IEP:'หลักสูตร IEP', GP:'หลักสูตร GP' };
+    const cols = otherColData.map(({ cKey, passing }) => {
+      const rows = passing.length
+        ? passing.map(p => `<div style="font-size:11px;color:#1F2937;padding:2px 0;border-bottom:1px solid #F3F4F6">${p.name}</div>`).join('')
+        : `<div style="font-size:11px;color:#9CA3AF;font-style:italic">—</div>`;
+      return `<td style="vertical-align:top;padding:0 10px 0 0;width:33%">
+        <div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:5px;padding-bottom:3px;border-bottom:1.5px solid #374151">${colLabels[cKey]}</div>
+        ${rows}
+      </td>`;
+    }).join('');
+    return `<table style="width:100%;border-collapse:collapse"><tr>${cols}</tr></table>`;
+  })() : '';
+
+  // ── hero card ──
+  const heroEl    = document.getElementById('hero-card');
+  const heroClass = (heroEl.className.match(/eligibility-hero (\w+)/)||[])[1] || 'empty';
+  const heroTitle = document.getElementById('hero-title').textContent;
+  const heroSub   = document.getElementById('hero-subtitle').textContent;
+  const heroIconT = document.getElementById('hero-icon').textContent;
+  const hc = goalColors[heroClass] || goalColors.empty;
+
+  // ── โลโก้ SVG ──
+  const logoSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 512 512">
+    <defs>
+      <linearGradient id="prg" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#AD1457"/><stop offset="100%" stop-color="#FF6BB5"/></linearGradient>
+      <linearGradient id="pmg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F02D8A"/><stop offset="100%" stop-color="#9C1050"/></linearGradient>
+    </defs>
+    <rect width="512" height="512" rx="108" ry="108" fill="white"/>
+    <g transform="translate(266,248) scale(1.06) translate(-256,-256)">
+      <circle cx="256" cy="256" r="188" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="16"/>
+      <circle cx="256" cy="256" r="188" fill="none" stroke="url(#prg)" stroke-width="16" stroke-dasharray="886 295" stroke-dashoffset="295" stroke-linecap="round" transform="rotate(-90 256 256)"/>
+      <path id="ppa" d="M 30 256 A 226 226 0 0 0 256 482" fill="none"/>
+      <text font-family="Prompt,Arial,sans-serif" font-size="26" font-weight="600" fill="#1A3A6B"><textPath href="#ppa" side="right" startOffset="0%" textLength="350" lengthAdjust="spacingAndGlyphs">POTISARNPITTAYAKORN</textPath></text>
+      <circle cx="256" cy="256" r="158" fill="url(#pmg)"/>
+      <text x="256" y="290" font-family="Prompt,Arial,sans-serif" font-size="110" font-weight="800" fill="white" text-anchor="middle">ม.4</text>
+    </g>
+  </svg>`;
+
+  const now = new Date();
+  const printDate = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()+543}`;
+
+  document.getElementById('print-page').innerHTML = `
+    <!-- HEADER -->
+    <div class="print-header">
+      ${logoSVG}
+      <div class="print-header-text">
+        <h1>ระบบประเมินการขึ้นชั้น ม.4</h1>
+        <p>โรงเรียนโพธิสารพิทยากร &nbsp;·&nbsp; วันที่พิมพ์ ${printDate}</p>
+      </div>
+    </div>
+
+    <!-- ข้อมูลนักเรียน -->
+    <div class="print-section">
+      <div class="print-section-title">ข้อมูลนักเรียน</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 16px">
+        <div class="print-field"><span class="pf-label">ชื่อ–สกุล</span><span class="pf-val">${name}</span></div>
+        <div class="print-field"><span class="pf-label">ห้อง</span><span class="pf-val">${cls}</span></div>
+        <div class="print-field"><span class="pf-label">เลขที่</span><span class="pf-val">${sid}</span></div>
+        <div class="print-field"><span class="pf-label">ครูที่ปรึกษา 1</span><span class="pf-val">${teacher}</span></div>
+        <div class="print-field"><span class="pf-label">ครูที่ปรึกษา 2</span><span class="pf-val">${teacher2}</span></div>
+        <div class="print-field"><span class="pf-label">หลักสูตร</span><span class="pf-val">${curr}</span></div>
+      </div>
+    </div>
+
+    <!-- ผลการเรียนรายเทอม — infographic -->
+    <div class="print-section">
+      <div class="print-section-title">ผลการเรียนรายเทอม</div>
+      <!-- avg summary -->
+      <div style="display:flex;gap:8px;align-items:stretch;padding:10px 14px;background:linear-gradient(135deg,#1A3A6B,#2563EB);border-radius:8px;margin-bottom:10px">
+        <div style="color:white;min-width:60px">
+          <div style="font-size:9px;opacity:0.75;margin-bottom:2px">เฉลี่ยรวม</div>
+          <div style="font-size:22px;font-weight:800;line-height:1">${fmt2(gpax)}</div>
+          <div style="font-size:9px;opacity:0.6;margin-top:2px">/ 4.00</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.2)"></div>
+        <div style="display:flex;flex:1;gap:12px;align-items:center;padding-left:8px">${avgBars}</div>
+      </div>
+      <!-- sem cards -->
+      <div style="display:flex;gap:6px">${semCards}</div>
+      <div style="display:flex;gap:16px;margin-top:6px;font-size:9px;color:#6B7280">
+        <span><span style="color:#10B981;font-weight:700">●</span> ≥ 3.00 ดีมาก</span>
+        <span><span style="color:#F59E0B;font-weight:700">●</span> 2.50–2.99 ผ่าน</span>
+        <span><span style="color:#EF4444;font-weight:700">●</span> < 2.50 ต้องพัฒนา</span>
+        <span><span style="color:#DC2626;font-weight:700">●</span> GPAX < 2.50 ไม่ผ่านเกณฑ์</span>
+      </div>
+    </div>
+
+    <!-- ผลการประเมินภาพรวม -->
+    <div class="print-section">
+      <div class="print-section-title">ผลการประเมินภาพรวม</div>
+      <div style="background:${hc.bg};border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:14px">
+        <span style="font-size:28px">${heroIconT}</span>
+        <div style="color:${hc.text}">
+          <div style="font-size:13px;font-weight:800">${heroTitle}</div>
+          <div style="font-size:10.5px;margin-top:3px;opacity:0.9">${heroSub}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ผลการประเมินรายอันดับ -->
+    <div class="print-section">
+      <div class="print-section-title">ผลการประเมินแผนการเรียนที่เลือก</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${goal1Result}
+        ${goal2Result}
+      </div>
+    </div>
+
+    ${hasAnyOther ? `
+    <!-- แผนการเรียนอื่นที่ผ่านเกณฑ์ -->
+    <div class="print-section">
+      <div class="print-section-title">แผนการเรียนอื่นที่ผ่านเกณฑ์</div>
+      ${otherPassBlocks}
+    </div>` : ''}
+
+    <!-- หมายเหตุ -->
+    <div class="print-footnote">
+      <strong>หมายเหตุ:</strong> การประเมินดังกล่าวเป็นการประเมินเบื้องต้นเท่านั้น
+      ผลการตัดสินโดยคณะกรรมการพิจารณาการขึ้นชั้น ม.4 โรงเรียนโพธิสารพิทยากร ถือเป็นที่สิ้นสุด
+      <div style="text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid #E5E7EB;color:#6B7280">พัฒนาระบบโดย นายวิฑูรย์ เจริญชัยไพบูลย์</div>
+    </div>
+  `;
+
+  window.print();
+}
 
 function openLightbox(src) {
   const lb = document.getElementById('prog-lightbox');
@@ -2293,5 +2776,6 @@ function installPWA() {
   _deferredPrompt.userChoice.then(() => { _deferredPrompt = null; });
 }
 </script>
+<div id="print-page"></div>
 </body>
 </html>
