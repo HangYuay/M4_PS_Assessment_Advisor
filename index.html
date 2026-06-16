@@ -1,0 +1,2218 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#C2185B">
+  <meta name="description" content="ระบบประเมินการขึ้นชั้น ม.4 โรงเรียนโพธิสารพิทยากร">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ประเมิน ม.4">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <title>ระบบประเมินการขึ้นชั้น ม.4 — โรงเรียนโพธิสารพิทยากร</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --primary: #1A3A6B;
+  --primary-dark: #112850;
+  --accent: #F0A500;
+  --green: #10B981;
+  --green-light: #D1FAE5;
+  --red: #EF4444;
+  --red-light: #FEE2E2;
+  --yellow: #F59E0B;
+  --yellow-light: #FEF3C7;
+  --blue: #3B82F6;
+  --blue-light: #DBEAFE;
+  --purple: #8B5CF6;
+  --purple-light: #EDE9FE;
+  --surface: #FFFFFF;
+  --surface-2: #F5F7FA;
+  --surface-3: #EDF0F5;
+  --border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 4px 16px rgba(0,0,0,0.07), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --sidebar-w: 240px;
+  --header-h: 64px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ---- HEADER ---- */
+.app-header {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
+  background: linear-gradient(120deg, #0D1F4A 0%, #1A3A8B 35%, #4A1A7A 65%, #A8185C 85%, #C8245C 100%);
+  display: flex; align-items: center; padding: 0 20px; gap: 16px; z-index: 100;
+  box-shadow: 0 2px 20px rgba(168,24,92,0.35), 0 1px 6px rgba(13,31,74,0.40);
+}
+.header-logos { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.ps-header-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.12); border-radius: var(--radius-sm); padding: 5px 10px;
+}
+.ps-header-text { display: flex; flex-direction: column; line-height: 1.2; }
+.ps-header-line1 { font-size: 9px; color: rgba(255,255,255,0.75); font-weight: 400; }
+.ps-header-line2 { font-size: 11px; color: #fff; font-weight: 600; }
+.logo-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.2); }
+.m4-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.10); border-radius: var(--radius-sm); padding: 5px 12px;
+}
+.m4-badge-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #e67e00);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: white;
+}
+.m4-badge-text { display: flex; flex-direction: column; line-height: 1.2; }
+.m4-badge-line1 { font-size: 9px; color: rgba(255,255,255,0.75); }
+.m4-badge-line2 { font-size: 11px; color: #fff; font-weight: 600; }
+.header-title { flex: 1; min-width: 0; }
+.header-title h1 { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-title p { font-size: 11px; color: rgba(255,255,255,0.65); }
+.header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.student-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.12); border-radius: 20px; padding: 4px 12px 4px 4px;
+  cursor: pointer; transition: background var(--transition);
+}
+.student-chip:hover { background: rgba(255,255,255,0.20); }
+.student-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: white;
+}
+.student-chip-name { font-size: 12px; color: white; font-weight: 500; white-space: nowrap; }
+
+/* ---- LAYOUT ---- */
+.app-layout { display: flex; padding-top: var(--header-h); min-height: 100vh; }
+.sidebar {
+  position: fixed; top: var(--header-h); left: 0; bottom: 0;
+  width: var(--sidebar-w); background: var(--surface);
+  border-right: 1px solid var(--border); overflow-y: auto; z-index: 90;
+  display: flex; flex-direction: column;
+}
+.sidebar-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.sidebar-label {
+  font-size: 10px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 16px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  font-size: 13.5px; color: var(--text-secondary); font-weight: 400;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--text-primary); }
+.nav-item.active { background: #EEF4FF; color: var(--primary); font-weight: 600; border-left-color: var(--primary); }
+.nav-item svg { flex-shrink: 0; opacity: 0.6; }
+.nav-item.active svg { opacity: 1; }
+.sidebar-status { padding: 12px 16px; }
+.eligibility-mini { border-radius: var(--radius-sm); padding: 10px 12px; font-size: 12px; text-align: center; }
+.eligibility-mini.pass { background: var(--green-light); color: #065F46; }
+.eligibility-mini.fail { background: var(--red-light); color: #991B1B; }
+.eligibility-mini.pending { background: var(--yellow-light); color: #92400E; }
+.eligibility-mini strong { display: block; font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.main-content { margin-left: var(--sidebar-w); flex: 1; padding: 24px; }
+
+/* ---- SECTIONS ---- */
+.section { display: none; }
+.section.active { display: block; }
+.section-header { margin-bottom: 20px; }
+.section-header h2 { font-size: 20px; font-weight: 700; }
+.section-header p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+/* ---- CARDS ---- */
+.card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 20px; box-shadow: var(--shadow-sm); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+
+/* ---- STAT CARDS ---- */
+.stat-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 18px 20px; box-shadow: var(--shadow-sm); }
+.stat-card .label { font-size: 11.5px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+.stat-card .value { font-size: 26px; font-weight: 700; line-height: 1; }
+.stat-card .sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.stat-card .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 20px; margin-top: 6px; }
+.badge-pass { background: var(--green-light); color: #065F46; }
+.badge-fail { background: var(--red-light); color: #991B1B; }
+.badge-info { background: var(--blue-light); color: #1E3A8A; }
+
+/* ---- HERO ---- */
+.eligibility-hero { border-radius: var(--radius-lg); padding: 24px 28px; display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
+.eligibility-hero.pass { background: linear-gradient(135deg, #065F46 0%, #10B981 100%); color: white; }
+.eligibility-hero.fail { background: linear-gradient(135deg, #991B1B 0%, #EF4444 100%); color: white; }
+.eligibility-hero.pending { background: linear-gradient(135deg, #92400E 0%, #F59E0B 100%); color: white; }
+.hero-icon { font-size: 48px; flex-shrink: 0; }
+.hero-body h2 { font-size: 22px; font-weight: 700; }
+.hero-body p { font-size: 13.5px; opacity: 0.9; margin-top: 4px; }
+.hero-right { margin-left: auto; text-align: right; }
+.hero-gpa { font-size: 40px; font-weight: 700; line-height: 1; }
+.hero-gpa small { font-size: 14px; font-weight: 400; opacity: 0.8; }
+
+/* ---- INPUTS ---- */
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12.5px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+.form-input {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Prompt', sans-serif; font-size: 13.5px; color: var(--text-primary);
+  background: var(--surface); transition: border-color var(--transition);
+}
+.form-input:focus { outline: none; border-color: var(--primary); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* ---- BUTTONS ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 9px 18px; border-radius: var(--radius-sm);
+  font-family: 'Prompt', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; transition: all var(--transition);
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+.btn-outline:hover { background: #EEF4FF; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+/* ---- GRADE SEMESTER CARDS ---- */
+.sem-card {
+  background: var(--surface); border-radius: var(--radius-lg); border: 2px solid var(--border);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.sem-card:hover { box-shadow: var(--shadow); }
+.sem-card-header {
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+}
+.sem-badge {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; text-align: center; line-height: 1.2;
+}
+.sem-card-title { font-size: 13px; font-weight: 700; }
+.sem-card-sub { font-size: 11px; color: var(--text-muted); }
+.sem-card-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+.sem-field label { font-size: 11px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
+.sem-field input {
+  width: 100%; padding: 8px 10px; text-align: center;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Prompt', sans-serif; font-size: 15px; font-weight: 600;
+  color: var(--text-primary); background: var(--surface-2);
+  transition: border-color var(--transition), background var(--transition);
+}
+.sem-field input:focus { outline: none; border-color: var(--primary); background: white; }
+.sem-field input.has-value { background: white; }
+/* Criteria tabs */
+.crit-tabs { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+.crit-tab {
+  padding:8px 20px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;
+  border:2px solid var(--border); background:var(--surface-2); color:var(--text-secondary);
+  transition:all .18s;
+}
+.crit-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
+.crit-panel { display:none; }
+.crit-panel.active { display:block; }
+.crit-table { width:100%; border-collapse:collapse; font-size:13px; }
+.crit-table th { padding:10px 12px; text-align:center; font-weight:600; white-space:nowrap; }
+.crit-table td { padding:10px 12px; text-align:center; border-top:1px solid var(--border); }
+.crit-table td:first-child { text-align:left; font-weight:600; }
+.crit-pass { color:var(--green); font-weight:700; }
+.crit-na   { color:var(--text-muted); font-size:11px; }
+.crit-highlight { background:#EEF4FF; }
+.curr-badge {
+  display:inline-block; padding:2px 10px; border-radius:999px; font-size:11px;
+  font-weight:700; margin-left:6px;
+}
+.curr-ep  { background:#DBEAFE; color:#1E40AF; }
+.curr-iep { background:#EDE9FE; color:#5B21B6; }
+.curr-gp  { background:#D1FAE5; color:#065F46; }
+.input-warn {
+  font-size: 11px;
+  color: #B45309;
+  background: #FFFBEB;
+  border: 1px solid #FCD34D;
+  border-radius: 6px;
+  padding: 5px 8px;
+  margin-top: 4px;
+  animation: fadeInWarn 0.2s ease;
+}
+@keyframes fadeInWarn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+.sem-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.sem-gpa-field label { color: var(--primary); font-weight: 700; }
+.sem-gpa-field input { font-size: 17px; border-color: var(--primary); background: #EEF4FF; }
+
+/* ---- GPA BARS ---- */
+.gpa-bar-wrap { margin-bottom: 8px; }
+.gpa-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 3px; }
+.gpa-bar { height: 8px; background: var(--surface-3); border-radius: 4px; overflow: hidden; }
+.gpa-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+
+/* ---- TREND ---- */
+.trend-wrap { display: flex; align-items: flex-end; gap: 8px; height: 80px; }
+.trend-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.trend-bar-outer { flex: 1; display: flex; align-items: flex-end; width: 100%; }
+.trend-bar-inner { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.5s ease; min-height: 4px; }
+.trend-label { font-size: 9px; color: var(--text-muted); text-align: center; }
+.trend-value { font-size: 10px; font-weight: 600; color: var(--text-primary); }
+
+/* ---- TRACK CARDS ---- */
+.track-card { border-radius: var(--radius-lg); border: 2px solid var(--border); overflow: hidden; background: var(--surface); transition: transform var(--transition), box-shadow var(--transition); }
+.track-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.track-card.qualified { border-color: var(--green); }
+.track-card.borderline { border-color: var(--yellow); }
+.track-card.not-qualified { opacity: 0.7; }
+.track-header { padding: 16px 18px 12px; display: flex; align-items: center; gap: 12px; }
+.track-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.track-name { font-size: 14px; font-weight: 700; }
+.track-name-en { font-size: 11px; color: var(--text-muted); }
+.track-body { padding: 0 18px 16px; }
+.track-match-bar-wrap { margin-bottom: 10px; }
+.track-match-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.track-match-bar { height: 6px; background: var(--surface-3); border-radius: 3px; overflow: hidden; }
+.track-match-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.track-match-fill.green { background: var(--green); }
+.track-match-fill.yellow { background: var(--yellow); }
+.track-match-fill.red { background: var(--red); }
+.track-req { font-size: 11px; color: var(--text-secondary); }
+.track-req-row { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--border); }
+.track-req-row:last-child { border: none; }
+.req-ok { color: var(--green); font-weight: 600; }
+.req-fail { color: var(--red); font-weight: 600; }
+
+/* ---- PROFILE ---- */
+.avatar-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; justify-content: center; }
+.avatar-option {
+  width: 52px; height: 52px; border-radius: 12px; border: 2px solid var(--border);
+  font-size: 26px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all var(--transition); background: var(--surface-2);
+  user-select: none;
+}
+.avatar-option:hover { border-color: var(--primary); background: #EEF4FF; transform: scale(1.08); }
+.avatar-option.selected { border-color: var(--primary); background: #EEF4FF; box-shadow: 0 0 0 3px rgba(26,58,107,0.15); }
+.avatar-section-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; width: 100%; margin-bottom: -2px; }
+.profile-saved-card {
+  background: var(--green-light); border: 1.5px solid var(--green);
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px;
+  font-size: 13px; color: #065F46; display: none;
+}
+
+/* ---- PROGRAM CARDS ---- */
+.prog-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); overflow: hidden;
+  box-shadow: var(--shadow-sm); transition: transform var(--transition), box-shadow var(--transition);
+  display: flex; flex-direction: column;
+}
+.prog-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.prog-thumb {
+  position: relative; overflow: hidden; cursor: zoom-in;
+  aspect-ratio: 16/9;
+}
+.prog-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+.prog-card:hover .prog-thumb img { transform: scale(1.04); }
+.prog-thumb-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 13px; font-weight: 600; opacity: 0;
+  transition: opacity var(--transition);
+}
+.prog-thumb:hover .prog-thumb-overlay { opacity: 1; }
+.prog-body { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.prog-career-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; display: inline-block; width: fit-content; }
+.prog-name { font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.prog-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+.prog-section-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+.prog-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.prog-tag { font-size: 10.5px; background: var(--surface-3); color: var(--text-secondary); border-radius: 6px; padding: 2px 8px; font-weight: 500; }
+.prog-paths { font-size: 11px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ---- PRINT ---- */
+@media print {
+  .app-header, .sidebar, .header-actions { display: none !important; }
+  .main-content { margin-left: 0 !important; padding: 16px !important; }
+  .section { display: block !important; }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 1100px) {
+  .grid-5 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); transition: transform var(--transition); }
+  .sidebar.open { transform: translateX(0); }
+  .main-content { margin-left: 0; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-5 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .grid-4, .grid-3, .grid-2, .grid-5 { grid-template-columns: 1fr; }
+  .form-row, .form-row-3 { grid-template-columns: 1fr; }
+  .eligibility-hero { flex-wrap: wrap; }
+  .hero-right { margin-left: 0; text-align: left; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="app-header">
+  <div class="header-logos">
+    <div class="ps-header-badge">
+      <img src="logoPsพื้นใส-01 (1).png" alt="โรงเรียนโพธิสารพิทยากร"
+           style="width:42px;height:42px;object-fit:contain;background:white;border-radius:8px;padding:3px">
+      <div class="ps-header-text">
+        <span class="ps-header-line1">โรงเรียน</span>
+        <span class="ps-header-line2">โพธิสารพิทยากร</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-title" style="display:flex;align-items:center;gap:10px;min-width:0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 512 512" style="flex-shrink:0">
+      <defs>
+        <linearGradient id="hRingGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#AD1457"/>
+          <stop offset="100%" stop-color="#FF6BB5"/>
+        </linearGradient>
+        <linearGradient id="hBadgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#F02D8A"/>
+          <stop offset="100%" stop-color="#9C1050"/>
+        </linearGradient>
+      </defs>
+      <rect width="512" height="512" rx="108" ry="108" fill="white"/>
+      <g transform="translate(266,248) scale(1.06) translate(-256,-256)">
+        <circle cx="256" cy="256" r="188" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="16"/>
+        <circle cx="256" cy="256" r="188" fill="none" stroke="url(#hRingGrad)" stroke-width="16"
+                stroke-dasharray="886 295" stroke-dashoffset="295" stroke-linecap="round"
+                transform="rotate(-90 256 256)"/>
+        <path id="hSchoolArc" d="M 30 256 A 226 226 0 0 0 256 482" fill="none" stroke="none"/>
+        <text font-family="Prompt,Arial,sans-serif" font-size="26" font-weight="600" fill="#1A3A6B">
+          <textPath href="#hSchoolArc" side="right" startOffset="0%" textLength="350" lengthAdjust="spacingAndGlyphs">POTISARNPITTAYAKORN</textPath>
+        </text>
+        <circle cx="256" cy="256" r="158" fill="url(#hBadgeGrad)"/>
+        <text x="256" y="290" font-family="Prompt,Arial,sans-serif" font-size="110" font-weight="800" fill="white" text-anchor="middle">ม.4</text>
+      </g>
+    </svg>
+    <div style="min-width:0">
+      <h1 style="margin:0">ระบบประเมินการขึ้นชั้น ม.4 — โรงเรียนโพธิสารพิทยากร</h1>
+      <p style="margin:0">ประเมินจากผลการเรียน ม.1–ม.3 เทอม 1 · ปีการศึกษา 2567–2569</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <!-- PWA install button (hidden until browser fires beforeinstallprompt) -->
+    <button id="pwa-install-btn" onclick="installPWA()"
+      style="display:none;align-items:center;gap:6px;background:rgba(255,255,255,0.18);color:white;border:1px solid rgba(255,255,255,0.35);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M12 2v13M7 11l5 5 5-5"/><path d="M3 18h18v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z"/>
+      </svg>ติดตั้งแอป
+    </button>
+    <button class="btn btn-sm" onclick="printReport()"
+      style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>พิมพ์
+    </button>
+    <div class="student-chip" onclick="showSection('profile')">
+      <div class="student-avatar" id="header-avatar">น</div>
+      <span class="student-chip-name" id="header-name">กรอกโปรไฟล์</span>
+    </div>
+    <button onclick="resetAll()" title="รีเซ็ต"
+      style="background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.6);cursor:pointer;padding:6px 8px;border-radius:6px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.36"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== LAYOUT ===== -->
+<div class="app-layout">
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">เมนูหลัก</div>
+    <div class="nav-item active" onclick="showSection('dashboard')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>ภาพรวม Dashboard
+    </div>
+    <div class="nav-item" onclick="showSection('tracks')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>แผนการเรียน ม.ปลาย
+    </div>
+    <div class="nav-item" onclick="showSection('subjects')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>ผลการเรียน GPA & วิชาหลัก
+    </div>
+    <div class="nav-item" onclick="showSection('criteria')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+      </svg>เกณฑ์การขึ้น ม.4
+    </div>
+    <div class="nav-item" onclick="showSection('profile')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>ข้อมูลนักเรียน & ผลการเรียน
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">สรุปผลการเรียน</div>
+    <div id="sidebar-grade-summary" style="padding:6px 12px 10px;font-size:11px"></div>
+  </div>
+
+  <div class="sidebar-section" style="border:none">
+    <div class="sidebar-label">เกณฑ์ขั้นต่ำ (สรุป)</div>
+    <div style="padding:6px 12px 10px;font-size:11px;color:var(--text-secondary)">
+      <div style="font-weight:700;color:#1E40AF;margin-bottom:3px">🔵 EP / IEP</div>
+      <div style="padding-left:8px;line-height:1.9">
+        GPA ≥ 3.00 · อังกฤษ ≥ 3.00<br>
+        คณิต ≥ 3.00 (ยกเว้นศิลป์/กีฬา)<br>
+        วิทย์ ≥ 3.00 (เฉพาะสายวิทย์)
+      </div>
+      <div style="font-weight:700;color:#065F46;margin:6px 0 3px">🟢 GP</div>
+      <div style="padding-left:8px;line-height:1.9">
+        สายวิทย์: GPA ≥ 2.75–3.00<br>
+        สายศิลป์: GPA ≥ 2.50<br>
+        ศิลปกรรม: GPA ≥ 2.50 เท่านั้น
+      </div>
+      <div style="margin-top:8px;padding-top:7px;border-top:1px solid var(--border)">
+        <a onclick="showSection('criteria')" style="color:var(--primary);cursor:pointer;font-size:11px;font-weight:600">
+          ดูตารางเกณฑ์ฉบับเต็ม →
+        </a>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;font-size:10px;color:var(--text-muted);opacity:0.55;border-top:1px solid var(--border);line-height:1.5">
+    พัฒนาระบบโดย<br><strong style="opacity:0.8">วิฑูรย์ เจริญชัยไพบูลย์</strong>
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <section class="section active" id="section-dashboard">
+    <div class="section-header">
+      <h2>ภาพรวมการประเมิน</h2>
+      <p>สรุปผลการเรียนและสถานะการขึ้นชั้น ม.4</p>
+    </div>
+
+    <div class="eligibility-hero pending" id="hero-card">
+      <div class="hero-icon" id="hero-icon">📋</div>
+      <div class="hero-body">
+        <h2 id="hero-title">รอข้อมูลผลการเรียน</h2>
+        <p id="hero-subtitle">กรุณากรอกผลการเรียนในเมนู "ข้อมูลนักเรียน & ผลการเรียน" เพื่อดูการประเมิน</p>
+        <div id="hero-goals" style="display:none;margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"></div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-gpa" id="hero-gpax">—<small>/4.00</small></div>
+        <div style="font-size:13px;opacity:0.85;margin-top:4px" id="hero-sem-label">GPAX รวม 5 เทอม</div>
+      </div>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:16px">
+      <div class="stat-card">
+        <div class="label">GPAX รวม</div>
+        <div class="value" id="stat-gpax" style="color:var(--primary)">—</div>
+        <div class="sub" id="sub-gpax">เฉลี่ย 5 เทอม</div>
+        <span class="badge badge-info" id="badge-gpax">รอข้อมูล</span>
+      </div>
+      <div class="stat-card">
+        <div class="label">➗ คณิตศาสตร์พื้นฐาน</div>
+        <div class="value" id="stat-math" style="color:var(--blue)">—</div>
+        <div class="sub" id="sub-math">เฉลี่ย 5 เทอม</div>
+        <span class="badge badge-info" id="badge-math">รอข้อมูล</span>
+      </div>
+      <div class="stat-card">
+        <div class="label">🔬 วิทยาศาสตร์พื้นฐาน</div>
+        <div class="value" id="stat-sci" style="color:var(--green)">—</div>
+        <div class="sub" id="sub-sci">เฉลี่ย 5 เทอม</div>
+        <span class="badge badge-info" id="badge-sci">รอข้อมูล</span>
+      </div>
+      <div class="stat-card">
+        <div class="label">🌍 ภาษาอังกฤษพื้นฐาน</div>
+        <div class="value" id="stat-eng" style="color:var(--purple)">—</div>
+        <div class="sub" id="sub-eng">เฉลี่ย 5 เทอม</div>
+        <span class="badge badge-info" id="badge-eng">รอข้อมูล</span>
+      </div>
+    </div>
+
+    <div id="dashboard-requirements-card" style="margin-bottom:16px"></div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px">📊 วิชาหลัก เทียบเกณฑ์ขั้นต่ำ</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">เส้นประแดง = เกณฑ์ขั้นต่ำที่ต้องผ่าน</div>
+      <div id="subject-bars"><div style="color:var(--text-muted);font-size:13px">กรอกผลการเรียนเพื่อดูข้อมูล</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:16px">✅ แผนการเรียนทั้งหมดที่ผ่านเกณฑ์</div>
+      <div id="dashboard-all-qualified">
+        <div style="color:var(--text-muted);font-size:13px">กรอกผลการเรียนเพื่อดูแผนการเรียนที่ผ่านเกณฑ์</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TRACKS ===================== -->
+  <section class="section" id="section-tracks">
+    <div class="section-header">
+      <h2>แผนการเรียนระดับมัธยมศึกษาตอนปลาย</h2>
+      <p>โรงเรียนโพธิสารพิทยากร · ปีการศึกษา 2570 · 11 แผนการเรียน</p>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="prog-lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:center;justify-content:center;cursor:zoom-out">
+      <img id="prog-lightbox-img" src="" style="max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
+    </div>
+
+    <div class="grid-3" id="tracks-grid">
+
+      <!-- 1. เตรียมแพทย์ -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide9.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide9.jpeg" alt="แผนเตรียมแพทย์">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#FEE2E2;color:#991B1B">🏥 Doctor · แพทย์</div>
+          <div class="prog-name">แผนเตรียมแพทย์</div>
+          <div class="prog-desc">เส้นทางสายชีวิตคนอื่นอยู่ในมือเรา</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">ชีววิทยา</span><span class="prog-tag">เคมี</span><span class="prog-tag">ฟิสิกส์</span><span class="prog-tag">คณิตศาสตร์</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">แพทยศาสตร์ · ทันตแพทย์ · เภสัชศาสตร์ · สัตวแพทย์ · เทคนิคการแพทย์ · สหเวชศาสตร์ · พยาบาลศาสตร์</div>
+        </div>
+      </div>
+
+      <!-- 2. เตรียมเภสัช-สหเวช -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide10.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide10.jpeg" alt="แผนเตรียมเภสัช">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#FEE2E2;color:#991B1B">💊 Pharmacist · เภสัชกร</div>
+          <div class="prog-name">แผนเตรียมเภสัช–สหเวช</div>
+          <div class="prog-desc">เส้นทางสู่การดูแลสุขภาพด้วยความละเอียดรอบคอบ</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">เคมี</span><span class="prog-tag">ชีววิทยา</span><span class="prog-tag">ฟิสิกส์</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">เภสัชศาสตร์ · เทคนิคการแพทย์ · สหเวชศาสตร์ · พยาบาลศาสตร์ · ภาพรังสี · วิทยาศาสตร์</div>
+        </div>
+      </div>
+
+      <!-- 3. เตรียมวิศวกรรม -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide11.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide11.jpeg" alt="แผนเตรียมวิศวกรรม">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#DBEAFE;color:#1E3A8A">⚙️ Engineer · วิศวกร</div>
+          <div class="prog-name">แผนเตรียมวิศวะ</div>
+          <div class="prog-desc">สร้างสรรค์โซลูชันเพื่อแก้ปัญหาโลก</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">คณิตศาสตร์</span><span class="prog-tag">ฟิสิกส์</span><span class="prog-tag">Logical Thinking</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">วิศวกรรมศาสตร์ · วิทยาศาสตร์ · เทคโนโลยีอุตสาหกรรม</div>
+        </div>
+      </div>
+
+      <!-- 4. เตรียมสถาปัตย์ -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide12.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide12.jpeg" alt="แผนเตรียมสถาปัตย์">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#DBEAFE;color:#1E3A8A">🏛️ Architect · สถาปนิก</div>
+          <div class="prog-name">แผนเตรียมสถาปัตย์</div>
+          <div class="prog-desc">ออกแบบพื้นที่ใช้สอยที่สวยงามและมีความหมาย</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">การวาดแบบ</span><span class="prog-tag">ฟิสิกส์</span><span class="prog-tag">Creativity</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">สถาปัตยกรรมศาสตร์ · ออกแบบผลิตภัณฑ์ · ภูมิสถาปัตย์ · ครุศาสตร์อุตสาหกรรม</div>
+        </div>
+      </div>
+
+      <!-- 5. เตรียมวิทย์-คอม -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide13.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide13.jpeg" alt="แผนเตรียมวิทย์คอม">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#EDE9FE;color:#4C1D95">💻 Computer Science · นักคอมฯ</div>
+          <div class="prog-name">แผนเตรียมวิทย์–คอม</div>
+          <div class="prog-desc">สองสายที่ขับเคลื่อนเทคโนโลยีอนาคต</div>
+          <div class="prog-section-title">📚 3 กลุ่มวิชาให้เลือก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">วิทยาการคอมพิวเตอร์</span><span class="prog-tag">วิทยาการหุ่นยนต์</span><span class="prog-tag">Media Innovation</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">วิทยาศาสตร์ (คอมฯ) · เทคโนโลยีสารสนเทศ · มัลติมีเดีย · วิศวกรรมคอมพิวเตอร์</div>
+        </div>
+      </div>
+
+      <!-- 6. เตรียมนิเทศ -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide15.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide15.jpeg" alt="แผนเตรียมนิเทศ">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#FCE7F3;color:#831843">🎬 Communications Pro · นิเทศกร</div>
+          <div class="prog-name">แผนเตรียมนิเทศ</div>
+          <div class="prog-desc">สร้างสรรค์เนื้อหาและสื่อสารได้อย่างมีประสิทธิภาพ</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">สื่อสารมวลชน</span><span class="prog-tag">การสร้างคอนเทนต์</span><span class="prog-tag">การผลิตสื่อดิจิทัล</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">นิเทศศาสตร์ · วารสารศาสตร์ · สื่อสารมวลชน · เทคโนโลยีสารสนเทศ (นิเทศ)</div>
+        </div>
+      </div>
+
+      <!-- 7. เตรียมมนุษย์-ครุศาสตร์ -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide16.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide16.jpeg" alt="แผนเตรียมมนุษย์ครุ">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#D1FAE5;color:#065F46">🌐 Linguist · นักภาษา / ครู</div>
+          <div class="prog-name">แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</div>
+          <div class="prog-desc">พัฒนาคนและสังคมด้วยภาษาและการศึกษา</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">ภาษาอังกฤษ</span><span class="prog-tag">ภาษาจีน / ญี่ปุ่น</span><span class="prog-tag">มนุษยศาสตร์</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">อักษรศาสตร์ · ศิลปศาสตร์ · มนุษยศาสตร์ · ครุศาสตร์ · ศึกษาศาสตร์ · สังคมวิทยา · โบราณคดี</div>
+        </div>
+      </div>
+
+      <!-- 8. เตรียมนิติ-รัฐศาสตร์ -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide17.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide17.jpeg" alt="แผนเตรียมนิติรัฐ">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#FEF3C7;color:#78350F">⚖️ Lawyer · นักกฎหมาย</div>
+          <div class="prog-name">แผนเตรียมนิติ–รัฐศาสตร์</div>
+          <div class="prog-desc">ปกป้องความยุติธรรมและกำหนดทิศทางสังคม</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">กฎหมาย</span><span class="prog-tag">รัฐศาสตร์</span><span class="prog-tag">ความคิดเชิงเหตุผล</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">นิติศาสตร์ · รัฐศาสตร์ · สังคมสงเคราะห์ · สังคมวิทยาและมานุษยวิทยา</div>
+        </div>
+      </div>
+
+      <!-- 9. เตรียมบริหาร บัญชี -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide18.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide18.jpeg" alt="แผนเตรียมบริหาร">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#FEF3C7;color:#78350F">💼 Accountant / Business · นักธุรกิจ</div>
+          <div class="prog-name">แผนเตรียมบริหาร บัญชี และการบริการ</div>
+          <div class="prog-desc">ขับเคลื่อนธุรกิจด้วยการจัดการและบริการที่เป็นเลิศ</div>
+          <div class="prog-section-title">📚 4 กลุ่มวิชาให้เลือก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">บัญชี</span><span class="prog-tag">บริหารธุรกิจ</span><span class="prog-tag">โรงแรม-ท่องเที่ยว</span><span class="prog-tag">ธุรกิจอาหาร</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">พาณิชยศาสตร์ · บัญชี · บริหารธุรกิจ · เศรษฐศาสตร์ · โรงแรมและการท่องเที่ยว</div>
+        </div>
+      </div>
+
+      <!-- 10. เตรียมศิลปกรรม -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide19.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide19.jpeg" alt="แผนเตรียมศิลปกรรม">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#FCE7F3;color:#831843">🎨 Artist · ศิลปิน / นักดนตรี</div>
+          <div class="prog-name">แผนเตรียมศิลปกรรม</div>
+          <div class="prog-desc">สร้างสรรค์ผลงานศิลปะที่สะท้อนจิตวิญญาณ</div>
+          <div class="prog-section-title">📚 3 กลุ่มวิชาให้เลือก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">ศิลปกรรม</span><span class="prog-tag">ดนตรี</span><span class="prog-tag">ศิลปะการแสดง</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">ศิลปกรรมศาสตร์ · มัณฑนศิลป์ · ดุริยางคศาสตร์ · วิจิตรศิลป์ · สถาปัตยกรรมและการออกแบบ</div>
+        </div>
+      </div>
+
+      <!-- 11. เตรียมครุ-กีฬา -->
+      <div class="prog-card">
+        <div class="prog-thumb" onclick="openLightbox('PS_Sttudy_Programs/Slide20.jpeg')">
+          <img src="PS_Sttudy_Programs/Slide20.jpeg" alt="แผนเตรียมกีฬา">
+          <div class="prog-thumb-overlay">🔍 ดูรายละเอียด</div>
+        </div>
+        <div class="prog-body">
+          <div class="prog-career-tag" style="background:#D1FAE5;color:#065F46">🏃 Athlete / PE Teacher · ครูพลศึกษา</div>
+          <div class="prog-name">แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</div>
+          <div class="prog-desc">การศึกษา การสอน การพัฒนาเด็กและเยาวชน วิทยาศาสตร์การกีฬา</div>
+          <div class="prog-section-title">📚 วิชาหลัก</div>
+          <div class="prog-tags">
+            <span class="prog-tag">วิทยาศาสตร์การกีฬา</span><span class="prog-tag">กายวิภาค</span><span class="prog-tag">เวชศาสตร์การกีฬา</span><span class="prog-tag">สรีรวิทยา</span>
+          </div>
+          <div class="prog-section-title">🎓 คณะที่ต่อยอดได้</div>
+          <div class="prog-paths">ครุศาสตร์ (พลศึกษา) · พลศึกษา · วิทยาศาสตร์การกีฬา</div>
+        </div>
+      </div>
+
+    </div><!-- end tracks-grid -->
+  </section>
+
+  <!-- ===================== SUBJECTS DETAIL ===================== -->
+  <section class="section" id="section-subjects">
+    <div class="section-header">
+      <h2>ผลการเรียน: GPA และรายวิชาหลักพื้นฐาน</h2>
+      <p>เปรียบเทียบเกรดแต่ละเทอม พร้อมค่าเฉลี่ยและแนวโน้ม</p>
+    </div>
+    <div class="grid-4" style="margin-bottom:20px">
+      <!-- GPA card -->
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">📊</span> GPA รวม (GPAX)
+        </div>
+        <div id="detail-gpa-bars"></div>
+        <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px">
+          <div style="font-size:11px;color:var(--text-muted)">GPAX เฉลี่ย</div>
+          <div style="font-size:24px;font-weight:700;color:var(--primary)" id="detail-gpa-avg">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">➗</span> คณิตศาสตร์พื้นฐาน
+        </div>
+        <div id="detail-math-bars"></div>
+        <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px">
+          <div style="font-size:11px;color:var(--text-muted)">เฉลี่ย</div>
+          <div style="font-size:24px;font-weight:700;color:var(--blue)" id="detail-math-avg">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">🔬</span> วิทยาศาสตร์พื้นฐาน
+        </div>
+        <div id="detail-sci-bars"></div>
+        <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px">
+          <div style="font-size:11px;color:var(--text-muted)">เฉลี่ย</div>
+          <div style="font-size:24px;font-weight:700;color:var(--green)" id="detail-sci-avg">—</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          <span style="font-size:20px">🌍</span> ภาษาอังกฤษพื้นฐาน
+        </div>
+        <div id="detail-eng-bars"></div>
+        <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px">
+          <div style="font-size:11px;color:var(--text-muted)">เฉลี่ย</div>
+          <div style="font-size:24px;font-weight:700;color:var(--purple)" id="detail-eng-avg">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px">📋 ตารางเปรียบเทียบวิชาหลัก</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:var(--primary);color:white">
+              <th style="padding:10px 14px;text-align:left;font-weight:600">วิชา</th>
+              <th style="padding:10px 14px;text-align:center">ม.1 เทอม 1</th>
+              <th style="padding:10px 14px;text-align:center">ม.1 เทอม 2</th>
+              <th style="padding:10px 14px;text-align:center">ม.2 เทอม 1</th>
+              <th style="padding:10px 14px;text-align:center">ม.2 เทอม 2</th>
+              <th style="padding:10px 14px;text-align:center">ม.3 เทอม 1</th>
+              <th style="padding:10px 14px;text-align:center;background:rgba(255,255,255,0.15)">เฉลี่ย</th>
+            </tr>
+          </thead>
+          <tbody id="subject-table-body">
+            <tr><td colspan="7" style="padding:20px;text-align:center;color:var(--text-muted)">กรอกผลการเรียนเพื่อดูข้อมูล</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CRITERIA ===================== -->
+  <section class="section" id="section-criteria">
+    <div class="section-header">
+      <h2>เกณฑ์การพิจารณาขึ้น ม.4</h2>
+      <p>เกณฑ์เกรดขั้นต่ำแต่ละแผนการเรียน แยกตามหลักสูตร · ปีการศึกษา 2570</p>
+    </div>
+
+    <!-- หลักสูตร tabs -->
+    <div class="crit-tabs">
+      <div class="crit-tab active" onclick="switchCritTab('EP',this)">
+        หลักสูตร EP <span class="curr-badge curr-ep">English Program</span>
+      </div>
+      <div class="crit-tab" onclick="switchCritTab('IEP',this)">
+        หลักสูตร IEP <span class="curr-badge curr-iep">Intensive English</span>
+      </div>
+      <div class="crit-tab" onclick="switchCritTab('GP',this)">
+        หลักสูตร GP <span class="curr-badge curr-gp">General Program</span>
+      </div>
+    </div>
+
+    <!-- EP Panel -->
+    <div class="crit-panel active" id="crit-panel-EP">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="background:var(--primary);color:white;padding:12px 16px;font-size:13px;font-weight:700">
+          📋 หลักสูตร EP — เกณฑ์เกรดขั้นต่ำ
+        </div>
+        <div style="overflow-x:auto">
+          <table class="crit-table">
+            <thead><tr style="background:#F8FAFF">
+              <th style="text-align:left;padding-left:16px">แผนการเรียน</th>
+              <th>GPA รวม</th>
+              <th>คณิตศาสตร์</th>
+              <th>วิทยาศาสตร์</th>
+              <th>ภาษาอังกฤษ</th>
+            </tr></thead>
+            <tbody id="crit-body-EP"></tbody>
+          </table>
+        </div>
+        <div style="padding:10px 16px;font-size:11px;color:var(--text-muted);background:var(--surface-2)">
+          หมายเหตุ: "—" = ไม่มีเกณฑ์ขั้นต่ำสำหรับวิชานั้น · ค่าเกรดทุกรายการต้องผ่านพร้อมกัน
+        </div>
+      </div>
+    </div>
+
+    <!-- IEP Panel -->
+    <div class="crit-panel" id="crit-panel-IEP">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="background:#5B21B6;color:white;padding:12px 16px;font-size:13px;font-weight:700">
+          📋 หลักสูตร IEP — เกณฑ์เกรดขั้นต่ำ
+        </div>
+        <div style="overflow-x:auto">
+          <table class="crit-table">
+            <thead><tr style="background:#F5F3FF">
+              <th style="text-align:left;padding-left:16px">แผนการเรียน</th>
+              <th>GPA รวม</th>
+              <th>คณิตศาสตร์</th>
+              <th>วิทยาศาสตร์</th>
+              <th>ภาษาอังกฤษ</th>
+            </tr></thead>
+            <tbody id="crit-body-IEP"></tbody>
+          </table>
+        </div>
+        <div style="padding:10px 16px;font-size:11px;color:var(--text-muted);background:var(--surface-2)">
+          หมายเหตุ: "—" = ไม่มีเกณฑ์ขั้นต่ำสำหรับวิชานั้น · ค่าเกรดทุกรายการต้องผ่านพร้อมกัน
+        </div>
+      </div>
+    </div>
+
+    <!-- GP Panel -->
+    <div class="crit-panel" id="crit-panel-GP">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="background:#065F46;color:white;padding:12px 16px;font-size:13px;font-weight:700">
+          📋 หลักสูตร GP — เกณฑ์เกรดขั้นต่ำ
+        </div>
+        <div style="overflow-x:auto">
+          <table class="crit-table">
+            <thead><tr style="background:#ECFDF5">
+              <th style="text-align:left;padding-left:16px">แผนการเรียน</th>
+              <th>GPA รวม</th>
+              <th>คณิตศาสตร์</th>
+              <th>วิทยาศาสตร์</th>
+              <th>ภาษาอังกฤษ</th>
+            </tr></thead>
+            <tbody id="crit-body-GP"></tbody>
+          </table>
+        </div>
+        <div style="padding:10px 16px;font-size:11px;color:var(--text-muted);background:var(--surface-2)">
+          หมายเหตุ: "—" = ไม่มีเกณฑ์ขั้นต่ำสำหรับวิชานั้น · ค่าเกรดทุกรายการต้องผ่านพร้อมกัน
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="card" style="margin-top:16px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px">📌 ข้อมูลเพิ่มเติม</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:12px">
+        <div style="background:#DBEAFE;border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:#1E40AF;margin-bottom:4px">🔵 หลักสูตร EP</div>
+          <div style="color:#1E3A8A">English Program<br>สอนเป็นภาษาอังกฤษ<br>เกณฑ์ GPA ≥ 3.00 ทุกแผน</div>
+        </div>
+        <div style="background:#EDE9FE;border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:#5B21B6;margin-bottom:4px">🟣 หลักสูตร IEP</div>
+          <div style="color:#4C1D95">Intensive English Program<br>เน้นภาษาอังกฤษเข้มข้น<br>เกณฑ์ GPA ≥ 3.00 ทุกแผน</div>
+        </div>
+        <div style="background:#D1FAE5;border-radius:8px;padding:12px">
+          <div style="font-weight:700;color:#065F46;margin-bottom:4px">🟢 หลักสูตร GP</div>
+          <div style="color:#064E3B">General Program<br>หลักสูตรปกติ<br>เกณฑ์แตกต่างตามแผน (2.50–3.00)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROFILE ===================== -->
+  <section class="section" id="section-profile">
+    <div class="section-header">
+      <h2>ข้อมูลนักเรียน & ผลการเรียน</h2>
+      <p>กรอกข้อมูลส่วนตัวและผลการเรียนแต่ละเทอม เพื่อแสดงใน Dashboard</p>
+    </div>
+
+    <!-- Profile Form (single column) -->
+    <div class="card" style="max-width:680px;margin-bottom:16px">
+
+      <!-- Avatar picker -->
+      <div class="form-group">
+        <label class="form-label">เลือกไอคอนประจำตัว</label>
+        <div class="avatar-picker" id="avatar-picker">
+          <span class="avatar-section-label">👦 เด็กผู้ชาย</span>
+          <div class="avatar-option" onclick="selectAvatar(this,'👦')">👦</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'🧒')">🧒</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'👨‍🎓')">👨‍🎓</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'🧑‍💻')">🧑‍💻</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'🧑‍🔬')">🧑‍🔬</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'🧑‍🏫')">🧑‍🏫</div>
+          <span class="avatar-section-label">👧 เด็กผู้หญิง</span>
+          <div class="avatar-option" onclick="selectAvatar(this,'👧')">👧</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'🧒‍♀️')">🧒‍♀️</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'👩‍🎓')">👩‍🎓</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'👩‍💻')">👩‍💻</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'👩‍🔬')">👩‍🔬</div>
+          <div class="avatar-option" onclick="selectAvatar(this,'👩‍🏫')">👩‍🏫</div>
+        </div>
+        <!-- Preview -->
+        <div style="display:flex;align-items:center;gap:12px;background:var(--surface-2);border-radius:var(--radius);padding:12px 16px">
+          <div id="profile-avatar-big" style="font-size:40px;line-height:1">👤</div>
+          <div>
+            <div style="font-size:15px;font-weight:700" id="profile-display-name">ยังไม่ได้กรอกชื่อ</div>
+            <div style="font-size:12px;color:var(--text-muted)" id="profile-display-class">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="profile-saved-notice" class="profile-saved-card">✅ บันทึกข้อมูลเรียบร้อยแล้ว</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ชื่อ-สกุล นักเรียน *</label>
+          <input class="form-input" id="prof-name" type="text" placeholder="เช่น นายสมชาย ใจดี" oninput="updateProfilePreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ชั้นเรียน / ห้อง</label>
+          <input class="form-input" id="prof-class" type="text" placeholder="เช่น ม.3/1" oninput="updateProfilePreview()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">เลขประจำตัวนักเรียน</label>
+          <input class="form-input" id="prof-id" type="text" placeholder="เช่น 12345">
+        </div>
+        <div class="form-group">
+          <label class="form-label">หลักสูตรที่ศึกษาอยู่</label>
+          <select class="form-input" id="prof-curriculum" style="padding:8px 12px" onchange="calculate()">
+            <option value="GP">GP — หลักสูตรปกติ (General Program)</option>
+            <option value="EP">EP — English Program</option>
+            <option value="IEP">IEP — Intensive English Program</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label class="form-label">ครูที่ปรึกษา</label>
+          <div class="form-row">
+            <input class="form-input" id="prof-teacher" type="text" placeholder="ครูที่ปรึกษาคนที่ 1 เช่น ครูสมศรี">
+            <input class="form-input" id="prof-teacher2" type="text" placeholder="ครูที่ปรึกษาคนที่ 2 (ถ้ามี)">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">แผนการเรียนที่ต้องการเรียน</label>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center">
+          <span style="font-size:12px;font-weight:600;color:var(--primary);background:#EEF4FF;border-radius:20px;padding:3px 10px;white-space:nowrap">อันดับ 1</span>
+          <select class="form-input" id="prof-goal1" style="padding:8px 12px">
+            <option value="">— เลือกหลักสูตร / แผนการเรียน —</option>
+            <optgroup label="🔵 EP — English Program (GPA ≥ 3.00 ทุกแผน)">
+              <option value="EP|แผนเตรียมแพทย์">[EP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="EP|แผนเตรียมเภสัช–สหเวช">[EP] 💊 แผนเตรียมเภสัช–สหเวช</option>
+              <option value="EP|แผนเตรียมวิศวกรรมศาสตร์">[EP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
+              <option value="EP|แผนเตรียมสถาปัตยกรรมศาสตร์">[EP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
+              <option value="EP|แผนเตรียมวิทย์–คอม">[EP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="EP|แผนเตรียมนิเทศ">[EP] 🎬 แผนเตรียมนิเทศ</option>
+              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[EP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="EP|แผนเตรียมนิติ–รัฐศาสตร์">[EP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
+              <option value="EP|แผนเตรียมบริหาร บัญชี และการบริการ">[EP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
+              <option value="EP|แผนเตรียมศิลปกรรม">[EP] 🎨 แผนเตรียมศิลปกรรม</option>
+              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[EP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+            </optgroup>
+            <optgroup label="🟣 IEP — Intensive English Program (GPA ≥ 3.00 ทุกแผน)">
+              <option value="IEP|แผนเตรียมแพทย์">[IEP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="IEP|แผนเตรียมเภสัช–สหเวช">[IEP] 💊 แผนเตรียมเภสัช–สหเวช</option>
+              <option value="IEP|แผนเตรียมวิศวกรรมศาสตร์">[IEP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
+              <option value="IEP|แผนเตรียมสถาปัตยกรรมศาสตร์">[IEP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
+              <option value="IEP|แผนเตรียมวิทย์–คอม">[IEP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="IEP|แผนเตรียมนิเทศ">[IEP] 🎬 แผนเตรียมนิเทศ</option>
+              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[IEP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="IEP|แผนเตรียมนิติ–รัฐศาสตร์">[IEP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
+              <option value="IEP|แผนเตรียมบริหาร บัญชี และการบริการ">[IEP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
+              <option value="IEP|แผนเตรียมศิลปกรรม">[IEP] 🎨 แผนเตรียมศิลปกรรม</option>
+              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[IEP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+            </optgroup>
+            <optgroup label="🟢 GP — General Program (GPA 2.50–3.00 แล้วแต่แผน)">
+              <option value="GP|แผนเตรียมแพทย์">[GP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="GP|แผนเตรียมเภสัช–สหเวช">[GP] 💊 แผนเตรียมเภสัช–สหเวช</option>
+              <option value="GP|แผนเตรียมวิศวกรรมศาสตร์">[GP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
+              <option value="GP|แผนเตรียมสถาปัตยกรรมศาสตร์">[GP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
+              <option value="GP|แผนเตรียมวิทย์–คอม">[GP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="GP|แผนเตรียมนิเทศ">[GP] 🎬 แผนเตรียมนิเทศ</option>
+              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[GP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="GP|แผนเตรียมนิติ–รัฐศาสตร์">[GP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
+              <option value="GP|แผนเตรียมบริหาร บัญชี และการบริการ">[GP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
+              <option value="GP|แผนเตรียมศิลปกรรม">[GP] 🎨 แผนเตรียมศิลปกรรม</option>
+              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[GP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+            </optgroup>
+          </select>
+          <span style="font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface-3);border-radius:20px;padding:3px 10px;white-space:nowrap">อันดับ 2</span>
+          <select class="form-input" id="prof-goal2" style="padding:8px 12px">
+            <option value="">— เลือกหลักสูตร / แผนการเรียน —</option>
+            <optgroup label="🔵 EP — English Program (GPA ≥ 3.00 ทุกแผน)">
+              <option value="EP|แผนเตรียมแพทย์">[EP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="EP|แผนเตรียมเภสัช–สหเวช">[EP] 💊 แผนเตรียมเภสัช–สหเวช</option>
+              <option value="EP|แผนเตรียมวิศวกรรมศาสตร์">[EP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
+              <option value="EP|แผนเตรียมสถาปัตยกรรมศาสตร์">[EP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
+              <option value="EP|แผนเตรียมวิทย์–คอม">[EP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="EP|แผนเตรียมนิเทศ">[EP] 🎬 แผนเตรียมนิเทศ</option>
+              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[EP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="EP|แผนเตรียมนิติ–รัฐศาสตร์">[EP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
+              <option value="EP|แผนเตรียมบริหาร บัญชี และการบริการ">[EP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
+              <option value="EP|แผนเตรียมศิลปกรรม">[EP] 🎨 แผนเตรียมศิลปกรรม</option>
+              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[EP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+            </optgroup>
+            <optgroup label="🟣 IEP — Intensive English Program (GPA ≥ 3.00 ทุกแผน)">
+              <option value="IEP|แผนเตรียมแพทย์">[IEP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="IEP|แผนเตรียมเภสัช–สหเวช">[IEP] 💊 แผนเตรียมเภสัช–สหเวช</option>
+              <option value="IEP|แผนเตรียมวิศวกรรมศาสตร์">[IEP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
+              <option value="IEP|แผนเตรียมสถาปัตยกรรมศาสตร์">[IEP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
+              <option value="IEP|แผนเตรียมวิทย์–คอม">[IEP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="IEP|แผนเตรียมนิเทศ">[IEP] 🎬 แผนเตรียมนิเทศ</option>
+              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[IEP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="IEP|แผนเตรียมนิติ–รัฐศาสตร์">[IEP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
+              <option value="IEP|แผนเตรียมบริหาร บัญชี และการบริการ">[IEP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
+              <option value="IEP|แผนเตรียมศิลปกรรม">[IEP] 🎨 แผนเตรียมศิลปกรรม</option>
+              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[IEP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+            </optgroup>
+            <optgroup label="🟢 GP — General Program (GPA 2.50–3.00 แล้วแต่แผน)">
+              <option value="GP|แผนเตรียมแพทย์">[GP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="GP|แผนเตรียมเภสัช–สหเวช">[GP] 💊 แผนเตรียมเภสัช–สหเวช</option>
+              <option value="GP|แผนเตรียมวิศวกรรมศาสตร์">[GP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
+              <option value="GP|แผนเตรียมสถาปัตยกรรมศาสตร์">[GP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
+              <option value="GP|แผนเตรียมวิทย์–คอม">[GP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="GP|แผนเตรียมนิเทศ">[GP] 🎬 แผนเตรียมนิเทศ</option>
+              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[GP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="GP|แผนเตรียมนิติ–รัฐศาสตร์">[GP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
+              <option value="GP|แผนเตรียมบริหาร บัญชี และการบริการ">[GP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
+              <option value="GP|แผนเตรียมศิลปกรรม">[GP] 🎨 แผนเตรียมศิลปกรรม</option>
+              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[GP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        บันทึกข้อมูล
+      </button>
+    </div>
+
+    <!-- Yellow note -->
+    <div style="max-width:680px;background:var(--yellow-light);border:1.5px solid #FDE68A;border-radius:var(--radius);padding:12px 16px;font-size:12.5px;color:#78350F;line-height:1.8">
+      <span style="font-weight:700;color:#92400E">⚠️ หมายเหตุ</span> — ข้อมูลทั้งหมดจัดเก็บเฉพาะในเครื่องของคุณ (localStorage) ไม่มีการส่งข้อมูลออกไปที่ใด หากล้างประวัติเบราว์เซอร์ข้อมูลจะหายไป
+    </div>
+
+    <!-- Hidden spans for JS compatibility -->
+    <span id="info-name" style="display:none"></span>
+    <span id="info-class" style="display:none"></span>
+    <span id="info-id" style="display:none"></span>
+    <span id="info-teacher" style="display:none"></span>
+    <span id="info-goal" style="display:none"></span>
+
+    <!-- ─── ผลการเรียน ─── -->
+    <div style="margin-top:28px;padding-top:24px;border-top:2px solid var(--border)">
+      <div style="font-size:15px;font-weight:700;color:var(--primary);margin-bottom:4px">📝 ผลการเรียน</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">กรอกเกรดแต่ละเทอม ม.1–ม.3 เทอม 1 · ระดับเกรด 0.00–4.00</div>
+    <div class="grid-5" style="margin-bottom:20px" id="semester-cards-grid">
+
+      <!-- ม.1 เทอม 1 -->
+      <div class="sem-card">
+        <div class="sem-card-header">
+          <div class="sem-badge" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8)">ม.1<br>เทอม 1</div>
+          <div>
+            <div class="sem-card-title">ม.1 เทอม 1</div>
+            <div class="sem-card-sub">ภาคเรียนที่ 1/2567</div>
+          </div>
+        </div>
+        <div class="sem-card-body">
+          <div class="sem-field sem-gpa-field">
+            <label>📊 GPA รวม</label>
+            <input type="number" id="gpa-t1" min="0" max="4" step="0.01" placeholder="0.00" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-divider"></div>
+          <div class="sem-field">
+            <label>➗ คณิตศาสตร์</label>
+            <input type="number" id="math-t1" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🔬 วิทยาศาสตร์</label>
+            <input type="number" id="sci-t1" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🌍 ภาษาอังกฤษ</label>
+            <input type="number" id="eng-t1" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+        </div>
+      </div>
+
+      <!-- ม.1 เทอม 2 -->
+      <div class="sem-card">
+        <div class="sem-card-header">
+          <div class="sem-badge" style="background:linear-gradient(135deg,#6366F1,#4338CA)">ม.1<br>เทอม 2</div>
+          <div>
+            <div class="sem-card-title">ม.1 เทอม 2</div>
+            <div class="sem-card-sub">ภาคเรียนที่ 2/2567</div>
+          </div>
+        </div>
+        <div class="sem-card-body">
+          <div class="sem-field sem-gpa-field">
+            <label>📊 GPA รวม</label>
+            <input type="number" id="gpa-t2" min="0" max="4" step="0.01" placeholder="0.00" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-divider"></div>
+          <div class="sem-field">
+            <label>➗ คณิตศาสตร์</label>
+            <input type="number" id="math-t2" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🔬 วิทยาศาสตร์</label>
+            <input type="number" id="sci-t2" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🌍 ภาษาอังกฤษ</label>
+            <input type="number" id="eng-t2" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+        </div>
+      </div>
+
+      <!-- ม.2 เทอม 1 -->
+      <div class="sem-card">
+        <div class="sem-card-header">
+          <div class="sem-badge" style="background:linear-gradient(135deg,#10B981,#047857)">ม.2<br>เทอม 1</div>
+          <div>
+            <div class="sem-card-title">ม.2 เทอม 1</div>
+            <div class="sem-card-sub">ภาคเรียนที่ 1/2568</div>
+          </div>
+        </div>
+        <div class="sem-card-body">
+          <div class="sem-field sem-gpa-field">
+            <label>📊 GPA รวม</label>
+            <input type="number" id="gpa-t3" min="0" max="4" step="0.01" placeholder="0.00" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-divider"></div>
+          <div class="sem-field">
+            <label>➗ คณิตศาสตร์</label>
+            <input type="number" id="math-t3" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🔬 วิทยาศาสตร์</label>
+            <input type="number" id="sci-t3" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🌍 ภาษาอังกฤษ</label>
+            <input type="number" id="eng-t3" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+        </div>
+      </div>
+
+      <!-- ม.2 เทอม 2 -->
+      <div class="sem-card">
+        <div class="sem-card-header">
+          <div class="sem-badge" style="background:linear-gradient(135deg,#F59E0B,#B45309)">ม.2<br>เทอม 2</div>
+          <div>
+            <div class="sem-card-title">ม.2 เทอม 2</div>
+            <div class="sem-card-sub">ภาคเรียนที่ 2/2568</div>
+          </div>
+        </div>
+        <div class="sem-card-body">
+          <div class="sem-field sem-gpa-field">
+            <label>📊 GPA รวม</label>
+            <input type="number" id="gpa-t4" min="0" max="4" step="0.01" placeholder="0.00" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-divider"></div>
+          <div class="sem-field">
+            <label>➗ คณิตศาสตร์</label>
+            <input type="number" id="math-t4" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🔬 วิทยาศาสตร์</label>
+            <input type="number" id="sci-t4" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🌍 ภาษาอังกฤษ</label>
+            <input type="number" id="eng-t4" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+        </div>
+      </div>
+
+      <!-- ม.3 เทอม 1 -->
+      <div class="sem-card" style="border-color:var(--primary)">
+        <div class="sem-card-header" style="background:#EEF4FF">
+          <div class="sem-badge" style="background:linear-gradient(135deg,var(--primary),#2856A3)">ม.3<br>เทอม 1</div>
+          <div>
+            <div class="sem-card-title" style="color:var(--primary)">ม.3 เทอม 1 ★</div>
+            <div class="sem-card-sub">ล่าสุด · ภาคเรียนที่ 1/2569</div>
+          </div>
+        </div>
+        <div class="sem-card-body">
+          <div class="sem-field sem-gpa-field">
+            <label>📊 GPA รวม</label>
+            <input type="number" id="gpa-t5" min="0" max="4" step="0.01" placeholder="0.00" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-divider"></div>
+          <div class="sem-field">
+            <label>➗ คณิตศาสตร์</label>
+            <input type="number" id="math-t5" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🔬 วิทยาศาสตร์</label>
+            <input type="number" id="sci-t5" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+          <div class="sem-field">
+            <label>🌍 ภาษาอังกฤษ</label>
+            <input type="number" id="eng-t5" min="0" max="4" step="0.5" placeholder="0.0" oninput="onInput(this);calculate()">
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end grid -->
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="calculate(); showSection('dashboard')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        คำนวณและดูผล
+      </button>
+      <button class="btn btn-outline" onclick="fillDemo()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        กรอกข้อมูลตัวอย่าง
+      </button>
+      <span style="font-size:12px;color:var(--text-muted)">* ข้อมูลบันทึกอัตโนมัติ</span>
+    </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  name: '', class: '', studentId: '', teacher: '', teacher2: '', goal1: '', goal2: '', avatar: '👤', curriculum: 'GP',
+  gpa:  [null,null,null,null,null],
+  math: [null,null,null,null,null],
+  sci:  [null,null,null,null,null],
+  eng:  [null,null,null,null,null],
+};
+
+const SEMESTERS = ['ม.1 เทอม 1','ม.1 เทอม 2','ม.2 เทอม 1','ม.2 เทอม 2','ม.3 เทอม 1'];
+
+// เกณฑ์แต่ละแผนการเรียน (gpax, math, sci, eng)
+// null = ไม่มีเกณฑ์วิชานั้น (ผ่านอัตโนมัติ)
+const CRITERIA = {
+  EP: [
+    { name:'แผนเตรียมแพทย์',                         icon:'🏥', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเภสัช–สหเวช',                   icon:'💊', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิศวกรรมศาสตร์',                icon:'⚙️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมสถาปัตยกรรมศาสตร์',             icon:'🏛️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิทย์–คอม',                     icon:'💻', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมนิเทศ',                          icon:'🎬', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์',         icon:'🌐', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                icon:'⚖️', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',     icon:'💼', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมศิลปกรรม',                       icon:'🎨', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]', icon:'🏃', gpax:3, math:null, sci:null, eng:3    },
+  ],
+  IEP: [
+    { name:'แผนเตรียมแพทย์',                         icon:'🏥', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเภสัช–สหเวช',                   icon:'💊', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิศวกรรมศาสตร์',                icon:'⚙️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมสถาปัตยกรรมศาสตร์',             icon:'🏛️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิทย์–คอม',                     icon:'💻', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมนิเทศ',                          icon:'🎬', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์',         icon:'🌐', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                icon:'⚖️', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',     icon:'💼', gpax:3, math:3,    sci:null, eng:3    },
+    { name:'แผนเตรียมศิลปกรรม',                       icon:'🎨', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]', icon:'🏃', gpax:3, math:null, sci:null, eng:3    },
+  ],
+  GP: [
+    { name:'แผนเตรียมแพทย์',                         icon:'🏥', gpax:3,    math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเภสัช–สหเวช',                   icon:'💊', gpax:2.75, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิศวกรรมศาสตร์',                icon:'⚙️', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
+    { name:'แผนเตรียมสถาปัตยกรรมศาสตร์',             icon:'🏛️', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
+    { name:'แผนเตรียมวิทย์–คอม',                     icon:'💻', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
+    { name:'แผนเตรียมนิเทศ',                          icon:'🎬', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
+    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์',         icon:'🌐', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
+    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                icon:'⚖️', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
+    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',     icon:'💼', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
+    { name:'แผนเตรียมศิลปกรรม',                       icon:'🎨', gpax:2.5,  math:null, sci:null, eng:null },
+    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]', icon:'🏃', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
+  ],
+};
+
+// ใช้ CRITERIA ตาม curriculum ของนักเรียน
+function getPrograms() { return CRITERIA[state.curriculum] || CRITERIA.GP; }
+
+// Parse goal value format "CURR|ชื่อแผน" → { curr, name, label }
+function parseGoal(val) {
+  if (!val) return { curr:'', name:'', label:'' };
+  const idx = val.indexOf('|');
+  if (idx === -1) return { curr:'', name:val, label:val };
+  const curr = val.substring(0, idx);
+  const name = val.substring(idx + 1);
+  return { curr, name, label:`[${curr}] ${name}` };
+}
+// Get programs matching goal's curriculum
+function goalPrograms(goalVal) {
+  const { curr } = parseGoal(goalVal);
+  return CRITERIA[curr] || getPrograms();
+}
+// Check if goal passes its own curriculum criteria
+function goalPass(goalVal, scores) {
+  const { name } = parseGoal(goalVal);
+  if (!name) return null;
+  const progs = goalPrograms(goalVal);
+  const prog = progs.find(p => p.name === name);
+  if (!prog) return { pass: false, pct: 0 };
+  return progPass(prog, scores);
+}
+
+function progPass(prog, scores) {
+  if (scores.gpax === null) return { pass: false, pct: 0 };
+  const keys = ['gpax','math','sci','eng'];
+  // เฉพาะ key ที่มีเกณฑ์ (ไม่ใช่ null) และมีข้อมูล
+  const required = keys.filter(k => prog[k] !== null);
+  const passed   = required.filter(k => scores[k] !== null && scores[k] >= prog[k]);
+  const allPass  = required.every(k => scores[k] !== null && scores[k] >= prog[k]);
+  const pct      = required.length ? Math.round(passed.length / required.length * 100) : 100;
+  return { pass: allPass, pct };
+}
+
+// Render criteria table for a given program tab
+function renderCritTable(curr) {
+  const progs = CRITERIA[curr];
+  const scores = {
+    gpax: avg(state.gpa), math: avg(state.math),
+    sci:  avg(state.sci), eng:  avg(state.eng),
+  };
+  const tbody = document.getElementById('crit-body-' + curr);
+  if (!tbody) return;
+  const g1n = parseGoal(state.goal1), g2n = parseGoal(state.goal2);
+  tbody.innerHTML = progs.map((p, idx) => {
+    const rowCls = (idx % 2 === 0) ? '' : 'crit-highlight';
+    const chosen = (p.name === g1n.name && g1n.curr === curr) ? '★ อันดับ 1'
+                 : (p.name === g2n.name && g2n.curr === curr) ? '★ อันดับ 2' : '';
+    const fmtC = (v) => v === null
+      ? `<span class="crit-na">—</span>`
+      : `<span class="crit-pass">${v}</span>`;
+    return `<tr class="${rowCls}">
+      <td style="padding-left:16px">
+        ${p.icon} ${p.name}
+        ${chosen ? `<span style="color:var(--primary);font-size:10px;font-weight:700">${chosen}</span>` : ''}
+      </td>
+      <td>${fmtC(p.gpax)}</td>
+      <td>${fmtC(p.math)}</td>
+      <td>${fmtC(p.sci)}</td>
+      <td>${fmtC(p.eng)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function switchCritTab(curr, el) {
+  document.querySelectorAll('.crit-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.crit-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('crit-panel-' + curr).classList.add('active');
+  renderCritTable(curr);
+}
+
+
+// ============================================================
+// UTILS
+// ============================================================
+function avg(arr) {
+  const valid = arr.filter(v => v !== null);
+  if (!valid.length) return null;
+  return valid.reduce((a,b) => a + b, 0) / valid.length;
+}
+function fmt(v) { return v === null ? '—' : parseFloat(v).toFixed(2); }
+function gpaColor(v) {
+  if (v === null) return 'var(--text-muted)';
+  if (v >= 3.5) return 'var(--green)';
+  if (v >= 3.0) return 'var(--blue)';
+  if (v >= 2.5) return 'var(--accent)';
+  if (v >= 2.0) return 'var(--yellow)';
+  return 'var(--red)';
+}
+function gpaLabel(v) {
+  if (v === null) return 'รอข้อมูล';
+  if (v >= 3.5) return 'ดีเยี่ยม';
+  if (v >= 3.0) return 'ดีมาก';
+  if (v >= 2.5) return 'ดี';
+  if (v >= 2.0) return 'พอใช้';
+  if (v >= 1.5) return 'ผ่านขั้นต่ำ';
+  return 'ไม่ผ่านเกณฑ์';
+}
+function getVal(id) {
+  const el = document.getElementById(id);
+  if (!el || el.value === '') return null;
+  const v = parseFloat(el.value);
+  return isNaN(v) ? null : Math.min(4, Math.max(0, v));
+}
+function onInput(el) {
+  const v = parseFloat(el.value);
+  if (el.value !== '' && !isNaN(v) && v > 4) {
+    showInputWarning(el);
+    el.value = '';
+    el.classList.remove('has-value');
+    return;
+  }
+  if (el.value !== '') el.classList.add('has-value');
+  else el.classList.remove('has-value');
+}
+function showInputWarning(el) {
+  // Remove existing warning if any
+  const existing = el.parentElement.querySelector('.input-warn');
+  if (existing) existing.remove();
+  const warn = document.createElement('div');
+  warn.className = 'input-warn';
+  warn.textContent = '⚠️ เกรดต้องอยู่ระหว่าง 0.00–4.00 กรุณากรอกใหม่';
+  el.parentElement.appendChild(warn);
+  el.focus();
+  setTimeout(() => warn.remove(), 3500);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'"))
+      n.classList.add('active');
+  });
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+function selectAvatar(el, emoji) {
+  document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.avatar = emoji;
+  document.getElementById('profile-avatar-big').textContent = emoji;
+  document.getElementById('header-avatar').textContent = emoji;
+}
+
+function updateProfilePreview() {
+  const name = document.getElementById('prof-name').value.trim();
+  const cls  = document.getElementById('prof-class').value.trim();
+  document.getElementById('profile-display-name').textContent = name || 'ยังไม่ได้กรอกชื่อ';
+  document.getElementById('profile-display-class').textContent = cls || '—';
+}
+
+function saveProfile() {
+  const name = document.getElementById('prof-name').value.trim();
+  if (!name) { alert('กรุณากรอกชื่อ-สกุล'); return; }
+  state.name     = name;
+  state.class    = document.getElementById('prof-class').value.trim();
+  state.studentId= document.getElementById('prof-id').value.trim();
+  state.teacher  = document.getElementById('prof-teacher').value.trim();
+  state.teacher2 = document.getElementById('prof-teacher2').value.trim();
+  state.goal1      = document.getElementById('prof-goal1').value;
+  state.goal2      = document.getElementById('prof-goal2').value;
+  state.curriculum = document.getElementById('prof-curriculum').value;
+
+  document.getElementById('header-name').textContent   = name;
+  document.getElementById('header-avatar').textContent = state.avatar || name.charAt(0);
+
+  document.getElementById('info-name').textContent    = name || '—';
+  document.getElementById('info-class').textContent   = state.class || '—';
+  document.getElementById('info-id').textContent      = state.studentId || '—';
+  document.getElementById('info-teacher').textContent = state.teacher || '—';
+  const goalText = [state.goal1, state.goal2].filter(Boolean).map((g,i) => `อันดับ ${i+1}: ${parseGoal(g).label}`).join(' · ') || '—';
+  document.getElementById('info-goal').textContent = goalText;
+
+  const notice = document.getElementById('profile-saved-notice');
+  notice.style.display = 'block';
+  setTimeout(() => notice.style.display = 'none', 3000);
+
+  saveStorage();
+  calculate();
+}
+
+function loadProfileInputs() {
+  document.getElementById('prof-name').value     = state.name;
+  document.getElementById('prof-class').value    = state.class;
+  document.getElementById('prof-id').value       = state.studentId;
+  document.getElementById('prof-teacher').value  = state.teacher || '';
+  document.getElementById('prof-teacher2').value = state.teacher2 || '';
+  document.getElementById('prof-goal1').value       = state.goal1 || '';
+  document.getElementById('prof-goal2').value       = state.goal2 || '';
+  document.getElementById('prof-curriculum').value  = state.curriculum || 'GP';
+  // Restore avatar
+  if (state.avatar && state.avatar !== '👤') {
+    document.getElementById('profile-avatar-big').textContent = state.avatar;
+    document.getElementById('header-avatar').textContent = state.avatar;
+    document.querySelectorAll('.avatar-option').forEach(o => {
+      if (o.textContent === state.avatar) o.classList.add('selected');
+    });
+  }
+  updateProfilePreview();
+  document.getElementById('info-name').textContent    = state.name || '—';
+  document.getElementById('info-class').textContent   = state.class || '—';
+  document.getElementById('info-id').textContent      = state.studentId || '—';
+  document.getElementById('info-teacher').textContent = state.teacher || '—';
+  const goalText = [state.goal1, state.goal2].filter(Boolean).map((g,i) => `อันดับ ${i+1}: ${parseGoal(g).label}`).join(' · ') || '—';
+  document.getElementById('info-goal').textContent = goalText;
+}
+
+// ============================================================
+// CALCULATE
+// ============================================================
+function readInputs() {
+  state.gpa  = [1,2,3,4,5].map(i => getVal('gpa-t'+i));
+  state.math = [1,2,3,4,5].map(i => getVal('math-t'+i));
+  state.sci  = [1,2,3,4,5].map(i => getVal('sci-t'+i));
+  state.eng  = [1,2,3,4,5].map(i => getVal('eng-t'+i));
+}
+
+function calculate() {
+  readInputs();
+  saveStorage();
+  const gpax    = avg(state.gpa);
+  const mathAvg = avg(state.math);
+  const sciAvg  = avg(state.sci);
+  const engAvg  = avg(state.eng);
+  const scores  = { gpax, math: mathAvg, sci: sciAvg, eng: engAvg };
+  updateDashboard(scores);
+  updateSubjectDetail(scores);
+  updateSidebar(scores);
+  // Re-render active criteria tab
+  const activeTab = document.querySelector('.crit-panel.active');
+  if (activeTab) renderCritTable(activeTab.id.replace('crit-panel-',''));
+}
+
+function renderRequirementsCard(scores) {
+  const el = document.getElementById('dashboard-requirements-card');
+  const goals = [state.goal1, state.goal2].filter(Boolean);
+  if (!goals.length) { el.innerHTML = ''; return; }
+
+  const TOTAL = 5;
+  const subjectKeys = ['gpa','math','sci','eng'];
+  const subjectLabel = { gpa:'GPAX รวม', math:'คณิตศาสตร์', sci:'วิทยาศาสตร์', eng:'ภาษาอังกฤษ' };
+  const subjectColor = { gpa:'var(--primary)', math:'var(--blue)', sci:'var(--green)', eng:'var(--purple)' };
+
+  // count filled semesters per subject
+  function filledCount(subj) { return state[subj].filter(v => v !== null).length; }
+  function currentSum(subj)  { return state[subj].filter(v => v !== null).reduce((a,b)=>a+b,0); }
+
+  function calcNeeded(target, subj) {
+    if (target === null) return null; // no requirement
+    const filled = filledCount(subj);
+    const remaining = TOTAL - filled;
+    if (remaining <= 0) return null; // all filled, handled by progPass
+    const needed = (target * TOTAL - currentSum(subj)) / remaining;
+    return needed;
+  }
+
+  function needChip(needed) {
+    if (needed === null) return `<span style="font-size:10px;color:#6B7280">ไม่มีเกณฑ์</span>`;
+    if (needed > 4.00) return `<span style="background:#FEE2E2;color:#991B1B;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">เป็นไปได้ยาก</span>`;
+    if (needed <= 0)   return `<span style="background:#D1FAE5;color:#065F46;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านแล้ว</span>`;
+    const chip = `<span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">ต้องได้ ≥ ${needed.toFixed(2)}</span>`;
+    if (needed < 1.0) {
+      return `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+        ${chip}
+        <span style="font-size:9px;color:#6B7280;font-style:italic">* ต้องได้ ≥ 1.00 เพื่อผ่านการประเมินเทอมนั้น</span>
+      </div>`;
+    }
+    return chip;
+  }
+
+  // subjectKeys use state key names; map to prog key where needed
+  function progKey(k) { return k === 'gpa' ? 'gpax' : k; }
+
+  const noGradesAtAll = scores.gpax === null && filledCount('math') === 0 && filledCount('sci') === 0 && filledCount('eng') === 0;
+  const allFilled = filledCount('gpa') === TOTAL;
+  if (allFilled) { el.innerHTML = ''; return; }
+
+  const currMeta = {
+    EP:  { badge:'#1E40AF', bg:'#EEF2FF' },
+    IEP: { badge:'#5B21B6', bg:'#F5F3FF' },
+    GP:  { badge:'#065F46', bg:'#F0FDF4' },
+  };
+
+  // rank-based header colors: อันดับ 1 = navy blue (โลโก้โรงเรียน), อันดับ 2 = pink (โลโก้โรงเรียน)
+  const rankMeta = [
+    { badge:'#1A3A6B', bg:'#EEF2FF' },  // อันดับ 1 — navy blue
+    { badge:'#C2185B', bg:'#FCE4EC' },  // อันดับ 2 — pink
+  ];
+
+  const blocks = goals.map((goalVal, gi) => {
+    const { curr, name } = parseGoal(goalVal);
+    const progs = CRITERIA[curr] || getPrograms();
+    const prog = progs.find(p => p.name === name);
+    if (!prog) return '';
+    const meta = rankMeta[gi] || rankMeta[0];
+    const rank = gi === 0 ? 'อันดับ 1' : 'อันดับ 2';
+
+    // rows for all 4 items using consistent 'gpa','math','sci','eng' keys
+    const rowItems = subjectKeys.map(k => {
+      const target = prog[progKey(k)];  // prog.gpax / prog.math / prog.sci / prog.eng
+      if (noGradesAtAll) {
+        // static minimum display
+        if (target === null) return '';
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px;color:${subjectColor[k]};font-weight:600">${subjectLabel[k]}</span>
+          <span style="background:${meta.bg};color:${meta.badge};font-size:11px;padding:2px 8px;border-radius:999px;font-weight:700">≥ ${target}</span>
+        </div>`;
+      } else {
+        // partial — calculate needed average over remaining semesters
+        if (target === null) return `<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px;color:${subjectColor[k]};font-weight:600">${subjectLabel[k]}</span>
+          <span style="font-size:10px;color:#6B7280">ไม่มีเกณฑ์</span>
+        </div>`;
+        const needed = calcNeeded(target, k);   // k is 'gpa','math','sci','eng' — matches state keys
+        const filled_k = filledCount(k);
+        const remaining = TOTAL - filled_k;
+        const semNote = remaining === 0 ? '(ครบแล้ว)' : `(เหลืออีก ${remaining} เทอม)`;
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+          <div>
+            <span style="font-size:12px;color:${subjectColor[k]};font-weight:600">${subjectLabel[k]}</span>
+            <span style="font-size:10px;color:var(--text-muted);margin-left:4px">${semNote}</span>
+          </div>
+          ${needChip(needed)}
+        </div>`;
+      }
+    }).join('');
+
+    const bodyTitle = noGradesAtAll ? 'เกณฑ์ขั้นต่ำที่ต้องทำให้ได้' : 'เกรดเฉลี่ยที่ต้องได้ในเทอมที่เหลือ';
+    return `<div style="flex:1;min-width:240px">
+      <div style="font-size:11px;font-weight:700;color:white;background:${meta.badge};border-radius:8px 8px 0 0;padding:7px 12px;display:flex;align-items:center;gap:8px">
+        <span>${prog.icon}</span>
+        <span>${rank} · [${curr}] ${name}</span>
+      </div>
+      <div style="border:1.5px solid ${meta.badge}33;border-top:none;border-radius:0 0 8px 8px;padding:10px 12px;background:white">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">${bodyTitle}</div>
+        ${rowItems}
+      </div>
+    </div>`;
+  }).join('');
+
+  const title = noGradesAtAll ? 'ยังไม่สามารถประเมินได้ — เกรดขั้นต่ำที่ต้องทำให้ได้' : 'เกรดที่ต้องทำให้ได้ในเทอมที่เหลือ';
+  const subtitle = noGradesAtAll ? 'กรอกผลการเรียนเพื่อดูการประเมินแบบละเอียด · ด้านล่างคือเกณฑ์ขั้นต่ำตามแผนที่เลือก' : `กรอกมาแล้ว ${filledCount('gpa')} เทอม · เหลืออีก ${TOTAL - filledCount('gpa')} เทอม · คำนวณจากเกณฑ์แผนที่เลือก`;
+
+  el.innerHTML = `<div class="card" style="border-left:4px solid #F59E0B;background:linear-gradient(135deg,#FFFBEB,#FFF)">
+    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px">
+      <span style="font-size:22px">${noGradesAtAll ? '⚠️' : '📐'}</span>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--text-primary)">${title}</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${subtitle}</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">${blocks}</div>
+  </div>`;
+}
+
+function updateDashboard(scores) {
+  const { gpax, math, sci, eng } = scores;
+  const heroGpax = document.getElementById('hero-gpax');
+  heroGpax.innerHTML = gpax !== null ? `${fmt(gpax)}<small>/4.00</small>` : `—<small>/4.00</small>`;
+
+  const hero = document.getElementById('hero-card');
+  const heroIcon  = document.getElementById('hero-icon');
+  const heroTitle = document.getElementById('hero-title');
+  const heroSub   = document.getElementById('hero-subtitle');
+  const name = state.name || 'นักเรียน';
+
+  // ตรวจว่ากรอกครบทุกวิชาครบ 5 เทอมหรือยัง
+  const gpaFilledHero  = state.gpa.filter(v => v !== null).length;
+  const mathFilledHero = state.math.filter(v => v !== null).length;
+  const sciFilledHero  = state.sci.filter(v => v !== null).length;
+  const engFilledHero  = state.eng.filter(v => v !== null).length;
+  const allSubjFull = gpaFilledHero === 5 && mathFilledHero === 5 && sciFilledHero === 5 && engFilledHero === 5;
+  const anyFilled   = gpaFilledHero > 0;
+
+  if (gpax === null) {
+    hero.className = 'eligibility-hero pending';
+    heroIcon.textContent = '📋';
+    heroTitle.textContent = 'รอข้อมูลผลการเรียน';
+    heroSub.textContent   = 'กรุณากรอกผลการเรียนในเมนู "ข้อมูลนักเรียน & ผลการเรียน" เพื่อดูการประเมิน';
+  } else if (!allSubjFull) {
+    hero.className = 'eligibility-hero pending';
+    heroIcon.textContent = '📋';
+    heroTitle.textContent = `${name} — ยังไม่สามารถประเมินผลได้`;
+    const missing = [];
+    if (gpaFilledHero  < 5) missing.push(`GPAX (${gpaFilledHero}/5 เทอม)`);
+    if (mathFilledHero < 5) missing.push(`คณิต (${mathFilledHero}/5 เทอม)`);
+    if (sciFilledHero  < 5) missing.push(`วิทย์ (${sciFilledHero}/5 เทอม)`);
+    if (engFilledHero  < 5) missing.push(`อังกฤษ (${engFilledHero}/5 เทอม)`);
+    heroSub.textContent = 'ยังกรอกข้อมูลไม่ครบ: ' + missing.join(', ');
+  } else {
+    const pass = gpax >= 2.00 && (math===null||math>=1.50) && (sci===null||sci>=1.50) && (eng===null||eng>=1.50);
+    const warn = !pass && gpax >= 1.80;
+    if (pass) {
+      hero.className = 'eligibility-hero pass';
+      heroIcon.textContent = '✅';
+      heroTitle.textContent = `${name} — ผ่านเกณฑ์การขึ้น ม.4`;
+      heroSub.textContent = `GPAX ${fmt(gpax)} · คณิต ${fmt(math)} · วิทย์ ${fmt(sci)} · อังกฤษ ${fmt(eng)} — ผ่านเกณฑ์ขั้นต่ำทุกวิชา`;
+    } else if (warn) {
+      hero.className = 'eligibility-hero pending';
+      heroIcon.textContent = '⚠️';
+      heroTitle.textContent = `${name} — เกรดอยู่ในเกณฑ์เสี่ยง`;
+      heroSub.textContent = `GPAX ${fmt(gpax)} ต่ำกว่าเกณฑ์ 2.00 เล็กน้อย ควรพัฒนาผลการเรียนเทอมต่อไป`;
+    } else {
+      hero.className = 'eligibility-hero fail';
+      heroIcon.textContent = '❌';
+      const reasons = [];
+      if (gpax < 2.00) reasons.push(`GPAX ${fmt(gpax)} < 2.00`);
+      if (math!==null && math<1.50) reasons.push(`คณิต ${fmt(math)} < 1.50`);
+      if (sci!==null  && sci<1.50)  reasons.push(`วิทย์ ${fmt(sci)} < 1.50`);
+      if (eng!==null  && eng<1.50)  reasons.push(`อังกฤษ ${fmt(eng)} < 1.50`);
+      heroTitle.textContent = `${name} — ยังไม่ผ่านเกณฑ์การขึ้น ม.4`;
+      heroSub.textContent = 'สาเหตุ: ' + reasons.join(', ');
+    }
+  }
+
+  // Stat cards — update values + dynamic semester count labels
+  const subjFilled = {
+    gpax: state.gpa.filter(v => v !== null).length,
+    math: state.math.filter(v => v !== null).length,
+    sci:  state.sci.filter(v => v !== null).length,
+    eng:  state.eng.filter(v => v !== null).length,
+  };
+  function semLabel(key) {
+    const n = subjFilled[key], rem = 5 - n;
+    if (n === 0) return 'ยังไม่มีข้อมูล';
+    if (n === 5) return 'เฉลี่ย 5 เทอม (ครบแล้ว)';
+    return `เฉลี่ย ${n} เทอม · เหลืออีก ${rem} เทอม`;
+  }
+
+  [['stat-gpax','badge-gpax','sub-gpax',gpax,'gpax',2.0],
+   ['stat-math','badge-math','sub-math',math,'math',1.5],
+   ['stat-sci', 'badge-sci', 'sub-sci', sci, 'sci', 1.5],
+   ['stat-eng', 'badge-eng', 'sub-eng', eng, 'eng', 1.5]
+  ].forEach(([sid,bid,subid,val,key,minPass]) => {
+    document.getElementById(sid).textContent = fmt(val);
+    document.getElementById(sid).style.color = gpaColor(val);
+    document.getElementById(subid).textContent = semLabel(key);
+    const b = document.getElementById(bid);
+    b.textContent = gpaLabel(val);
+    b.className = 'badge ' + (val===null ? 'badge-info' : val>=minPass ? 'badge-pass' : 'badge-fail');
+  });
+
+  // Update hero semester label
+  const hSemEl = document.getElementById('hero-sem-label');
+  const gpaxFilled = subjFilled.gpax;
+  if (hSemEl) {
+    if (gpaxFilled === 0) hSemEl.textContent = 'ยังไม่มีข้อมูล';
+    else if (gpaxFilled === 5) hSemEl.textContent = 'GPAX รวม 5 เทอม (ครบแล้ว)';
+    else hSemEl.textContent = `GPAX รวม ${gpaxFilled} เทอม · เหลืออีก ${5 - gpaxFilled} เทอม`;
+  }
+
+
+  // Subject bars — threshold from goal1 program, with semester progress note
+  const { curr: g1Curr, name: g1Name } = parseGoal(state.goal1);
+  const g1Progs = g1Curr ? (CRITERIA[g1Curr] || getPrograms()) : getPrograms();
+  const g1Prog  = g1Progs.find(p => p.name === g1Name) || null;
+  // fallback thresholds (general ม.4 criteria) if no goal selected
+  const barMin = {
+    gpax: g1Prog ? g1Prog.gpax : 2.0,
+    math: g1Prog ? g1Prog.math : 1.5,
+    sci:  g1Prog ? g1Prog.sci  : 1.5,
+    eng:  g1Prog ? g1Prog.eng  : 1.5,
+  };
+  const barGoalLabel = g1Prog ? `[${g1Curr}] ${g1Name}` : 'เกณฑ์ทั่วไป';
+
+  const subjectBarItems = [
+    {label:'📊 GPAX รวม',     val:gpax, stateKey:'gpa',  color:'var(--primary)', minKey:'gpax'},
+    {label:'➗ คณิตศาสตร์',  val:math, stateKey:'math', color:'var(--blue)',    minKey:'math'},
+    {label:'🔬 วิทยาศาสตร์', val:sci,  stateKey:'sci',  color:'var(--green)',   minKey:'sci' },
+    {label:'🌍 ภาษาอังกฤษ',  val:eng,  stateKey:'eng',  color:'var(--purple)',  minKey:'eng' },
+  ];
+
+  const barHeader = g1Prog
+    ? `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เกณฑ์อ้างอิงจาก: <strong style="color:var(--primary)">${barGoalLabel}</strong></div>`
+    : `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เลือกแผนการเรียนในข้อมูลนักเรียนเพื่อดูเกณฑ์เฉพาะแผน</div>`;
+
+  document.getElementById('subject-bars').innerHTML =
+    barHeader +
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px">` +
+    subjectBarItems.map(s => {
+      const minVal  = barMin[s.minKey];
+      const filled  = state[s.stateKey].filter(v => v !== null).length;
+      const remaining = 5 - filled;
+      const semNote = filled === 0
+        ? `<span style="font-size:10px;color:var(--text-muted)">ยังไม่กรอก</span>`
+        : remaining === 0
+          ? `<span style="font-size:10px;color:#16A34A;font-weight:600">✓ ครบแล้ว</span>`
+          : `<span style="font-size:10px;color:var(--text-muted)">เหลืออีก ${remaining} เทอม</span>`;
+
+      if (minVal === null) {
+        const pct = s.val !== null ? (s.val / 4 * 100) : 0;
+        return `<div class="gpa-bar-wrap">
+          <div class="gpa-bar-label">
+            <span>${s.label} ${semNote}</span>
+            <span style="display:flex;align-items:center;gap:5px">
+              <strong style="color:${gpaColor(s.val)}">${fmt(s.val)}</strong>
+              <span style="font-size:10px;color:#6B7280">ไม่มีเกณฑ์</span>
+            </span>
+          </div>
+          <div class="gpa-bar"><div class="gpa-bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+        </div>`;
+      }
+
+      const pct     = s.val !== null ? (s.val / 4 * 100) : 0;
+      const minPct  = minVal / 4 * 100;
+      const pass    = s.val !== null && s.val >= minVal;
+      const statusIcon = s.val === null ? '' : pass ? ' ✅' : ' ❌';
+      return `<div class="gpa-bar-wrap">
+        <div class="gpa-bar-label">
+          <span>${s.label} ${semNote}</span>
+          <strong style="color:${gpaColor(s.val)}">${fmt(s.val)}${statusIcon}</strong>
+        </div>
+        <div class="gpa-bar" style="position:relative">
+          <div class="gpa-bar-fill" style="width:${pct}%;background:${s.color}"></div>
+          <div style="position:absolute;top:0;bottom:0;left:${minPct}%;width:2px;background:#EF4444;border-radius:1px" title="เกณฑ์ขั้นต่ำ ${minVal}"></div>
+        </div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;padding-left:${minPct}%">▲ เกณฑ์ ${minVal}</div>
+      </div>`;
+    }).join('') + `</div>`;
+
+  // ── การ์ดเกรดที่ต้องทำให้ได้ ──
+  renderRequirementsCard(scores);
+
+  // ── Hero: แผนที่นักเรียนเลือก (goal1 / goal2) พร้อมสถานะผ่าน/ไม่ผ่าน ──
+  const heroGoalsEl = document.getElementById('hero-goals');
+  const rawGoals = [
+    { rank:'อันดับ 1', raw: state.goal1 },
+    { rank:'อันดับ 2', raw: state.goal2 },
+  ].filter(g => g.raw);
+
+  const gpaFilledCount = state.gpa.filter(v => v !== null).length;
+  const gradesFullyEntered = gpaFilledCount === 5;
+
+  heroGoalsEl.style.display = rawGoals.length ? 'flex' : 'none';
+  if (rawGoals.length) {
+    heroGoalsEl.innerHTML = rawGoals.map(g => {
+      const { curr, name } = parseGoal(g.raw);
+      const progs = CRITERIA[curr] || getPrograms();
+      const prog  = progs.find(p => p.name === name);
+      // Only show pass/fail when ALL 5 GPA semesters are entered
+      const res   = (prog && gradesFullyEntered) ? progPass(prog, scores) : null;
+      const pass  = res ? res.pass : null;
+      const bg = pass === null ? 'rgba(255,255,255,0.15)' : pass ? 'rgba(255,255,255,0.25)' : 'rgba(239,68,68,0.25)';
+      const icon = prog ? prog.icon : '🏫';
+      const partialNote = gpaFilledCount > 0 && !gradesFullyEntered
+        ? `กรอกมาแล้ว ${gpaFilledCount}/5 เทอม`
+        : 'กรอกเกรดเพื่อดูสถานะ';
+      const badge = pass === null
+        ? `<span style="font-size:10px;opacity:0.7">${partialNote}</span>`
+        : pass
+          ? `<span style="background:#16A34A;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านเกณฑ์</span>`
+          : `<span style="background:#DC2626;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">❌ ไม่ผ่านเกณฑ์</span>`;
+      const currBadge = curr ? `<span style="font-size:9px;opacity:0.75;background:rgba(255,255,255,0.2);border-radius:4px;padding:1px 5px;margin-left:4px">${curr}</span>` : '';
+      return `<div style="background:${bg};border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px)">
+        <span style="font-size:18px">${icon}</span>
+        <div>
+          <div style="font-size:10px;opacity:0.8">${g.rank}${currBadge}</div>
+          <div style="font-size:12px;font-weight:700">${name}</div>
+          <div style="margin-top:3px">${badge}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── การ์ดแผนทั้งหมดที่ผ่านเกณฑ์ — แสดงทุกหลักสูตร แยกกลุ่ม ──
+  const allQualEl = document.getElementById('dashboard-all-qualified');
+  const g1 = parseGoal(state.goal1), g2 = parseGoal(state.goal2);
+
+  if (!gradesFullyEntered) {
+    allQualEl.innerHTML = `<div style="color:var(--text-muted);font-size:13px">
+      ${gpax === null ? 'กรอกผลการเรียนเพื่อดูแผนการเรียนที่ผ่านเกณฑ์' : `กรอกมาแล้ว ${gpaFilledCount}/5 เทอม — ผลการประเมินจะแสดงเมื่อกรอกครบทุกเทอม`}
+    </div>`;
+    return;
+  }
+
+  const currMeta = {
+    EP:  { label:'EP — English Program',           color:'#1E40AF', bg:'#DBEAFE', headerBg:'#1E40AF' },
+    IEP: { label:'IEP — Intensive English Program', color:'#5B21B6', bg:'#EDE9FE', headerBg:'#5B21B6' },
+    GP:  { label:'GP — General Program',            color:'#065F46', bg:'#D1FAE5', headerBg:'#065F46' },
+  };
+
+  const sections = ['EP','IEP','GP'].map(curr => {
+    const progs     = CRITERIA[curr];
+    const qualified = progs.filter(p => progPass(p, scores).pass);
+    const meta      = currMeta[curr];
+
+    const qualCards = qualified.map(p => {
+      const isG1 = p.name === g1.name && g1.curr === curr;
+      const isG2 = p.name === g2.name && g2.curr === curr;
+      const chosen = isG1 ? '★ อันดับ 1' : isG2 ? '★ อันดับ 2' : '';
+      const hl = chosen
+        ? `border:2px solid var(--primary);background:#EEF4FF;`
+        : `border:1.5px solid #16A34A;background:#F0FDF4;`;
+      return `<div style="${hl}border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:8px;min-width:160px;flex:1">
+        <span style="font-size:20px">${p.icon}</span>
+        <div>
+          <div style="font-size:11.5px;font-weight:700;color:var(--text-primary)">${p.name}</div>
+          ${chosen ? `<div style="font-size:10px;color:var(--primary);font-weight:700">${chosen}</div>` : ''}
+          <div style="font-size:10px;color:#16A34A">✅ GPAX ≥ ${p.gpax}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div style="border:1.5px solid ${meta.color}33;border-radius:12px;overflow:hidden;margin-bottom:12px">
+      <div style="background:${meta.headerBg};color:white;padding:8px 14px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center">
+        <span>${meta.label}</span>
+        <span style="background:rgba(255,255,255,0.2);border-radius:999px;padding:2px 10px;font-size:11px">
+          ผ่าน ${qualified.length}/${progs.length} แผน
+        </span>
+      </div>
+      <div style="padding:12px">
+        ${qualified.length
+          ? `<div style="display:flex;flex-wrap:wrap;gap:8px">${qualCards}</div>`
+          : `<div style="color:var(--text-muted);font-size:12px;padding:4px 0">ยังไม่มีแผนที่ผ่านเกณฑ์ในหลักสูตรนี้</div>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+
+  allQualEl.innerHTML = sections;
+}
+
+
+function updateSubjectDetail(scores) {
+  // GPA card
+  const gpaAvgV = scores.gpax;
+  document.getElementById('detail-gpa-bars').innerHTML = SEMESTERS.map((sem,i) => {
+    const v = state.gpa[i], pct = v!==null?(v/4*100):0;
+    return `<div class="gpa-bar-wrap">
+      <div class="gpa-bar-label"><span>${sem}</span><strong style="color:${gpaColor(v)}">${fmt(v)}</strong></div>
+      <div class="gpa-bar"><div class="gpa-bar-fill" style="width:${pct}%;background:${gpaColor(v)}"></div></div>
+    </div>`;
+  }).join('');
+  const gpaAvgEl = document.getElementById('detail-gpa-avg');
+  gpaAvgEl.textContent = fmt(gpaAvgV);
+  gpaAvgEl.style.color = gpaColor(gpaAvgV);
+
+  // Subject cards
+  ['math','sci','eng'].forEach(subj => {
+    const vals = state[subj], avgV = scores[subj];
+    document.getElementById(`detail-${subj}-bars`).innerHTML = SEMESTERS.map((sem,i) => {
+      const v = vals[i], pct = v!==null?(v/4*100):0;
+      return `<div class="gpa-bar-wrap">
+        <div class="gpa-bar-label"><span>${sem}</span><strong style="color:${gpaColor(v)}">${fmt(v)}</strong></div>
+        <div class="gpa-bar"><div class="gpa-bar-fill" style="width:${pct}%;background:${gpaColor(v)}"></div></div>
+      </div>`;
+    }).join('');
+    document.getElementById(`detail-${subj}-avg`).textContent = fmt(avgV);
+  });
+
+  // Comparison table (GPA row + 3 subject rows)
+  const colors = {gpa:'var(--primary)',math:'var(--blue)',sci:'var(--green)',eng:'var(--purple)'};
+  const labels = {gpa:'📊 GPA รวม (GPAX)',math:'➗ คณิตศาสตร์พื้นฐาน',sci:'🔬 วิทยาศาสตร์พื้นฐาน',eng:'🌍 ภาษาอังกฤษพื้นฐาน'};
+  document.getElementById('subject-table-body').innerHTML = ['gpa','math','sci','eng'].map(subj => {
+    const vals = state[subj], avgV = avg(vals);
+    const cells = vals.map(v => `<td style="padding:9px 14px;text-align:center;color:${gpaColor(v)};font-weight:${v!==null?'600':'400'}">${fmt(v)}</td>`).join('');
+    const rowStyle = subj==='gpa' ? 'background:var(--surface-2);' : '';
+    return `<tr style="border-top:1px solid var(--border);${rowStyle}">
+      <td style="padding:9px 14px;font-weight:600;color:${colors[subj]}">${labels[subj]}</td>
+      ${cells}
+      <td style="padding:9px 14px;text-align:center;font-weight:700;color:${gpaColor(avgV)};background:rgba(0,0,0,0.04)">${fmt(avgV)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function updateSidebar(scores) {
+  const el = document.getElementById('sidebar-grade-summary');
+  if (!el) return;
+
+  const items = [
+    { key:'gpa',  stateKey:'gpa',  label:'📊 GPAX',       color:'var(--primary)', val: scores.gpax },
+    { key:'math', stateKey:'math', label:'➗ คณิต',        color:'var(--blue)',    val: scores.math },
+    { key:'sci',  stateKey:'sci',  label:'🔬 วิทย์',       color:'var(--green)',   val: scores.sci  },
+    { key:'eng',  stateKey:'eng',  label:'🌍 อังกฤษ',      color:'var(--purple)',  val: scores.eng  },
+  ];
+
+  const rows = items.map(item => {
+    const filled = state[item.stateKey].filter(v => v !== null).length;
+    const total  = 5;
+    const remaining = total - filled;
+
+    if (filled === 0) {
+      // not entered at all
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);opacity:0.5">
+        <span style="color:${item.color};font-weight:600">${item.label}</span>
+        <span style="font-size:10px;color:var(--text-muted)">ยังไม่กรอก</span>
+      </div>`;
+    }
+
+    const avgStr = item.val !== null ? fmt(item.val) : '—';
+    const avgColor = gpaColor(item.val);
+    const semNote = remaining === 0
+      ? `<span style="color:#16A34A;font-size:9px;font-weight:600">✓ ครบแล้ว</span>`
+      : `<span style="font-size:9px;color:var(--text-muted)">เหลือ ${remaining} เทอม</span>`;
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;flex-direction:column;gap:1px">
+        <span style="color:${item.color};font-weight:600">${item.label}</span>
+        ${semNote}
+      </div>
+      <span style="font-size:14px;font-weight:700;color:${avgColor}">${avgStr}</span>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = rows;
+}
+
+// ============================================================
+// DEMO
+// ============================================================
+function fillDemo() {
+  const d = { gpa:[3.20,3.35,3.10,3.45,3.60], math:[3.0,3.0,3.5,3.5,4.0], sci:[3.5,3.0,3.0,3.5,3.5], eng:[2.5,3.0,2.5,3.0,3.0] };
+  ['gpa','math','sci','eng'].forEach(subj => {
+    d[subj].forEach((v,i) => {
+      const el = document.getElementById(`${subj}-t${i+1}`);
+      el.value = v; el.classList.add('has-value');
+    });
+  });
+  calculate();
+}
+
+// ============================================================
+// STORAGE
+// ============================================================
+function saveStorage() { localStorage.setItem('ps-m4-state', JSON.stringify(state)); }
+
+function loadStorage() {
+  const saved = localStorage.getItem('ps-m4-state');
+  if (!saved) return;
+  try {
+    Object.assign(state, JSON.parse(saved));
+    if (state.name) {
+      document.getElementById('header-name').textContent   = state.name;
+      document.getElementById('header-avatar').textContent = state.name.charAt(0);
+    }
+    loadProfileInputs();
+    ['gpa','math','sci','eng'].forEach(subj => {
+      state[subj].forEach((v,i) => {
+        if (v !== null) {
+          const el = document.getElementById(`${subj}-t${i+1}`);
+          if (el) { el.value = v; el.classList.add('has-value'); }
+        }
+      });
+    });
+    calculate();
+  } catch(e) {}
+}
+
+function resetAll() {
+  if (!confirm('ต้องการรีเซ็ตข้อมูลทั้งหมดหรือไม่?')) return;
+  localStorage.removeItem('ps-m4-state');
+  location.reload();
+}
+
+function printReport() { window.print(); }
+
+function openLightbox(src) {
+  const lb = document.getElementById('prog-lightbox');
+  document.getElementById('prog-lightbox-img').src = src;
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('prog-lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadStorage();
+
+// ── PWA: Service Worker ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+
+// ── PWA: Install banner ──
+let _deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _deferredPrompt = e;
+  document.getElementById('pwa-install-btn').style.display = 'flex';
+});
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwa-install-btn').style.display = 'none';
+  _deferredPrompt = null;
+});
+function installPWA() {
+  if (!_deferredPrompt) return;
+  _deferredPrompt.prompt();
+  _deferredPrompt.userChoice.then(() => { _deferredPrompt = null; });
+}
+</script>
+</body>
+</html>
