@@ -519,21 +519,32 @@ html { font-size: 17px; }
   .hamburger-btn { display: flex; }
   /* Hide print on tablet/mobile */
   .btn-print { display: none !important; }
+  /* Tighten header on tablet */
+  .app-header { padding: 0 14px; gap: 10px; }
+  .ps-header-text { display: none; }
+  .header-title p { display: none !important; }
+  .header-title h1 { font-size: 13px !important; }
 }
 
 @media (max-width: 600px) {
-  --header-h: 56px;
+  --header-h: 54px;
   html { font-size: 16px; }
-  .app-header { padding: 0 12px; gap: 8px; }
-  /* Hide school name text, keep logo only */
-  .ps-header-text { display: none; }
-  /* Hide header subtitle */
+  /* Header layout: hamburger | icon+title (flex:1) | chip */
+  .app-header { padding: 0 10px; gap: 6px; }
+  /* ซ่อน school badge ทั้งก้อน — เหลือแค่ไอคอน ม.4 + ชื่อ */
+  .header-logos { display: none; }
+  /* ไอคอน ม.4 เล็กลง */
+  .header-title svg { width: 28px !important; height: 28px !important; flex-shrink: 0; }
+  /* สลับชื่อย่อ/เต็ม */
+  .title-full { display: none; }
+  .title-short { display: inline !important; }
+  .header-title h1 { font-size: 14px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* ซ่อน subtitle ใต้ชื่อ */
   .header-title p { display: none !important; }
-  /* Shrink icon */
-  .header-title svg { width: 30px !important; height: 30px !important; }
-  .header-title h1 { font-size: 13px !important; }
-  /* Shrink student chip */
+  /* ซ่อนชื่อนักเรียนใน chip เหลือแค่ avatar */
   .student-chip-name { display: none; }
+  /* ซ่อนปุ่ม install PWA บน mobile */
+  #pwa-install-btn { display: none !important; }
   /* Grids → single col */
   .grid-4, .grid-3, .grid-2, .grid-5 { grid-template-columns: 1fr; }
   .form-row, .form-row-3 { grid-template-columns: 1fr; }
@@ -595,7 +606,10 @@ html { font-size: 17px; }
       </g>
     </svg>
     <div style="min-width:0">
-      <h1 style="margin:0">ระบบประเมินการขึ้นชั้น ม.4 — โรงเรียนโพธิสารพิทยากร</h1>
+      <h1 style="margin:0">
+        <span class="title-full">ระบบประเมินการขึ้นชั้น ม.4 — โรงเรียนโพธิสารพิทยากร</span>
+        <span class="title-short" style="display:none">ระบบประเมิน ม.4</span>
+      </h1>
       <p style="margin:0">ประเมินจากผลการเรียน ม.1–ม.3 เทอม 1 · ปีการศึกษา 2567–2569</p>
     </div>
   </div>
@@ -720,6 +734,23 @@ html { font-size: 17px; }
       <div class="hero-right">
         <div class="hero-gpa" id="hero-gpax">—<small>/4.00</small></div>
         <div style="font-size:13px;opacity:0.85;margin-top:4px" id="hero-sem-label">GPAX รวม 5 เทอม</div>
+      </div>
+    </div>
+
+    <!-- MEBI notice — แสดงเฉพาะเมื่อเลือกแผนเตรียมแพทย์บูรณาการ MEBI -->
+    <div id="mebi-notice" style="display:none;margin-bottom:16px;background:linear-gradient(135deg,#78350F,#B45309);border-radius:12px;padding:14px 18px;color:white">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <span style="font-size:24px;flex-shrink:0">✏️</span>
+        <div>
+          <div style="font-size:13px;font-weight:800;margin-bottom:6px">แผนเตรียมแพทย์บูรณาการ : MEBI — มีการสอบข้อเขียนเพิ่มเติม</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+            <span style="background:rgba(255,255,255,0.2);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600">🔬 วิทยาศาสตร์ 40 ข้อ</span>
+            <span style="background:rgba(255,255,255,0.2);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600">🌍 ภาษาอังกฤษ 40 ข้อ</span>
+            <span style="background:rgba(255,255,255,0.2);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600">➗ คณิตศาสตร์ 40 ข้อ</span>
+            <span style="background:rgba(255,255,255,0.2);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600">🧠 การคิดวิเคราะห์ 40 ข้อ</span>
+          </div>
+          <div style="font-size:11px;opacity:0.85">📌 รับนักเรียนจำนวน <strong>30 คน</strong> — ผ่านเกณฑ์ GPA แล้วต้องสอบข้อเขียนเพิ่มเติมด้วย</div>
+        </div>
       </div>
     </div>
 
@@ -1257,41 +1288,42 @@ html { font-size: 17px; }
             <optgroup label="🔵 EP — English Program (GPA ≥ 3.00 ทุกแผน)">
               <option value="EP|แผนเตรียมแพทย์">[EP] 🏥 แผนเตรียมแพทย์</option>
               <option value="EP|แผนเตรียมเภสัช–สหเวช">[EP] 💊 แผนเตรียมเภสัช–สหเวช</option>
-              <option value="EP|แผนเตรียมวิศวกรรมศาสตร์">[EP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
-              <option value="EP|แผนเตรียมสถาปัตยกรรมศาสตร์">[EP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
-              <option value="EP|แผนเตรียมวิทย์–คอม">[EP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="EP|แผนเตรียมวิศวะ">[EP] ⚙️ แผนเตรียมวิศวะ</option>
+              <option value="EP|แผนเตรียมสถาปัตย์">[EP] 🏛️ แผนเตรียมสถาปัตย์</option>
+              <option value="EP|แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์">[EP] 🤖 แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์</option>
               <option value="EP|แผนเตรียมนิเทศ">[EP] 🎬 แผนเตรียมนิเทศ</option>
-              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[EP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="EP|แผนเตรียมอักษรศาสตร์">[EP] 📖 แผนเตรียมอักษรศาสตร์</option>
               <option value="EP|แผนเตรียมนิติ–รัฐศาสตร์">[EP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
               <option value="EP|แผนเตรียมบริหาร บัญชี และการบริการ">[EP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
               <option value="EP|แผนเตรียมศิลปกรรม">[EP] 🎨 แผนเตรียมศิลปกรรม</option>
-              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[EP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+              <option value="EP|แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา">[EP] 🏋️ แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา</option>
             </optgroup>
             <optgroup label="🟣 IEP — Intensive English Program (GPA ≥ 3.00 ทุกแผน)">
               <option value="IEP|แผนเตรียมแพทย์">[IEP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="IEP|แผนเตรียมแพทย์บูรณาการ : MEBI">[IEP] 🔬 แผนเตรียมแพทย์บูรณาการ : MEBI</option>
               <option value="IEP|แผนเตรียมเภสัช–สหเวช">[IEP] 💊 แผนเตรียมเภสัช–สหเวช</option>
-              <option value="IEP|แผนเตรียมวิศวกรรมศาสตร์">[IEP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
-              <option value="IEP|แผนเตรียมสถาปัตยกรรมศาสตร์">[IEP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
-              <option value="IEP|แผนเตรียมวิทย์–คอม">[IEP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="IEP|แผนเตรียมวิศวะ">[IEP] ⚙️ แผนเตรียมวิศวะ</option>
+              <option value="IEP|แผนเตรียมสถาปัตย์">[IEP] 🏛️ แผนเตรียมสถาปัตย์</option>
+              <option value="IEP|แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์">[IEP] 🤖 แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์</option>
               <option value="IEP|แผนเตรียมนิเทศ">[IEP] 🎬 แผนเตรียมนิเทศ</option>
-              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[IEP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="IEP|แผนเตรียมอักษรศาสตร์">[IEP] 📖 แผนเตรียมอักษรศาสตร์</option>
               <option value="IEP|แผนเตรียมนิติ–รัฐศาสตร์">[IEP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
               <option value="IEP|แผนเตรียมบริหาร บัญชี และการบริการ">[IEP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
               <option value="IEP|แผนเตรียมศิลปกรรม">[IEP] 🎨 แผนเตรียมศิลปกรรม</option>
-              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[IEP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+              <option value="IEP|แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา">[IEP] 🏋️ แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา</option>
             </optgroup>
             <optgroup label="🟢 GP — General Program (GPA 2.50–3.00 แล้วแต่แผน)">
               <option value="GP|แผนเตรียมแพทย์">[GP] 🏥 แผนเตรียมแพทย์</option>
               <option value="GP|แผนเตรียมเภสัช–สหเวช">[GP] 💊 แผนเตรียมเภสัช–สหเวช</option>
-              <option value="GP|แผนเตรียมวิศวกรรมศาสตร์">[GP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
-              <option value="GP|แผนเตรียมสถาปัตยกรรมศาสตร์">[GP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
-              <option value="GP|แผนเตรียมวิทย์–คอม">[GP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="GP|แผนเตรียมวิศวะ">[GP] ⚙️ แผนเตรียมวิศวะ</option>
+              <option value="GP|แผนเตรียมสถาปัตย์">[GP] 🏛️ แผนเตรียมสถาปัตย์</option>
+              <option value="GP|แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์">[GP] 🤖 แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์</option>
               <option value="GP|แผนเตรียมนิเทศ">[GP] 🎬 แผนเตรียมนิเทศ</option>
-              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[GP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="GP|แผนเตรียมอักษรศาสตร์">[GP] 📖 แผนเตรียมอักษรศาสตร์</option>
               <option value="GP|แผนเตรียมนิติ–รัฐศาสตร์">[GP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
               <option value="GP|แผนเตรียมบริหาร บัญชี และการบริการ">[GP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
               <option value="GP|แผนเตรียมศิลปกรรม">[GP] 🎨 แผนเตรียมศิลปกรรม</option>
-              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[GP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+              <option value="GP|แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา">[GP] 🏋️ แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา</option>
             </optgroup>
           </select>
           <span style="font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface-3);border-radius:20px;padding:3px 10px;white-space:nowrap">อันดับ 2</span>
@@ -1300,41 +1332,42 @@ html { font-size: 17px; }
             <optgroup label="🔵 EP — English Program (GPA ≥ 3.00 ทุกแผน)">
               <option value="EP|แผนเตรียมแพทย์">[EP] 🏥 แผนเตรียมแพทย์</option>
               <option value="EP|แผนเตรียมเภสัช–สหเวช">[EP] 💊 แผนเตรียมเภสัช–สหเวช</option>
-              <option value="EP|แผนเตรียมวิศวกรรมศาสตร์">[EP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
-              <option value="EP|แผนเตรียมสถาปัตยกรรมศาสตร์">[EP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
-              <option value="EP|แผนเตรียมวิทย์–คอม">[EP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="EP|แผนเตรียมวิศวะ">[EP] ⚙️ แผนเตรียมวิศวะ</option>
+              <option value="EP|แผนเตรียมสถาปัตย์">[EP] 🏛️ แผนเตรียมสถาปัตย์</option>
+              <option value="EP|แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์">[EP] 🤖 แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์</option>
               <option value="EP|แผนเตรียมนิเทศ">[EP] 🎬 แผนเตรียมนิเทศ</option>
-              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[EP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="EP|แผนเตรียมอักษรศาสตร์">[EP] 📖 แผนเตรียมอักษรศาสตร์</option>
               <option value="EP|แผนเตรียมนิติ–รัฐศาสตร์">[EP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
               <option value="EP|แผนเตรียมบริหาร บัญชี และการบริการ">[EP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
               <option value="EP|แผนเตรียมศิลปกรรม">[EP] 🎨 แผนเตรียมศิลปกรรม</option>
-              <option value="EP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[EP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+              <option value="EP|แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา">[EP] 🏋️ แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา</option>
             </optgroup>
             <optgroup label="🟣 IEP — Intensive English Program (GPA ≥ 3.00 ทุกแผน)">
               <option value="IEP|แผนเตรียมแพทย์">[IEP] 🏥 แผนเตรียมแพทย์</option>
+              <option value="IEP|แผนเตรียมแพทย์บูรณาการ : MEBI">[IEP] 🔬 แผนเตรียมแพทย์บูรณาการ : MEBI</option>
               <option value="IEP|แผนเตรียมเภสัช–สหเวช">[IEP] 💊 แผนเตรียมเภสัช–สหเวช</option>
-              <option value="IEP|แผนเตรียมวิศวกรรมศาสตร์">[IEP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
-              <option value="IEP|แผนเตรียมสถาปัตยกรรมศาสตร์">[IEP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
-              <option value="IEP|แผนเตรียมวิทย์–คอม">[IEP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="IEP|แผนเตรียมวิศวะ">[IEP] ⚙️ แผนเตรียมวิศวะ</option>
+              <option value="IEP|แผนเตรียมสถาปัตย์">[IEP] 🏛️ แผนเตรียมสถาปัตย์</option>
+              <option value="IEP|แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์">[IEP] 🤖 แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์</option>
               <option value="IEP|แผนเตรียมนิเทศ">[IEP] 🎬 แผนเตรียมนิเทศ</option>
-              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[IEP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="IEP|แผนเตรียมอักษรศาสตร์">[IEP] 📖 แผนเตรียมอักษรศาสตร์</option>
               <option value="IEP|แผนเตรียมนิติ–รัฐศาสตร์">[IEP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
               <option value="IEP|แผนเตรียมบริหาร บัญชี และการบริการ">[IEP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
               <option value="IEP|แผนเตรียมศิลปกรรม">[IEP] 🎨 แผนเตรียมศิลปกรรม</option>
-              <option value="IEP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[IEP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+              <option value="IEP|แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา">[IEP] 🏋️ แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา</option>
             </optgroup>
             <optgroup label="🟢 GP — General Program (GPA 2.50–3.00 แล้วแต่แผน)">
               <option value="GP|แผนเตรียมแพทย์">[GP] 🏥 แผนเตรียมแพทย์</option>
               <option value="GP|แผนเตรียมเภสัช–สหเวช">[GP] 💊 แผนเตรียมเภสัช–สหเวช</option>
-              <option value="GP|แผนเตรียมวิศวกรรมศาสตร์">[GP] ⚙️ แผนเตรียมวิศวกรรมศาสตร์</option>
-              <option value="GP|แผนเตรียมสถาปัตยกรรมศาสตร์">[GP] 🏛️ แผนเตรียมสถาปัตยกรรมศาสตร์</option>
-              <option value="GP|แผนเตรียมวิทย์–คอม">[GP] 💻 แผนเตรียมวิทย์–คอม</option>
+              <option value="GP|แผนเตรียมวิศวะ">[GP] ⚙️ แผนเตรียมวิศวะ</option>
+              <option value="GP|แผนเตรียมสถาปัตย์">[GP] 🏛️ แผนเตรียมสถาปัตย์</option>
+              <option value="GP|แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์">[GP] 🤖 แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์</option>
               <option value="GP|แผนเตรียมนิเทศ">[GP] 🎬 แผนเตรียมนิเทศ</option>
-              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์">[GP] 🌐 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์</option>
+              <option value="GP|แผนเตรียมอักษรศาสตร์">[GP] 📖 แผนเตรียมอักษรศาสตร์</option>
               <option value="GP|แผนเตรียมนิติ–รัฐศาสตร์">[GP] ⚖️ แผนเตรียมนิติ–รัฐศาสตร์</option>
               <option value="GP|แผนเตรียมบริหาร บัญชี และการบริการ">[GP] 💼 แผนเตรียมบริหาร บัญชี และการบริการ</option>
               <option value="GP|แผนเตรียมศิลปกรรม">[GP] 🎨 แผนเตรียมศิลปกรรม</option>
-              <option value="GP|แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]">[GP] 🏃 แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]</option>
+              <option value="GP|แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา">[GP] 🏋️ แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา</option>
             </optgroup>
           </select>
         </div>
@@ -1555,43 +1588,44 @@ const SEMESTERS = ['ม.1 เทอม 1','ม.1 เทอม 2','ม.2 เท�
 // null = ไม่มีเกณฑ์วิชานั้น (ผ่านอัตโนมัติ)
 const CRITERIA = {
   EP: [
-    { name:'แผนเตรียมแพทย์',                         icon:'🏥', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมเภสัช–สหเวช',                   icon:'💊', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมวิศวกรรมศาสตร์',                icon:'⚙️', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมสถาปัตยกรรมศาสตร์',             icon:'🏛️', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมวิทย์–คอม',                     icon:'💻', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมนิเทศ',                          icon:'🎬', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์',         icon:'🌐', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                icon:'⚖️', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',     icon:'💼', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมศิลปกรรม',                       icon:'🎨', gpax:3, math:null, sci:null, eng:3    },
-    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]', icon:'🏃', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมแพทย์',                                    icon:'🏥', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเภสัช–สหเวช',                              icon:'💊', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิศวะ',                                     icon:'⚙️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมสถาปัตย์',                                  icon:'🏛️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์',       icon:'🤖', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมนิเทศ',                                     icon:'🎬', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมอักษรศาสตร์',                              icon:'📖', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                           icon:'⚖️', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',                icon:'💼', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมศิลปกรรม',                                  icon:'🎨', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา',             icon:'🏋️', gpax:3, math:null, sci:null, eng:3    },
   ],
   IEP: [
-    { name:'แผนเตรียมแพทย์',                         icon:'🏥', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมเภสัช–สหเวช',                   icon:'💊', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมวิศวกรรมศาสตร์',                icon:'⚙️', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมสถาปัตยกรรมศาสตร์',             icon:'🏛️', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมวิทย์–คอม',                     icon:'💻', gpax:3, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมนิเทศ',                          icon:'🎬', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์',         icon:'🌐', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                icon:'⚖️', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',     icon:'💼', gpax:3, math:3,    sci:null, eng:3    },
-    { name:'แผนเตรียมศิลปกรรม',                       icon:'🎨', gpax:3, math:null, sci:null, eng:3    },
-    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]', icon:'🏃', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมแพทย์',                                    icon:'🏥', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมแพทย์บูรณาการ : MEBI',                    icon:'🔬', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเภสัช–สหเวช',                              icon:'💊', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิศวะ',                                     icon:'⚙️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมสถาปัตย์',                                  icon:'🏛️', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์',       icon:'🤖', gpax:3, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมนิเทศ',                                     icon:'🎬', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมอักษรศาสตร์',                              icon:'📖', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                           icon:'⚖️', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',                icon:'💼', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมศิลปกรรม',                                  icon:'🎨', gpax:3, math:null, sci:null, eng:3    },
+    { name:'แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา',             icon:'🏋️', gpax:3, math:null, sci:null, eng:3    },
   ],
   GP: [
-    { name:'แผนเตรียมแพทย์',                         icon:'🏥', gpax:3,    math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมเภสัช–สหเวช',                   icon:'💊', gpax:2.75, math:3,    sci:3,    eng:3    },
-    { name:'แผนเตรียมวิศวกรรมศาสตร์',                icon:'⚙️', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
-    { name:'แผนเตรียมสถาปัตยกรรมศาสตร์',             icon:'🏛️', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
-    { name:'แผนเตรียมวิทย์–คอม',                     icon:'💻', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
-    { name:'แผนเตรียมนิเทศ',                          icon:'🎬', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
-    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์',         icon:'🌐', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
-    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                icon:'⚖️', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
-    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',     icon:'💼', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
-    { name:'แผนเตรียมศิลปกรรม',                       icon:'🎨', gpax:2.5,  math:null, sci:null, eng:null },
-    { name:'แผนเตรียมมนุษยศาสตร์–ครุศาสตร์ [กีฬา]', icon:'🏃', gpax:2.5,  math:2.5,  sci:null, eng:2.5  },
+    { name:'แผนเตรียมแพทย์',                                    icon:'🏥', gpax:3,    math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมเภสัช–สหเวช',                              icon:'💊', gpax:2.75, math:3,    sci:3,    eng:3    },
+    { name:'แผนเตรียมวิศวะ',                                     icon:'⚙️', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
+    { name:'แผนเตรียมสถาปัตย์',                                  icon:'🏛️', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
+    { name:'แผนเตรียมเทคโนโลยีอัจฉริยะและปัญญาประดิษฐ์',       icon:'🤖', gpax:2.75, math:2.75, sci:2.75, eng:2.75 },
+    { name:'แผนเตรียมนิเทศ',                                     icon:'🎬', gpax:2.5,  math:null, sci:null, eng:null },
+    { name:'แผนเตรียมอักษรศาสตร์',                              icon:'📖', gpax:2.5,  math:null, sci:null, eng:null },
+    { name:'แผนเตรียมนิติ–รัฐศาสตร์',                           icon:'⚖️', gpax:2.5,  math:null, sci:null, eng:null },
+    { name:'แผนเตรียมบริหาร บัญชี และการบริการ',                icon:'💼', gpax:2.5,  math:null, sci:null, eng:null },
+    { name:'แผนเตรียมศิลปกรรม',                                  icon:'🎨', gpax:2.5,  math:null, sci:null, eng:null },
+    { name:'แผนเตรียมวิทยาการสุขภาพและธุรกิจกีฬา',             icon:'🏋️', gpax:2.5,  math:null, sci:null, eng:null },
   ],
 };
 
@@ -2264,15 +2298,29 @@ function updateDashboard(scores) {
         ? `<span style="background:#16A34A;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านเกณฑ์</span>`
         : `<span style="background:#DC2626;color:white;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">❌ ไม่ผ่านเกณฑ์</span>`;
     const currBadge = curr ? `<span style="font-size:9px;opacity:0.75;background:rgba(255,255,255,0.2);border-radius:4px;padding:1px 5px;margin-left:4px">${curr}</span>` : '';
+    const isMEBI = curr === 'IEP' && name === 'แผนเตรียมแพทย์บูรณาการ : MEBI';
+    const mebiBadge = isMEBI
+      ? `<div style="margin-top:5px;font-size:9px;background:rgba(255,193,7,0.25);border:1px solid rgba(255,193,7,0.5);border-radius:6px;padding:3px 7px;color:#FEF08A;line-height:1.5">
+          ✏️ <strong>มีสอบข้อเขียนเพิ่มเติม</strong> — รับ 30 คน
+        </div>`
+      : '';
     return `<div style="background:${bg};border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(4px)">
       <span style="font-size:18px">${icon}</span>
       <div>
         <div style="font-size:10px;opacity:0.8">${g.rank}${currBadge}</div>
         <div style="font-size:12px;font-weight:700">${name}</div>
         <div style="margin-top:3px">${badge}</div>
+        ${mebiBadge}
       </div>
     </div>`;
   }).join('');
+
+  // ── MEBI notice ──
+  const hasMEBI = [state.goal1, state.goal2].some(g => {
+    const { curr, name } = parseGoal(g);
+    return curr === 'IEP' && name === 'แผนเตรียมแพทย์บูรณาการ : MEBI';
+  });
+  document.getElementById('mebi-notice').style.display = hasMEBI ? 'block' : 'none';
 
   // ── การ์ดแผนทั้งหมดที่ผ่านเกณฑ์ — แสดงทุกหลักสูตร แยกกลุ่ม ──
   const allQualEl = document.getElementById('dashboard-all-qualified');
