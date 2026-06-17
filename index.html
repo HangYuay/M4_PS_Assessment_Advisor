@@ -517,8 +517,7 @@ html { font-size: 17px; }
   .grid-5 { grid-template-columns: repeat(2, 1fr); }
   /* Show hamburger */
   .hamburger-btn { display: flex; }
-  /* Hide print on tablet/mobile */
-  .btn-print { display: none !important; }
+  /* Keep print button visible on tablet/mobile */
   /* Tighten header on tablet */
   .app-header { padding: 0 14px; gap: 10px; }
   .ps-header-text { display: none; }
@@ -555,6 +554,10 @@ html { font-size: 17px; }
   .nav-item { padding: 14px 16px !important; font-size: 16px !important; }
   .stat-card .value { font-size: 28px; }
   .section-header h2 { font-size: 20px; }
+  /* Goal dropdown text smaller on mobile */
+  #prof-goal1, #prof-goal2 { font-size: 13px !important; padding: 8px 8px !important; }
+  /* Print button compact on mobile */
+  .btn-print { font-size: 12px !important; padding: 5px 8px !important; }
 }
   </style>
 </head>
@@ -2315,7 +2318,7 @@ function updateDashboard(scores) {
     </div>`;
   }).join('');
 
-  // ── MEBI notice ──
+  // ── MEBI notice — must run before early return ──
   const hasMEBI = [state.goal1, state.goal2].some(g => {
     const { curr, name } = parseGoal(g);
     return curr === 'IEP' && name === 'แผนเตรียมแพทย์บูรณาการ : MEBI';
