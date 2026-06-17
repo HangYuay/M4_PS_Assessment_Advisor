@@ -1901,6 +1901,11 @@ function readInputs() {
   state.math = [1,2,3,4,5].map(i => getVal('math-t'+i));
   state.sci  = [1,2,3,4,5].map(i => getVal('sci-t'+i));
   state.eng  = [1,2,3,4,5].map(i => getVal('eng-t'+i));
+  // อ่านค่าแผนการเรียนจาก dropdown ทุกครั้ง ไม่รอให้กด "บันทึก"
+  const g1El = document.getElementById('prof-goal1');
+  const g2El = document.getElementById('prof-goal2');
+  if (g1El && g1El.value) state.goal1 = g1El.value;
+  if (g2El && g2El.value) state.goal2 = g2El.value;
 }
 
 function calculate() {
