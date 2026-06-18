@@ -520,7 +520,7 @@ html { font-size: 17px; }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .grid-5 { grid-template-columns: repeat(2, 1fr); }
   /* Show hamburger */
-  .hamburger-btn { display: flex; }
+  .hamburger-btn { display: flex; align-self: flex-start; }
   /* Keep print button visible on tablet/mobile */
   /* Tighten header on tablet */
   .app-header { padding: 0 14px; gap: 10px; }
@@ -544,25 +544,29 @@ html { font-size: 17px; }
   .app-header {
     flex-wrap: wrap;
     height: auto;
-    padding: 7px 10px 5px;
+    padding: 8px 10px 5px;
     gap: 6px;
     row-gap: 5px;
-    align-content: center;
-    align-items: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;  /* ทุก element ชิดบน */
   }
 
   /* Row 1: hamburger | PS logo | ม.4 SVG | title (full, wrapping) | print */
-  .header-logos { display: flex; flex-shrink: 0; align-items: center; }
-  .ps-header-badge { padding: 2px 4px; gap: 4px; background: transparent; }
+  .header-logos { display: flex; flex-shrink: 0; align-items: flex-start; }
+  .ps-header-badge { padding: 0; gap: 0; background: transparent; }
   .ps-header-badge img { width: 32px !important; height: 32px !important; border-radius: 6px !important; padding: 2px !important; }
   .ps-header-text { display: none; }
   .logo-divider { display: none; }
   .m4-badge { display: none; }
-  .header-m4-icon { display: block !important; width: 28px !important; height: 28px !important; }
+  .header-m4-icon { display: block !important; width: 28px !important; height: 28px !important; flex-shrink: 0; align-self: flex-start; margin-top: 1px; }
+  /* header-title: icon เทียบกับขอบบนของข้อความ */
   .header-title { gap: 5px; align-items: flex-start; }
-  /* แสดงชื่อเต็ม + subtitle บน mobile */
-  .title-full { display: inline; }
+  /* แสดง title-mobile และ subtitle-mobile */
+  .title-full { display: none; }
   .title-short { display: none !important; }
+  .title-mobile { display: inline !important; }
+  .subtitle-desktop { display: none !important; }
+  .subtitle-mobile { display: block !important; }
   .header-title h1 {
     font-size: 11px !important;
     white-space: normal;
@@ -570,17 +574,17 @@ html { font-size: 17px; }
     overflow: visible;
     text-overflow: unset;
   }
-  .header-title p {
-    display: block !important;
+  .subtitle-mobile {
     font-size: 9.5px !important;
-    line-height: 1.35;
-    margin-top: 2px;
+    line-height: 1.4;
+    margin-top: 2px !important;
     opacity: 0.8;
+    color: rgba(255,255,255,0.75);
     white-space: normal;
   }
   /* Print: icon only */
   .btn-print-text { display: none; }
-  .btn-print { padding: 6px 8px !important; flex-shrink: 0; }
+  .btn-print { padding: 6px 8px !important; flex-shrink: 0; align-self: flex-start; }
   /* ซ่อน student chip ใน row 1 (แสดงใน mobile-name-bar แทน) */
   .student-chip { display: none; }
   /* ซ่อน reset btn (มีใน sidebar) */
@@ -707,8 +711,10 @@ html { font-size: 17px; }
       <h1 style="margin:0">
         <span class="title-full">ระบบประเมินการขึ้นชั้น ม.4 — โรงเรียนโพธิสารพิทยากร</span>
         <span class="title-short" style="display:none">ระบบประเมิน ม.4</span>
+        <span class="title-mobile" style="display:none">ระบบประเมินการขึ้นชั้น ม.4 —<br>โรงเรียนโพธิสารพิทยากร</span>
       </h1>
-      <p style="margin:0">ประเมินจากผลการเรียน ม.1–ม.3 เทอม 1 · ปีการศึกษา 2567–2569</p>
+      <p class="subtitle-desktop" style="margin:0">ประเมินจากผลการเรียน ม.1–ม.3 เทอม 1 · ปีการศึกษา 2567–2569</p>
+      <p class="subtitle-mobile" style="display:none;margin:0">ประเมินจากผลการเรียน ม.1–ม.3 เทอม 1<br>ปีการศึกษา 2567–2569</p>
     </div>
   </div>
   <div class="header-actions">
