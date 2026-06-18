@@ -240,6 +240,8 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
 .crit-table td { padding:10px 12px; text-align:center; border-top:1px solid var(--border); }
 .crit-table td:first-child { text-align:left; font-weight:600; }
 .crit-pass { color:var(--green); font-weight:700; }
+.crit-legend-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; font-size:12px; }
+.curr-compare-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
 .crit-na   { color:var(--text-muted); font-size:11px; }
 .crit-highlight { background:#EEF4FF; }
 .curr-badge {
@@ -527,46 +529,117 @@ html { font-size: 17px; }
   .header-title h1 { font-size: 13px !important; }
 }
 
+/* Mobile-name-bar: hidden on desktop */
+.mobile-name-bar {
+  display: none;
+  align-items: center; gap: 8px;
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
-  --header-h: 54px;
+  --header-h: 82px;
   html { font-size: 16px; }
-  /* Header layout: hamburger | title (flex:1) | print-icon | chip */
-  .app-header { padding: 0 10px; gap: 6px; }
-  /* ซ่อน school badge ทั้งก้อน */
-  .header-logos { display: none; }
-  /* ซ่อน SVG ม.4 ใน header-title เพื่อประหยัดพื้นที่ */
-  .header-m4-icon { display: none !important; }
-  /* สลับชื่อย่อ/เต็ม */
+
+  /* Header: 2 rows via flex-wrap */
+  .app-header {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--header-h);
+    padding: 7px 10px 5px;
+    gap: 6px;
+    row-gap: 5px;
+    align-content: center;
+  }
+
+  /* Row 1: hamburger | logo (img only) | ม.4 SVG | title | print */
+  .header-logos { display: flex; flex-shrink: 0; }
+  .ps-header-badge { padding: 2px 4px; gap: 4px; background: transparent; }
+  .ps-header-badge img { width: 30px !important; height: 30px !important; border-radius: 6px !important; padding: 2px !important; }
+  .ps-header-text { display: none; }
+  .logo-divider { display: none; }
+  .m4-badge { display: none; } /* hide m4-badge text box, use SVG instead */
+  .header-m4-icon { display: block !important; width: 26px !important; height: 26px !important; }
+  .header-title { gap: 5px; }
+  /* ชื่อระบบย่อ */
   .title-full { display: none; }
   .title-short { display: inline !important; }
-  .header-title { gap: 0; }
-  .header-title h1 { font-size: 15px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  /* ซ่อน subtitle ใต้ชื่อ */
+  .header-title h1 { font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .header-title p { display: none !important; }
-  /* Print: icon only, no text */
+  /* Print: icon only */
   .btn-print-text { display: none; }
   .btn-print { padding: 6px 8px !important; }
-  /* ซ่อนชื่อนักเรียนใน chip เหลือแค่ avatar */
-  .student-chip-name { display: none; }
-  .student-chip { padding: 4px; }
-  /* ซ่อน reset button บน mobile (มีใน sidebar) */
+  /* ซ่อน student chip ใน row 1 (แสดงใน mobile-name-bar แทน) */
+  .student-chip { display: none; }
+  /* ซ่อน reset btn (มีใน sidebar) */
   .header-reset-btn { display: none !important; }
+  /* ซ่อน PWA install */
+  #pwa-install-btn { display: none !important; }
+
+  /* Row 2: mobile-name-bar — ชื่อนักเรียน เต็มความกว้าง */
+  .mobile-name-bar {
+    display: flex;
+    flex-basis: 100%;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 4px 10px;
+    order: 10;
+  }
+
   /* แสดง sidebar reset เฉพาะ mobile */
   .sidebar-reset-wrap { display: block; }
-  /* ซ่อนปุ่ม install PWA บน mobile */
-  #pwa-install-btn { display: none !important; }
   /* Grids → single col */
   .grid-4, .grid-3, .grid-2, .grid-5 { grid-template-columns: 1fr; }
   .form-row, .form-row-3 { grid-template-columns: 1fr; }
   .eligibility-hero { flex-wrap: wrap; }
   .hero-right { margin-left: 0; text-align: left; }
   .main-content { padding: 16px 12px; }
-  /* Bigger touch targets */
-  .nav-item { padding: 14px 16px !important; font-size: 16px !important; }
+  /* Touch targets: keep padding but reduce font by 2 steps (16→13) */
+  .nav-item { padding: 12px 16px !important; font-size: 13px !important; }
   .stat-card .value { font-size: 28px; }
   .section-header h2 { font-size: 20px; }
   /* Goal dropdown text smaller on mobile */
   #prof-goal1, #prof-goal2 { font-size: 13px !important; padding: 8px 8px !important; }
+
+  /* ─── SECTION: ผลการเรียน (subjects) ─── */
+  /* ตารางเปรียบเทียบ — ใช้ชื่อย่อ, ลด font */
+  .th-full { display: none; }
+  .th-short { display: inline !important; }
+  #subject-compare-table { font-size: 11px !important; min-width: unset !important; }
+  #subject-compare-table th,
+  #subject-compare-table td { padding: 7px 4px !important; }
+  #subject-compare-table td:first-child { font-size: 10px; max-width: 80px; word-break: break-all; }
+  /* 4 stat cards → 2×2 */
+  #section-subjects .grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* ─── SECTION: เกณฑ์ (criteria) ─── */
+  /* Tabs: ซ่อน badge ชื่อเต็ม, ลด padding */
+  .crit-tab { padding: 8px 10px !important; font-size: 12px !important; }
+  .curr-badge { display: none; }
+  /* criteria table — ลด padding + font */
+  .crit-table { font-size: 11px !important; table-layout: fixed; width: 100%; }
+  .crit-table colgroup .col-name { width: 38%; }
+  .crit-table colgroup .col-score { width: 15.5%; }
+  .crit-table th { padding: 7px 4px !important; white-space: normal; font-size: 10px !important; }
+  .crit-table td { padding: 7px 4px !important; }
+  .crit-table td:first-child { font-size: 10px; word-break: break-all; line-height: 1.3; }
+  /* Legend 3-col → 1-col */
+  .crit-legend-grid { grid-template-columns: 1fr !important; }
+
+  /* ─── SECTION: หลักสูตร (curriculum) ─── */
+  .curr-compare-grid { grid-template-columns: 1fr !important; }
+  .curr-header-badges { flex-direction: column; }
+
+  /* ─── SECTION: dashboard ─── */
+  /* subject bars card ไม่ overflow */
+  #subject-bars { overflow-x: hidden; }
+
+  /* ─── SECTION: profile (grade input) ─── */
+  /* sem-cards เต็มความกว้าง */
+  .sem-card { margin-bottom: 0; }
+
+  /* ─── GLOBAL: prevent any card from overflowing viewport ─── */
+  .card { max-width: 100%; overflow-x: hidden; }
+  .section { overflow-x: hidden; }
 }
   </style>
 </head>
@@ -651,6 +724,12 @@ html { font-size: 17px; }
         <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.36"/>
       </svg>
     </button>
+  </div>
+  <!-- Mobile-only: student name bar (row 2) -->
+  <div class="mobile-name-bar" onclick="showSection('profile');if(window.innerWidth<=900){toggleSidebar&&false}">
+    <div class="student-avatar" id="mobile-header-avatar" style="width:20px;height:20px;font-size:10px;flex-shrink:0">น</div>
+    <span id="mobile-header-name" style="font-size:11px;color:rgba(255,255,255,0.9);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">กรอกโปรไฟล์</span>
+    <span style="font-size:10px;color:rgba(255,255,255,0.5);margin-left:auto;flex-shrink:0">แตะเพื่อแก้ไข →</span>
   </div>
 </header>
 
@@ -1121,17 +1200,17 @@ html { font-size: 17px; }
     </div>
     <div class="card">
       <div style="font-size:14px;font-weight:700;margin-bottom:14px">📋 ตารางเปรียบเทียบวิชาหลัก</div>
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <table id="subject-compare-table" style="width:100%;border-collapse:collapse;font-size:13px;min-width:420px">
           <thead>
             <tr style="background:var(--primary);color:white">
-              <th style="padding:10px 14px;text-align:left;font-weight:600">วิชา</th>
-              <th style="padding:10px 14px;text-align:center">ม.1 เทอม 1</th>
-              <th style="padding:10px 14px;text-align:center">ม.1 เทอม 2</th>
-              <th style="padding:10px 14px;text-align:center">ม.2 เทอม 1</th>
-              <th style="padding:10px 14px;text-align:center">ม.2 เทอม 2</th>
-              <th style="padding:10px 14px;text-align:center">ม.3 เทอม 1</th>
-              <th style="padding:10px 14px;text-align:center;background:rgba(255,255,255,0.15)">เฉลี่ย</th>
+              <th style="padding:10px 8px;text-align:left;font-weight:600">วิชา</th>
+              <th style="padding:10px 6px;text-align:center"><span class="th-full">ม.1 เทอม 1</span><span class="th-short" style="display:none">1/67</span></th>
+              <th style="padding:10px 6px;text-align:center"><span class="th-full">ม.1 เทอม 2</span><span class="th-short" style="display:none">2/67</span></th>
+              <th style="padding:10px 6px;text-align:center"><span class="th-full">ม.2 เทอม 1</span><span class="th-short" style="display:none">1/68</span></th>
+              <th style="padding:10px 6px;text-align:center"><span class="th-full">ม.2 เทอม 2</span><span class="th-short" style="display:none">2/68</span></th>
+              <th style="padding:10px 6px;text-align:center"><span class="th-full">ม.3 เทอม 1</span><span class="th-short" style="display:none">1/69</span></th>
+              <th style="padding:10px 6px;text-align:center;background:rgba(255,255,255,0.15)">เฉลี่ย</th>
             </tr>
           </thead>
           <tbody id="subject-table-body">
@@ -1170,12 +1249,10 @@ html { font-size: 17px; }
         </div>
         <div style="overflow-x:auto">
           <table class="crit-table">
+            <colgroup><col class="col-name"><col class="col-score"><col class="col-score"><col class="col-score"><col class="col-score"></colgroup>
             <thead><tr style="background:#F8FAFF">
-              <th style="text-align:left;padding-left:16px">แผนการเรียน</th>
-              <th>GPA รวม</th>
-              <th>คณิตศาสตร์</th>
-              <th>วิทยาศาสตร์</th>
-              <th>ภาษาอังกฤษ</th>
+              <th style="text-align:left;padding-left:12px;min-width:0">แผนการเรียน</th>
+              <th>GPA</th><th>คณิต</th><th>วิทย์</th><th>อังกฤษ</th>
             </tr></thead>
             <tbody id="crit-body-EP"></tbody>
           </table>
@@ -1194,12 +1271,10 @@ html { font-size: 17px; }
         </div>
         <div style="overflow-x:auto">
           <table class="crit-table">
+            <colgroup><col class="col-name"><col class="col-score"><col class="col-score"><col class="col-score"><col class="col-score"></colgroup>
             <thead><tr style="background:#F5F3FF">
-              <th style="text-align:left;padding-left:16px">แผนการเรียน</th>
-              <th>GPA รวม</th>
-              <th>คณิตศาสตร์</th>
-              <th>วิทยาศาสตร์</th>
-              <th>ภาษาอังกฤษ</th>
+              <th style="text-align:left;padding-left:12px;min-width:0">แผนการเรียน</th>
+              <th>GPA</th><th>คณิต</th><th>วิทย์</th><th>อังกฤษ</th>
             </tr></thead>
             <tbody id="crit-body-IEP"></tbody>
           </table>
@@ -1218,12 +1293,10 @@ html { font-size: 17px; }
         </div>
         <div style="overflow-x:auto">
           <table class="crit-table">
+            <colgroup><col class="col-name"><col class="col-score"><col class="col-score"><col class="col-score"><col class="col-score"></colgroup>
             <thead><tr style="background:#ECFDF5">
-              <th style="text-align:left;padding-left:16px">แผนการเรียน</th>
-              <th>GPA รวม</th>
-              <th>คณิตศาสตร์</th>
-              <th>วิทยาศาสตร์</th>
-              <th>ภาษาอังกฤษ</th>
+              <th style="text-align:left;padding-left:12px;min-width:0">แผนการเรียน</th>
+              <th>GPA</th><th>คณิต</th><th>วิทย์</th><th>อังกฤษ</th>
             </tr></thead>
             <tbody id="crit-body-GP"></tbody>
           </table>
@@ -1237,7 +1310,7 @@ html { font-size: 17px; }
     <!-- Legend -->
     <div class="card" style="margin-top:16px">
       <div style="font-size:13px;font-weight:700;margin-bottom:12px">📌 ข้อมูลเพิ่มเติม</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:12px">
+      <div class="crit-legend-grid">
         <div style="background:#DBEAFE;border-radius:8px;padding:12px">
           <div style="font-weight:700;color:#1E40AF;margin-bottom:4px">🔵 หลักสูตร EP</div>
           <div style="color:#1E3A8A">English Program<br>สอนเป็นภาษาอังกฤษ<br>เกณฑ์ GPA ≥ 3.00 ทุกแผน</div>
@@ -1262,18 +1335,18 @@ html { font-size: 17px; }
     </div>
 
     <!-- Header badges -->
-    <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap">
-      <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#1E3A8A,#2563EB);border-radius:12px;padding:14px 18px;color:white">
+    <div class="curr-header-badges" style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#0D2054,#1A3A6B);border-radius:12px;padding:14px 18px;color:white">
         <div style="font-size:11px;font-weight:700;opacity:0.8;letter-spacing:.06em;margin-bottom:4px">EP</div>
         <div style="font-size:15px;font-weight:800">English Program</div>
         <div style="font-size:11px;opacity:0.85;margin-top:4px">เรียนเป็นภาษาอังกฤษ · บูรณาการหลักสูตรสากล</div>
       </div>
-      <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#5B21B6,#7C3AED);border-radius:12px;padding:14px 18px;color:white">
+      <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#4A1A7A,#7B2270);border-radius:12px;padding:14px 18px;color:white">
         <div style="font-size:11px;font-weight:700;opacity:0.8;letter-spacing:.06em;margin-bottom:4px">IEP</div>
         <div style="font-size:15px;font-weight:800">Intensive English Program</div>
         <div style="font-size:11px;opacity:0.85;margin-top:4px">เรียนภาษาอังกฤษเข้มข้น · บูรณาการหลักสูตรสากล</div>
       </div>
-      <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#065F46,#059669);border-radius:12px;padding:14px 18px;color:white">
+      <div style="flex:1;min-width:200px;background:linear-gradient(135deg,#9C1050,#C2185B);border-radius:12px;padding:14px 18px;color:white">
         <div style="font-size:11px;font-weight:700;opacity:0.8;letter-spacing:.06em;margin-bottom:4px">GP</div>
         <div style="font-size:15px;font-weight:800">General Program</div>
         <div style="font-size:11px;opacity:0.85;margin-top:4px">หลักสูตรสถานศึกษา · เรียนเป็นภาษาไทย</div>
@@ -1291,9 +1364,9 @@ html { font-size: 17px; }
         <div style="width:32px;height:32px;background:#BE185D;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:800;flex-shrink:0">01</div>
         <div style="font-size:15px;font-weight:700">วิชาเรียน</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div style="background:#EFF6FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#1E40AF;margin-bottom:8px">🔵 EP</div>
+      <div class="curr-compare-grid">
+        <div style="background:#E8EEF8;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#1A3A6B;margin-bottom:8px">🔵 EP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>ภาษาอังกฤษ <strong>6 ชม./สัปดาห์</strong></li>
             <li>สอนโดย Native Speaker + ครูไทย</li>
@@ -1301,8 +1374,8 @@ html { font-size: 17px; }
             <li>ภาษาที่ 2 บังคับ: <strong>ภาษาจีนกลาง</strong></li>
           </ul>
         </div>
-        <div style="background:#F5F3FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#5B21B6;margin-bottom:8px">🟣 IEP</div>
+        <div style="background:#F0E8F5;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#4A1A7A;margin-bottom:8px">🟣 IEP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>ภาษาอังกฤษ <strong>6 ชม./สัปดาห์</strong></li>
             <li>สอนโดย Native Speaker + ครูไทย</li>
@@ -1310,8 +1383,8 @@ html { font-size: 17px; }
             <li>ภาษาที่ 2 บังคับ: <strong>ภาษาจีนกลาง</strong></li>
           </ul>
         </div>
-        <div style="background:#F0FDF4;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:8px">🟢 GP</div>
+        <div style="background:#FCE4EC;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#C2185B;margin-bottom:8px">🌸 GP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>วิชาสามัญทั้งหมดเรียนเป็น<strong>ภาษาไทย</strong></li>
             <li>ภาษาอังกฤษตามหลักสูตรปกติ</li>
@@ -1327,9 +1400,9 @@ html { font-size: 17px; }
         <div style="width:32px;height:32px;background:#7C3AED;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:800;flex-shrink:0">02</div>
         <div style="font-size:15px;font-weight:700">หลักสูตรเพิ่มเติม</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div style="background:#EFF6FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#1E40AF;margin-bottom:8px">🔵 EP</div>
+      <div class="curr-compare-grid">
+        <div style="background:#E8EEF8;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#1A3A6B;margin-bottom:8px">🔵 EP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>วิทยาศาสตร์ (EP)</li>
             <li>คณิตศาสตร์ (EP)</li>
@@ -1339,17 +1412,17 @@ html { font-size: 17px; }
             <li>Bio International Program</li>
           </ul>
         </div>
-        <div style="background:#F5F3FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#5B21B6;margin-bottom:8px">🟣 IEP</div>
+        <div style="background:#F0E8F5;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#4A1A7A;margin-bottom:8px">🟣 IEP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>วิชาเพิ่มเติม IEP</li>
             <li>Career Based Study</li>
             <li>Research Based Study</li>
-            <li>Bio International Program <span style="font-size:10px;background:#EDE9FE;color:#5B21B6;border-radius:4px;padding:1px 5px">(MEBI)</span></li>
+            <li>Bio International Program <span style="font-size:10px;background:#EDE9FE;color:#4A1A7A;border-radius:4px;padding:1px 5px">(MEBI)</span></li>
           </ul>
         </div>
-        <div style="background:#F0FDF4;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:8px">🟢 GP</div>
+        <div style="background:#FCE4EC;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#C2185B;margin-bottom:8px">🌸 GP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>วิทยาศาสตร์เพิ่มเติม</li>
             <li>คณิตศาสตร์เพิ่มเติม</li>
@@ -1366,27 +1439,27 @@ html { font-size: 17px; }
         <div style="width:32px;height:32px;background:#9333EA;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:800;flex-shrink:0">03</div>
         <div style="font-size:15px;font-weight:700">ครูผู้สอน · ครูที่ปรึกษา · จำนวนนักเรียน</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div style="background:#EFF6FF;border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:11px;font-weight:800;color:#1E40AF;margin-bottom:10px">🔵 EP</div>
+      <div class="curr-compare-grid">
+        <div style="background:#E8EEF8;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:#1A3A6B;margin-bottom:10px">🔵 EP</div>
           <div style="font-size:11px;color:#475569;margin-bottom:8px">ครูผู้สอน</div>
           <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:10px">ครูต่างชาติ<br>+ ครูไทย</div>
           <div style="font-size:11px;color:#475569;margin-bottom:4px">นักเรียนต่อห้อง</div>
-          <div style="font-size:28px;font-weight:800;color:#1E40AF">25 <span style="font-size:13px;font-weight:500">คน</span></div>
+          <div style="font-size:28px;font-weight:800;color:#1A3A6B">25 <span style="font-size:13px;font-weight:500">คน</span></div>
         </div>
-        <div style="background:#F5F3FF;border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:11px;font-weight:800;color:#5B21B6;margin-bottom:10px">🟣 IEP</div>
+        <div style="background:#F0E8F5;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:#4A1A7A;margin-bottom:10px">🟣 IEP</div>
           <div style="font-size:11px;color:#475569;margin-bottom:8px">ครูผู้สอน</div>
           <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:10px">ครูต่างชาติ<br>+ ครูไทย</div>
           <div style="font-size:11px;color:#475569;margin-bottom:4px">นักเรียนต่อห้อง</div>
-          <div style="font-size:28px;font-weight:800;color:#5B21B6">30 <span style="font-size:13px;font-weight:500">คน</span></div>
+          <div style="font-size:28px;font-weight:800;color:#4A1A7A">30 <span style="font-size:13px;font-weight:500">คน</span></div>
         </div>
-        <div style="background:#F0FDF4;border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:10px">🟢 GP</div>
+        <div style="background:#FCE4EC;border-radius:10px;padding:14px;text-align:center">
+          <div style="font-size:11px;font-weight:800;color:#C2185B;margin-bottom:10px">🌸 GP</div>
           <div style="font-size:11px;color:#475569;margin-bottom:8px">ครูผู้สอน</div>
           <div style="font-size:12px;font-weight:600;color:#1e293b;margin-bottom:10px">ครูไทย</div>
           <div style="font-size:11px;color:#475569;margin-bottom:4px">นักเรียนต่อห้อง</div>
-          <div style="font-size:28px;font-weight:800;color:#065F46">40 <span style="font-size:13px;font-weight:500">คน</span></div>
+          <div style="font-size:28px;font-weight:800;color:#C2185B">40 <span style="font-size:13px;font-weight:500">คน</span></div>
         </div>
       </div>
     </div>
@@ -1397,9 +1470,9 @@ html { font-size: 17px; }
         <div style="width:32px;height:32px;background:#EA580C;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:800;flex-shrink:0">04</div>
         <div style="font-size:15px;font-weight:700">กิจกรรมพิเศษ &amp; กิจกรรมเสริมหลักสูตร</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div style="background:#EFF6FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#1E40AF;margin-bottom:8px">🔵 EP</div>
+      <div class="curr-compare-grid">
+        <div style="background:#E8EEF8;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#1A3A6B;margin-bottom:8px">🔵 EP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>ทัศนศึกษา<strong>ต่างประเทศ</strong></li>
             <li>Summer Camp ต่างประเทศ</li>
@@ -1408,8 +1481,8 @@ html { font-size: 17px; }
             <li>Science &amp; English Curriculum</li>
           </ul>
         </div>
-        <div style="background:#F5F3FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#5B21B6;margin-bottom:8px">🟣 IEP</div>
+        <div style="background:#F0E8F5;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#4A1A7A;margin-bottom:8px">🟣 IEP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>ทัศนศึกษา (ในประเทศ)</li>
             <li>กิจกรรมพิเศษ IEP</li>
@@ -1417,8 +1490,8 @@ html { font-size: 17px; }
             <li>Academic Course</li>
           </ul>
         </div>
-        <div style="background:#F0FDF4;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:8px">🟢 GP</div>
+        <div style="background:#FCE4EC;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#C2185B;margin-bottom:8px">🌸 GP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>กิจกรรมตามปกติของโรงเรียน</li>
             <li>Tutoring Courses</li>
@@ -1434,9 +1507,9 @@ html { font-size: 17px; }
         <div style="width:32px;height:32px;background:#475569;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:800;flex-shrink:0">05</div>
         <div style="font-size:15px;font-weight:700">การวัดความสามารถภาษาอังกฤษ</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div style="background:#EFF6FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#1E40AF;margin-bottom:8px">🔵 EP</div>
+      <div class="curr-compare-grid">
+        <div style="background:#E8EEF8;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#1A3A6B;margin-bottom:8px">🔵 EP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>Thai CEFR (B1–B2+)</li>
             <li>TU-GET</li>
@@ -1444,16 +1517,16 @@ html { font-size: 17px; }
             <li><strong>IELTS</strong></li>
           </ul>
         </div>
-        <div style="background:#F5F3FF;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#5B21B6;margin-bottom:8px">🟣 IEP</div>
+        <div style="background:#F0E8F5;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#4A1A7A;margin-bottom:8px">🟣 IEP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>Thai CEFR (B1–B2+)</li>
             <li>TU-GET</li>
             <li>CU-TEP</li>
           </ul>
         </div>
-        <div style="background:#F0FDF4;border-radius:10px;padding:12px">
-          <div style="font-size:11px;font-weight:800;color:#065F46;margin-bottom:8px">🟢 GP</div>
+        <div style="background:#FCE4EC;border-radius:10px;padding:12px">
+          <div style="font-size:11px;font-weight:800;color:#C2185B;margin-bottom:8px">🌸 GP</div>
           <ul style="margin:0;padding-left:14px;font-size:12px;line-height:1.8;color:#1e293b">
             <li>Thai CEFR</li>
             <li>CU-TEP</li>
@@ -1946,9 +2019,9 @@ function renderCritTable(curr) {
       ? `<span class="crit-na">—</span>`
       : `<span class="crit-pass">${v}</span>`;
     return `<tr class="${rowCls}">
-      <td style="padding-left:16px">
+      <td style="padding-left:12px;word-break:break-all;min-width:0">
         ${p.icon} ${p.name}
-        ${chosen ? `<span style="color:var(--primary);font-size:10px;font-weight:700">${chosen}</span>` : ''}
+        ${chosen ? `<br><span style="color:var(--primary);font-size:10px;font-weight:700">${chosen}</span>` : ''}
       </td>
       <td>${fmtC(p.gpax)}</td>
       <td>${fmtC(p.math)}</td>
@@ -2109,6 +2182,8 @@ function saveProfile() {
 
   document.getElementById('header-name').textContent   = name;
   document.getElementById('header-avatar').textContent = state.avatar || name.charAt(0);
+  const _mhn = document.getElementById('mobile-header-name'); if(_mhn) _mhn.textContent = name;
+  const _mha = document.getElementById('mobile-header-avatar'); if(_mha) _mha.textContent = state.avatar || name.charAt(0);
 
   document.getElementById('info-name').textContent    = name || '—';
   document.getElementById('info-class').textContent   = state.class || '—';
@@ -2688,7 +2763,10 @@ function updateSubjectDetail(scores) {
 
   // Comparison table (GPA row + 3 subject rows)
   const colors = {gpa:'var(--primary)',math:'var(--blue)',sci:'var(--green)',eng:'var(--purple)'};
-  const labels = {gpa:'📊 GPA รวม (GPAX)',math:'➗ คณิตศาสตร์พื้นฐาน',sci:'🔬 วิทยาศาสตร์พื้นฐาน',eng:'🌍 ภาษาอังกฤษพื้นฐาน'};
+  const isMobile = window.innerWidth <= 600;
+  const labels = isMobile
+    ? {gpa:'📊 GPAX',math:'➗ คณิต',sci:'🔬 วิทย์',eng:'🌍 อังกฤษ'}
+    : {gpa:'📊 GPA รวม (GPAX)',math:'➗ คณิตศาสตร์พื้นฐาน',sci:'🔬 วิทยาศาสตร์พื้นฐาน',eng:'🌍 ภาษาอังกฤษพื้นฐาน'};
   document.getElementById('subject-table-body').innerHTML = ['gpa','math','sci','eng'].map(subj => {
     const vals = state[subj], avgV = avg(vals);
     const cells = vals.map(v => `<td style="padding:9px 14px;text-align:center;color:${gpaColor(v)};font-weight:${v!==null?'600':'400'}">${fmt(v)}</td>`).join('');
@@ -2769,6 +2847,8 @@ function loadStorage() {
     if (state.name) {
       document.getElementById('header-name').textContent   = state.name;
       document.getElementById('header-avatar').textContent = state.name.charAt(0);
+      const _mhn2 = document.getElementById('mobile-header-name'); if(_mhn2) _mhn2.textContent = state.name;
+      const _mha2 = document.getElementById('mobile-header-avatar'); if(_mha2) _mha2.textContent = state.avatar || state.name.charAt(0);
     }
     loadProfileInputs();
     ['gpa','math','sci','eng'].forEach(subj => {
