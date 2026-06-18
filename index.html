@@ -537,37 +537,50 @@ html { font-size: 17px; }
 }
 
 @media (max-width: 600px) {
-  --header-h: 82px;
+  --header-h: 110px;
   html { font-size: 16px; }
 
-  /* Header: 2 rows via flex-wrap */
+  /* Header: 2 rows via flex-wrap, height auto */
   .app-header {
     flex-wrap: wrap;
     height: auto;
-    min-height: var(--header-h);
     padding: 7px 10px 5px;
     gap: 6px;
     row-gap: 5px;
     align-content: center;
+    align-items: flex-start;
   }
 
-  /* Row 1: hamburger | logo (img only) | ม.4 SVG | title | print */
-  .header-logos { display: flex; flex-shrink: 0; }
+  /* Row 1: hamburger | PS logo | ม.4 SVG | title (full, wrapping) | print */
+  .header-logos { display: flex; flex-shrink: 0; align-items: center; }
   .ps-header-badge { padding: 2px 4px; gap: 4px; background: transparent; }
-  .ps-header-badge img { width: 30px !important; height: 30px !important; border-radius: 6px !important; padding: 2px !important; }
+  .ps-header-badge img { width: 32px !important; height: 32px !important; border-radius: 6px !important; padding: 2px !important; }
   .ps-header-text { display: none; }
   .logo-divider { display: none; }
-  .m4-badge { display: none; } /* hide m4-badge text box, use SVG instead */
-  .header-m4-icon { display: block !important; width: 26px !important; height: 26px !important; }
-  .header-title { gap: 5px; }
-  /* ชื่อระบบย่อ */
-  .title-full { display: none; }
-  .title-short { display: inline !important; }
-  .header-title h1 { font-size: 13px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .header-title p { display: none !important; }
+  .m4-badge { display: none; }
+  .header-m4-icon { display: block !important; width: 28px !important; height: 28px !important; }
+  .header-title { gap: 5px; align-items: flex-start; }
+  /* แสดงชื่อเต็ม + subtitle บน mobile */
+  .title-full { display: inline; }
+  .title-short { display: none !important; }
+  .header-title h1 {
+    font-size: 11px !important;
+    white-space: normal;
+    line-height: 1.45;
+    overflow: visible;
+    text-overflow: unset;
+  }
+  .header-title p {
+    display: block !important;
+    font-size: 9.5px !important;
+    line-height: 1.35;
+    margin-top: 2px;
+    opacity: 0.8;
+    white-space: normal;
+  }
   /* Print: icon only */
   .btn-print-text { display: none; }
-  .btn-print { padding: 6px 8px !important; }
+  .btn-print { padding: 6px 8px !important; flex-shrink: 0; }
   /* ซ่อน student chip ใน row 1 (แสดงใน mobile-name-bar แทน) */
   .student-chip { display: none; }
   /* ซ่อน reset btn (มีใน sidebar) */
@@ -3236,6 +3249,19 @@ function closeLightbox() {
 // INIT
 // ============================================================
 loadStorage();
+
+// ── Dynamic header height → layout padding-top ──
+function syncHeaderHeight() {
+  const header = document.querySelector('.app-header');
+  const layout = document.querySelector('.app-layout');
+  if (header && layout) {
+    layout.style.paddingTop = header.offsetHeight + 'px';
+  }
+}
+syncHeaderHeight();
+window.addEventListener('resize', syncHeaderHeight);
+// Also sync after fonts load (avoid flash)
+document.fonts && document.fonts.ready.then(syncHeaderHeight);
 
 // ── Sidebar toggle (mobile) ──
 function toggleSidebar() {
