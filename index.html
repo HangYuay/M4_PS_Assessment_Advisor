@@ -465,14 +465,17 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
 }
 #print-page .print-footnote {
   margin-top: 20px;
-  border-top: 1px solid #ddd;
+  border-top: 2px solid #FCA5A5;
   padding-top: 10px;
   font-size: 10.5px;
-  color: #555;
+  color: #991B1B;
   line-height: 1.6;
+  background: #FFF5F5;
+  border-radius: 6px;
+  padding: 10px 14px;
 }
 #print-page .print-footnote strong {
-  color: #111;
+  color: #B91C1C;
 }
 
 /* ---- FONT SIZE SCALE UP ---- */
@@ -558,7 +561,7 @@ html { font-size: 17px; }
   .ps-header-text { display: none; }
   .logo-divider { display: none; }
   .m4-badge { display: none; }
-  .header-m4-icon { display: block !important; width: 28px !important; height: 28px !important; flex-shrink: 0; align-self: flex-start; margin-top: 1px; }
+  .header-m4-icon { display: block !important; width: 32px !important; height: 32px !important; flex-shrink: 0; align-self: flex-start; }
   /* header-title: icon เทียบกับขอบบนของข้อความ */
   .header-title { gap: 5px; align-items: flex-start; }
   /* แสดง title-mobile และ subtitle-mobile */
@@ -882,6 +885,12 @@ html { font-size: 17px; }
       </div>
     </div>
 
+    <!-- Disclaimer -->
+    <div style="margin-bottom:16px;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:var(--radius);padding:11px 16px;font-size:12px;color:#991B1B;line-height:1.75;display:flex;gap:10px;align-items:flex-start">
+      <span style="font-size:16px;flex-shrink:0;margin-top:1px">⚠️</span>
+      <span><strong>เกี่ยวกับระบบนี้</strong> — ระบบนี้จัดทำขึ้นเพื่อช่วยให้นักเรียนชั้น ม.3 ปีการศึกษา 2569 ประเมินความพร้อมของตนเองก่อนขึ้นชั้น ม.4 เท่านั้น ผลการประเมินที่แสดงเป็นเพียงการประเมินเบื้องต้นและไม่มีส่วนเกี่ยวข้องกับกระบวนการพิจารณาขึ้นชั้นของโรงเรียนโพธิสารพิทยากรแต่อย่างใด</span>
+    </div>
+
     <!-- MEBI notice — แสดงเฉพาะเมื่อเลือกแผนเตรียมแพทย์บูรณาการ MEBI -->
     <div id="mebi-notice" style="display:none;margin-bottom:16px;background:linear-gradient(135deg,#78350F,#B45309);border-radius:12px;padding:14px 18px;color:white">
       <div style="display:flex;align-items:flex-start;gap:12px">
@@ -951,7 +960,7 @@ html { font-size: 17px; }
 
     <!-- Lightbox -->
     <div id="prog-lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:center;justify-content:center;cursor:zoom-out">
-      <img id="prog-lightbox-img" src="" style="max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
+      <img id="prog-lightbox-img" src="" alt="ภาพขยายแผนการเรียน" style="max-width:92vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
     </div>
 
     <div class="grid-3" id="tracks-grid">
@@ -1739,6 +1748,11 @@ html { font-size: 17px; }
     <!-- Yellow note -->
     <div style="max-width:680px;background:var(--yellow-light);border:1.5px solid #FDE68A;border-radius:var(--radius);padding:12px 16px;font-size:12.5px;color:#78350F;line-height:1.8">
       <span style="font-weight:700;color:#92400E">⚠️ หมายเหตุ</span> — ข้อมูลทั้งหมดจัดเก็บเฉพาะในเครื่องของคุณ (localStorage) ไม่มีการส่งข้อมูลออกไปที่ใด หากล้างประวัติเบราว์เซอร์ข้อมูลจะหายไป
+    </div>
+
+    <!-- Disclaimer note -->
+    <div style="max-width:680px;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:var(--radius);padding:12px 16px;font-size:12.5px;color:#991B1B;line-height:1.8;margin-top:10px">
+      <span style="font-weight:700;color:#B91C1C">⚠️ เกี่ยวกับระบบนี้</span> — ระบบนี้จัดทำขึ้นเพื่อช่วยให้นักเรียนชั้น ม.3 ปีการศึกษา 2569 ประเมินความพร้อมของตนเองก่อนขึ้นชั้น ม.4 เท่านั้น ผลการประเมินที่แสดงเป็นเพียงการประเมินเบื้องต้นและไม่มีส่วนเกี่ยวข้องกับกระบวนการพิจารณาขึ้นชั้นของโรงเรียนโพธิสารพิทยากรแต่อย่างใด
     </div>
 
     <!-- Hidden spans for JS compatibility -->
@@ -3231,8 +3245,7 @@ function printReport() {
 
     <!-- หมายเหตุ -->
     <div class="print-footnote">
-      <strong>หมายเหตุ:</strong> การประเมินดังกล่าวเป็นการประเมินเบื้องต้นเท่านั้น
-      ผลการตัดสินโดยคณะกรรมการพิจารณาการขึ้นชั้น ม.4 โรงเรียนโพธิสารพิทยากร ถือเป็นที่สิ้นสุด
+      <strong>หมายเหตุ:</strong> ระบบนี้จัดทำขึ้นเพื่อช่วยให้นักเรียนชั้น ม.3 ปีการศึกษา 2569 ประเมินความพร้อมของตนเองก่อนขึ้นชั้น ม.4 เท่านั้น ผลการประเมินที่แสดงเป็นเพียงการประเมินเบื้องต้นและไม่มีส่วนเกี่ยวข้องกับกระบวนการพิจารณาขึ้นชั้นของโรงเรียนโพธิสารพิทยากรแต่อย่างใด
       <div style="text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid #E5E7EB;color:#6B7280">พัฒนาระบบโดย นายวิฑูรย์ เจริญชัยไพบูลย์</div>
     </div>
   `;
