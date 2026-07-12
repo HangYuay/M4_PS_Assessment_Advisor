@@ -1,11 +1,12 @@
-const CACHE = 'ps-m4-v1';
+const CACHE = 'ps-m4-v2';
+const BASE = '/M4_PS_Assessment_Advisor';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/manifest.json',
-  '/logoPsพื้นใส-01 (1).png'
+  BASE + '/',
+  BASE + '/index.html',
+  BASE + '/manifest.json',
+  BASE + '/icons/icon-192.png',
+  BASE + '/icons/icon-512.png',
+  BASE + '/logoPsพื้นใส-01 (1).png'
 ];
 
 self.addEventListener('install', e => {

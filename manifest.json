@@ -5,31 +5,31 @@
   "start_url": "/M4_PS_Assessment_Advisor/",
   "scope": "/M4_PS_Assessment_Advisor/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#C2185B",
   "theme_color": "#C2185B",
   "orientation": "portrait-primary",
   "lang": "th",
   "icons": [
     {
-      "src": "./icons/icon-192.png",
+      "src": "/M4_PS_Assessment_Advisor/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-192.png",
+      "src": "/M4_PS_Assessment_Advisor/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "/M4_PS_Assessment_Advisor/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "/M4_PS_Assessment_Advisor/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
