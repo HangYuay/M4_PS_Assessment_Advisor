@@ -1,8 +1,9 @@
 {
-  "name": "ระบบประเมินการขึ้นชั้น ม.4",
+  "name": "ระบบประเมินความพร้อม ม.4",
   "short_name": "ประเมิน ม.4",
   "description": "ระบบประเมินการขึ้นชั้น ม.4 โรงเรียนโพธิสารพิทยากร",
   "start_url": "/M4_PS_Assessment_Advisor/",
+  "scope": "/M4_PS_Assessment_Advisor/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#C2185B",
@@ -10,16 +11,28 @@
   "lang": "th",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
