@@ -2381,9 +2381,10 @@ function renderRequirementsCard(scores) {
 
   function needChip(needed) {
     if (needed === null) return `<span style="font-size:10px;color:#6B7280">ไม่มีเกณฑ์</span>`;
-    if (needed > 4.00) return `<span style="background:#FEE2E2;color:#991B1B;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">เป็นไปได้ยาก</span>`;
-    if (needed <= 0)   return `<span style="background:#D1FAE5;color:#065F46;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านแล้ว</span>`;
-    const chip = `<span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">ต้องได้ ≥ ${needed.toFixed(2)}</span>`;
+    if (needed > 4.00)  return `<span style="background:#FEE2E2;color:#991B1B;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">เป็นไปได้ยาก</span>`;
+    if (needed <= 0)    return `<span style="background:#D1FAE5;color:#065F46;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านแล้ว</span>`;
+    const label = needed >= 3.995 ? `= 4.00` : `≥ ${needed.toFixed(2)}`;
+    const chip = `<span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">ต้องได้ ${label}</span>`;
     if (needed < 1.0) {
       return `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
         ${chip}
@@ -2475,6 +2476,9 @@ function renderRequirementsCard(scores) {
       </div>
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:12px">${blocks}</div>
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid #FDE68A;font-size:11px;color:#92400E;line-height:1.7">
+      <strong>หมายเหตุ:</strong> หากวิชาใดแสดงว่า "ไม่มีเกณฑ์" หรือ "ผ่านแล้ว" นักเรียนยังคงต้องทำเกรดให้ได้อย่างน้อย <strong>1.00</strong> ในทุกวิชา เพื่อผ่านการวัดผลระดับชั้น ม.3
+    </div>
   </div>`;
 }
 
@@ -2620,25 +2624,13 @@ function updateDashboard(scores) {
   }
 
 
-  // Subject bars — threshold from goal1 (ถ้าเลือก), fallback goal2, fallback เกณฑ์ทั่วไป
+  // Subject bars — แสดงทั้ง 2 อันดับ
   const { curr: g1Curr, name: g1Name } = parseGoal(state.goal1);
   const { curr: g2Curr, name: g2Name } = parseGoal(state.goal2);
   const g1Progs = g1Curr ? (CRITERIA[g1Curr] || getPrograms()) : [];
   const g2Progs = g2Curr ? (CRITERIA[g2Curr] || getPrograms()) : [];
   const g1Prog  = g1Progs.find(p => p.name === g1Name) || null;
   const g2Prog  = g2Progs.find(p => p.name === g2Name) || null;
-  // ใช้เกณฑ์อันดับ 1 ถ้ามี ไม่งั้นใช้อันดับ 2 ไม่งั้นใช้เกณฑ์ทั่วไป
-  const refProg  = g1Prog || g2Prog || null;
-  const refCurr  = g1Prog ? g1Curr : g2Prog ? g2Curr : null;
-  const refName  = g1Prog ? g1Name : g2Prog ? g2Name : null;
-  const refRank  = g1Prog ? 'อันดับ 1' : g2Prog ? 'อันดับ 2' : null;
-  const barMin = {
-    gpax: refProg ? refProg.gpax : 2.5,
-    math: refProg ? refProg.math : null,
-    sci:  refProg ? refProg.sci  : null,
-    eng:  refProg ? refProg.eng  : null,
-  };
-  const barGoalLabel = refProg ? `${refRank} · [${refCurr}] ${refName}` : 'ยังไม่ได้เลือกแผนการเรียน';
 
   const subjectBarItems = [
     {label:'📊 GPAX รวม',     val:gpax, stateKey:'gpa',  color:'var(--primary)', minKey:'gpax'},
@@ -2647,53 +2639,72 @@ function updateDashboard(scores) {
     {label:'🌍 ภาษาอังกฤษ',  val:eng,  stateKey:'eng',  color:'var(--purple)',  minKey:'eng' },
   ];
 
-  const barHeader = refProg
-    ? `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เกณฑ์อ้างอิงจาก: <strong style="color:var(--primary)">${barGoalLabel}</strong></div>`
-    : `<div style="font-size:10px;color:var(--text-muted);margin-bottom:12px">เลือกแผนการเรียนในหน้าข้อมูลนักเรียนเพื่อดูเกณฑ์เฉพาะแผน</div>`;
+  const noteMin1bar = ``;
 
-  document.getElementById('subject-bars').innerHTML =
-    barHeader +
-    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px">` +
-    subjectBarItems.map(s => {
-      const minVal  = barMin[s.minKey];
-      const filled  = state[s.stateKey].filter(v => v !== null).length;
+  function renderBarSection(prog, curr, rankLabel, badgeColor) {
+    const barMin = {
+      gpax: prog ? prog.gpax : 2.5,
+      math: prog ? prog.math : null,
+      sci:  prog ? prog.sci  : null,
+      eng:  prog ? prog.eng  : null,
+    };
+    const header = prog
+      ? `<div style="font-size:10px;font-weight:700;color:white;background:${badgeColor};border-radius:6px;padding:4px 10px;margin-bottom:10px;display:inline-block">${rankLabel} · [${curr}] ${prog.name}</div>`
+      : `<div style="font-size:10px;color:var(--text-muted);margin-bottom:10px">เลือกแผนการเรียนเพื่อดูเกณฑ์</div>`;
+    const bars = subjectBarItems.map(s => {
+      const minVal = barMin[s.minKey];
+      const filled = state[s.stateKey].filter(v => v !== null).length;
       const remaining = 5 - filled;
       const semNote = filled === 0
-        ? `<span style="font-size:10px;color:var(--text-muted)">ยังไม่กรอก</span>`
+        ? `<span style="font-size:9px;color:var(--text-muted)">ยังไม่กรอก</span>`
         : remaining === 0
-          ? `<span style="font-size:10px;color:#16A34A;font-weight:600">✓ ครบแล้ว</span>`
-          : `<span style="font-size:10px;color:var(--text-muted)">เหลืออีก ${remaining} เทอม</span>`;
+          ? `<span style="font-size:9px;color:#16A34A;font-weight:600">✓ ครบ</span>`
+          : `<span style="font-size:9px;color:var(--text-muted)">เหลือ ${remaining} เทอม</span>`;
+      const pct = s.val !== null ? (s.val / 4 * 100) : 0;
 
       if (minVal === null) {
-        const pct = s.val !== null ? (s.val / 4 * 100) : 0;
         return `<div class="gpa-bar-wrap">
           <div class="gpa-bar-label">
             <span>${s.label} ${semNote}</span>
-            <span style="display:flex;align-items:center;gap:5px">
+            <span style="display:flex;align-items:center;gap:4px">
               <strong style="color:${gpaColor(s.val)}">${fmt(s.val)}</strong>
-              <span style="font-size:10px;color:#6B7280">ไม่มีเกณฑ์</span>
+              <span style="font-size:9px;color:#6B7280">ไม่มีเกณฑ์${noteMin1bar}</span>
             </span>
           </div>
           <div class="gpa-bar"><div class="gpa-bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
         </div>`;
       }
-
-      const pct     = s.val !== null ? (s.val / 4 * 100) : 0;
-      const minPct  = minVal / 4 * 100;
-      const pass    = s.val !== null && s.val >= minVal;
+      const minPct = minVal / 4 * 100;
+      const pass   = s.val !== null && s.val >= minVal;
       const statusIcon = s.val === null ? '' : pass ? ' ✅' : ' ❌';
+      const passNote = '';
       return `<div class="gpa-bar-wrap">
         <div class="gpa-bar-label">
           <span>${s.label} ${semNote}</span>
-          <strong style="color:${gpaColor(s.val)}">${fmt(s.val)}${statusIcon}</strong>
+          <strong style="color:${gpaColor(s.val)}">${fmt(s.val)}${statusIcon}${passNote}</strong>
         </div>
         <div class="gpa-bar" style="position:relative">
           <div class="gpa-bar-fill" style="width:${pct}%;background:${s.color}"></div>
-          <div style="position:absolute;top:0;bottom:0;left:${minPct}%;width:2px;background:#EF4444;border-radius:1px" title="เกณฑ์ขั้นต่ำ ${minVal}"></div>
+          <div style="position:absolute;top:0;bottom:0;left:${minPct}%;width:2px;background:#EF4444;border-radius:1px"></div>
         </div>
-        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;padding-left:${minPct}%">▲ เกณฑ์ ${minVal}</div>
+        <div style="font-size:9px;color:var(--text-muted);margin-top:2px;padding-left:${minPct}%">▲ เกณฑ์ ${minVal}</div>
       </div>`;
-    }).join('') + `</div>`;
+    }).join('');
+    return `<div style="flex:1;min-width:220px">${header}<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px">${bars}</div></div>`;
+  }
+
+  const hasAnyGoal = g1Prog || g2Prog;
+  let barsHTML = '';
+  if (!hasAnyGoal) {
+    barsHTML = `<div style="font-size:10px;color:var(--text-muted)">เลือกแผนการเรียนในหน้าข้อมูลนักเรียนเพื่อดูเกณฑ์เฉพาะแผน</div>`;
+  } else {
+    barsHTML = `<div style="display:flex;flex-wrap:wrap;gap:16px">`;
+    if (g1Prog) barsHTML += renderBarSection(g1Prog, g1Curr, 'อันดับ 1', '#1A3A6B');
+    if (g2Prog) barsHTML += renderBarSection(g2Prog, g2Curr, 'อันดับ 2', '#C2185B');
+    barsHTML += `</div>`;
+  }
+
+  document.getElementById('subject-bars').innerHTML = barsHTML;
 
   // ── การ์ดเกรดที่ต้องทำให้ได้ ──
   renderRequirementsCard(scores);
