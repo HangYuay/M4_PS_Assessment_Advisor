@@ -183,6 +183,8 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
   border: 1.5px solid var(--border); border-radius: var(--radius-sm);
   font-family: 'Prompt', sans-serif; font-size: 13.5px; color: var(--text-primary);
   background: var(--surface); transition: border-color var(--transition);
+  height: 40px; box-sizing: border-box;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .form-input:focus { outline: none; border-color: var(--primary); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -1617,7 +1619,7 @@ html { font-size: 17px; }
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">ชื่อ-สกุล นักเรียน *</label>
-          <input class="form-input" id="prof-name" type="text" placeholder="เช่น นายสมชาย ใจดี" oninput="updateProfilePreview()">
+          <input class="form-input" id="prof-name" type="text" placeholder="ชื่อ-นามสกุล" oninput="updateProfilePreview()">
         </div>
         <div class="form-group">
           <label class="form-label">ชั้นเรียน / ห้อง</label>
@@ -1640,7 +1642,7 @@ html { font-size: 17px; }
         <div class="form-group" style="grid-column:1/-1">
           <label class="form-label">ครูที่ปรึกษา</label>
           <div class="form-row">
-            <input class="form-input" id="prof-teacher" type="text" placeholder="ครูที่ปรึกษาคนที่ 1 เช่น ครูสมศรี">
+            <input class="form-input" id="prof-teacher" type="text" placeholder="ครูที่ปรึกษาคนที่ 1">
             <input class="form-input" id="prof-teacher2" type="text" placeholder="ครูที่ปรึกษาคนที่ 2 (ถ้ามี)">
           </div>
         </div>
