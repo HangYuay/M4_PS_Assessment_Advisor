@@ -1924,6 +1924,29 @@ html { font-size: 17px; }
 
     </div><!-- end grid -->
 
+    <!-- GPAX สรุปรวม — auto-calc + แก้ไขได้ -->
+    <div id="gpax-summary-box" style="margin:20px 0;background:#F0F4FF;border:2px solid var(--primary);border-radius:var(--radius);padding:16px 20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+        <span style="font-size:15px;font-weight:700;color:var(--primary)">📊 GPAX สรุปรวม</span>
+        <span id="gpax-auto-badge" style="font-size:11px;background:#DBEAFE;color:#1D4ED8;border-radius:20px;padding:2px 10px;font-weight:600">คำนวณอัตโนมัติ</span>
+        <span id="gpax-manual-badge" style="display:none;font-size:11px;background:#FEF3C7;color:#92400E;border-radius:20px;padding:2px 10px;font-weight:600">✏️ แก้ไขด้วยตนเอง</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <input type="number" id="gpax-override" min="0" max="4" step="0.01" placeholder="0.00"
+          style="width:110px;font-size:22px;font-weight:700;color:var(--primary);border:2px solid var(--primary);border-radius:8px;padding:6px 12px;background:white;text-align:center"
+          oninput="onGpaxOverride(this)">
+        <span style="font-size:16px;color:var(--text-muted)">/4.00</span>
+        <button id="gpax-reset-btn" onclick="resetGpaxOverride()" style="display:none;font-size:12px;background:white;border:1.5px solid var(--primary);color:var(--primary);border-radius:6px;padding:4px 12px;cursor:pointer;font-weight:600">🔄 คืนค่าคำนวณ</button>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:flex-start">
+        <span style="font-size:14px;flex-shrink:0">⚠️</span>
+        <span style="font-size:12px;color:#92400E;line-height:1.6">
+          <strong>หมายเหตุ:</strong> ค่า GPAX ที่แสดงคำนวณเบื้องต้นจาก GPA รวมที่กรอกในแต่ละเทอม
+          กรุณาตรวจสอบค่าจริงจาก <strong>ปพ.1</strong> และแก้ไขหากไม่ตรงกัน
+        </span>
+      </div>
+    </div>
+
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="calculate(); showSection('dashboard')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1952,6 +1975,37 @@ let state = {
   sci:  [null,null,null,null,null],
   eng:  [null,null,null,null,null],
 };
+let gpaxManualOverride = false; // true = นักเรียนแก้ไขเองแล้ว
+
+function onGpaxOverride(input) {
+  gpaxManualOverride = true;
+  document.getElementById('gpax-auto-badge').style.display = 'none';
+  document.getElementById('gpax-manual-badge').style.display = '';
+  document.getElementById('gpax-reset-btn').style.display = '';
+  onInput(input);
+  calculate();
+}
+
+function resetGpaxOverride() {
+  gpaxManualOverride = false;
+  document.getElementById('gpax-auto-badge').style.display = '';
+  document.getElementById('gpax-manual-badge').style.display = 'none';
+  document.getElementById('gpax-reset-btn').style.display = 'none';
+  updateGpaxSummaryBox();
+  calculate();
+}
+
+function updateGpaxSummaryBox() {
+  if (gpaxManualOverride) return; // ถ้าแก้เองอยู่ ไม่ override
+  const calcVal = avg(state.gpa);
+  const el = document.getElementById('gpax-override');
+  if (!el) return;
+  if (calcVal !== null) {
+    el.value = calcVal.toFixed(2);
+  } else {
+    el.value = '';
+  }
+}
 
 const SEMESTERS = ['ม.1 เทอม 1','ม.1 เทอม 2','ม.2 เทอม 1','ม.2 เทอม 2','ม.3 เทอม 1'];
 
@@ -2281,7 +2335,15 @@ function readInputs() {
 function calculate() {
   readInputs();
   saveStorage();
-  const gpax    = avg(state.gpa);
+  // อัปเดต GPAX summary box (เฉพาะเมื่อยังไม่ได้แก้เอง)
+  updateGpaxSummaryBox();
+  // ถ้าแก้ไข GPAX เองให้ใช้ค่านั้น มิฉะนั้นใช้ค่า avg จาก 5 เทอม
+  let gpax = avg(state.gpa);
+  if (gpaxManualOverride) {
+    const overrideEl = document.getElementById('gpax-override');
+    const v = overrideEl ? parseFloat(overrideEl.value) : NaN;
+    gpax = (!isNaN(v) && v >= 0 && v <= 4) ? v : gpax;
+  }
   const mathAvg = avg(state.math);
   const sciAvg  = avg(state.sci);
   const engAvg  = avg(state.eng);
@@ -2874,7 +2936,15 @@ function fillDemo() {
 // ============================================================
 // STORAGE
 // ============================================================
-function saveStorage() { localStorage.setItem('ps-m4-state', JSON.stringify(state)); }
+function saveStorage() {
+  localStorage.setItem('ps-m4-state', JSON.stringify(state));
+  // บันทึก GPAX override
+  const overrideEl = document.getElementById('gpax-override');
+  localStorage.setItem('ps-m4-gpax-override', JSON.stringify({
+    manual: gpaxManualOverride,
+    value: overrideEl ? overrideEl.value : ''
+  }));
+}
 
 function loadStorage() {
   const saved = localStorage.getItem('ps-m4-state');
@@ -2896,6 +2966,21 @@ function loadStorage() {
         }
       });
     });
+    // โหลด GPAX override
+    const savedOverride = localStorage.getItem('ps-m4-gpax-override');
+    if (savedOverride) {
+      try {
+        const ov = JSON.parse(savedOverride);
+        if (ov.manual && ov.value !== '') {
+          gpaxManualOverride = true;
+          const el = document.getElementById('gpax-override');
+          if (el) { el.value = ov.value; el.classList.add('has-value'); }
+          document.getElementById('gpax-auto-badge').style.display = 'none';
+          document.getElementById('gpax-manual-badge').style.display = '';
+          document.getElementById('gpax-reset-btn').style.display = '';
+        }
+      } catch(e) {}
+    }
     calculate();
   } catch(e) {}
 }
@@ -2905,6 +2990,7 @@ function resetAll() {
 }
 function confirmReset() {
   localStorage.removeItem('ps-m4-state');
+  localStorage.removeItem('ps-m4-gpax-override');
   location.reload();
 }
 
