@@ -2,7 +2,7 @@
   "name": "ระบบประเมินการขึ้นชั้น ม.4",
   "short_name": "ประเมิน ม.4",
   "description": "ระบบประเมินการขึ้นชั้น ม.4 โรงเรียนโพธิสารพิทยากร",
-  "start_url": "/",
+  "start_url": "/M4_PS_Assessment_Advisor/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#C2185B",
