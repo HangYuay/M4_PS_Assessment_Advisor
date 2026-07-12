@@ -511,6 +511,11 @@ html { font-size: 17px; }
   .grid-5 { grid-template-columns: repeat(3, 1fr); }
 }
 
+@media (max-width: 768px) {
+  /* collapse form-row ที่ 768px เพื่อรองรับมือถือทุกขนาด */
+  .form-row, .form-row-3 { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 900px) {
   /* Sidebar slides in as overlay */
   .sidebar {
@@ -616,6 +621,7 @@ html { font-size: 17px; }
   /* Grids → single col */
   .grid-4, .grid-3, .grid-2, .grid-5 { grid-template-columns: 1fr; }
   .form-row, .form-row-3 { grid-template-columns: 1fr; }
+  /* ป้องกัน breakpoint พลาดในมือถือกว้าง */
   .eligibility-hero { flex-wrap: wrap; }
   .hero-right { margin-left: 0; text-align: left; }
   .main-content { padding: 16px 12px; }
@@ -1619,7 +1625,7 @@ html { font-size: 17px; }
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">ชื่อ-สกุล นักเรียน *</label>
-          <input class="form-input" id="prof-name" type="text" placeholder="ชื่อ-นามสกุล" oninput="updateProfilePreview()">
+          <input class="form-input" id="prof-name" type="text" placeholder="ชื่อ-นามสกุล" oninput="updateProfilePreview()" style="min-width:0">
         </div>
         <div class="form-group">
           <label class="form-label">ชั้นเรียน / ห้อง</label>
@@ -1642,8 +1648,8 @@ html { font-size: 17px; }
         <div class="form-group" style="grid-column:1/-1">
           <label class="form-label">ครูที่ปรึกษา</label>
           <div class="form-row">
-            <input class="form-input" id="prof-teacher" type="text" placeholder="ครูที่ปรึกษาคนที่ 1">
-            <input class="form-input" id="prof-teacher2" type="text" placeholder="ครูที่ปรึกษาคนที่ 2 (ถ้ามี)">
+            <input class="form-input" id="prof-teacher" type="text" placeholder="ครูที่ปรึกษาคนที่ 1" style="min-width:0">
+            <input class="form-input" id="prof-teacher2" type="text" placeholder="ครูที่ปรึกษาคนที่ 2 (ถ้ามี)" style="min-width:0">
           </div>
         </div>
       </div>
