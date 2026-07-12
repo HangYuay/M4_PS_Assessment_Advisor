@@ -3163,7 +3163,7 @@ function printReport() {
         const needed = remaining <= 0 ? 0 : (target * TOTAL - currentSum) / remaining;
         if (needed > 4.00) chipHtml = `<span style="background:#FEE2E2;color:#991B1B;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">เป็นไปได้ยาก</span>`;
         else if (needed <= 0) chipHtml = `<span style="background:#D1FAE5;color:#065F46;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">✅ ผ่านแล้ว</span>`;
-        else chipHtml = `<span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">ต้องได้ ≥ ${needed.toFixed(2)}</span>`;
+        else { const lbl = needed >= 3.995 ? '= 4.00' : `≥ ${needed.toFixed(2)}`; chipHtml = `<span style="background:#FEF3C7;color:#92400E;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:700">ต้องได้ ${lbl}</span>`; }
       }
 
       const semNote = noGrades ? '' : remaining === 0 ? ' (ครบแล้ว)' : ` (เหลืออีก ${remaining} เทอม)`;
@@ -3185,6 +3185,9 @@ function printReport() {
       <div style="padding:8px 12px;background:white">
         <div style="font-size:10px;color:#9CA3AF;margin-bottom:6px">${bodyTitle}</div>
         ${rows}
+        <div style="margin-top:8px;padding-top:7px;border-top:1px solid #FDE68A;font-size:9px;color:#92400E;line-height:1.6">
+          <strong>หมายเหตุ:</strong> หากวิชาใดแสดงว่า "ไม่มีเกณฑ์" หรือ "ผ่านแล้ว" นักเรียนยังคงต้องทำเกรดให้ได้อย่างน้อย <strong>1.00</strong> ในทุกวิชา เพื่อผ่านการวัดผลระดับชั้น ม.3
+        </div>
       </div>
     </div>`;
   }
@@ -3397,9 +3400,60 @@ document.querySelectorAll('.nav-item').forEach(el => {
   });
 });
 
-// ── PWA: Service Worker ──
+// ── PWA: Service Worker + Auto-update ──
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+  navigator.serviceWorker.register('./sw.js').then(reg => {
+    // ตรวจสอบว่ามี SW ใหม่หรือไม่
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      newWorker.addEventListener('statechange', () => {
+        // SW ใหม่ installed และพร้อมใช้งาน (มี SW เดิมควบคุมอยู่)
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          showUpdateBanner();
+        }
+      });
+    });
+  }).catch(() => {});
+
+  // เมื่อ SW ใหม่เข้าควบคุม — reload อัตโนมัติ
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) { refreshing = true; window.location.reload(); }
+  });
+}
+
+function showUpdateBanner() {
+  // ถ้ามี banner อยู่แล้วไม่ต้องแสดงซ้ำ
+  if (document.getElementById('sw-update-banner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'sw-update-banner';
+  banner.style.cssText = `
+    position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+    background:#1A3A6B;color:white;border-radius:12px;
+    padding:12px 20px;display:flex;align-items:center;gap:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:9999;
+    font-size:13px;font-family:inherit;max-width:90vw;
+  `;
+  banner.innerHTML = `
+    <span>🔄 มีการอัปเดตระบบใหม่</span>
+    <button onclick="applyUpdate()" style="
+      background:#C2185B;color:white;border:none;border-radius:8px;
+      padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;
+      font-family:inherit;white-space:nowrap
+    ">อัปเดตเลย</button>
+    <button onclick="this.parentElement.remove()" style="
+      background:transparent;color:rgba(255,255,255,0.7);border:none;
+      font-size:18px;cursor:pointer;padding:0 4px;line-height:1
+    ">✕</button>
+  `;
+  document.body.appendChild(banner);
+}
+
+function applyUpdate() {
+  // บอก SW ใหม่ให้เข้าควบคุมทันที → trigger controllerchange → reload
+  navigator.serviceWorker.getRegistration().then(reg => {
+    if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+  });
 }
 
 // ── PWA: Install banner ──
