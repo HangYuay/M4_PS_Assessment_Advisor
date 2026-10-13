@@ -387,26 +387,26 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
 #print-page .print-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  border-bottom: 2.5px solid #C2185B;
-  padding-bottom: 8px;
-  margin-bottom: 10px;
+  gap: 9px;
+  border-bottom: 2px solid #C2185B;
+  padding-bottom: 5px;
+  margin-bottom: 7px;
 }
 #print-page .print-header-text h1 {
-  font-size: 14pt;
+  font-size: 12pt;
   font-weight: 800;
   color: #C2185B;
   margin: 0 0 1px 0;
   white-space: nowrap;
 }
 #print-page .print-header-text p {
-  font-size: 10pt;
+  font-size: 9pt;
   color: #555;
   margin: 0;
   white-space: nowrap;
 }
 #print-page .print-section {
-  margin-bottom: 9px;
+  margin-bottom: 7px;
 }
 #print-page .print-section-title {
   font-size: 9pt;
@@ -491,13 +491,13 @@ body { font-family: 'Prompt', sans-serif; background: var(--surface-2); color: v
   margin-bottom: 3px;
 }
 #print-page .print-footnote {
-  margin-top: 8px;
-  font-size: 9pt;
+  margin-top: 6px;
+  font-size: 8.5pt;
   color: #991B1B;
-  line-height: 1.5;
+  line-height: 1.45;
   background: #FFF5F5;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border: 1px solid #FCA5A5;
 }
 #print-page .print-footnote strong {
@@ -3267,7 +3267,7 @@ function printReport() {
   const hc = goalColors[heroClass] || goalColors.empty;
 
   // ── โลโก้ SVG ──
-  const logoSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 512 512">
+  const logoSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 512 512">
     <defs>
       <linearGradient id="prg" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#AD1457"/><stop offset="100%" stop-color="#FF6BB5"/></linearGradient>
       <linearGradient id="pmg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F02D8A"/><stop offset="100%" stop-color="#9C1050"/></linearGradient>
@@ -3396,8 +3396,8 @@ function printReport() {
 
     <!-- หมายเหตุ -->
     <div class="print-footnote">
-      <strong>หมายเหตุ:</strong> ระบบนี้จัดทำขึ้นเพื่อช่วยให้นักเรียนชั้น ม.3 ปีการศึกษา 2569 ประเมินความพร้อมของตนเองก่อนขึ้นชั้น ม.4 เท่านั้น ผลการประเมินที่แสดงเป็นเพียงการประเมินเบื้องต้นและไม่มีส่วนเกี่ยวข้องกับกระบวนการพิจารณาขึ้นชั้นของโรงเรียนโพธิสารพิทยากรแต่อย่างใด
-      <div style="text-align:center;margin-top:8px;padding-top:6px;border-top:1px solid #E5E7EB;color:#6B7280">พัฒนาระบบโดย นายวิฑูรย์ เจริญชัยไพบูลย์</div>
+      <strong>หมายเหตุ:</strong> ระบบนี้จัดทำเพื่อช่วยนักเรียน ม.3 ปีการศึกษา 2569 ประเมินความพร้อมก่อนขึ้นชั้น ม.4 เท่านั้น ผลการประเมินเป็นเพียงการประเมินเบื้องต้น ไม่เกี่ยวข้องกับกระบวนการพิจารณาขึ้นชั้นของโรงเรียนโพธิสารพิทยากร
+      <div style="text-align:center;margin-top:5px;padding-top:4px;border-top:1px solid #E5E7EB;color:#6B7280">พัฒนาระบบโดย นายวิฑูรย์ เจริญชัยไพบูลย์</div>
     </div>
   `;
 
